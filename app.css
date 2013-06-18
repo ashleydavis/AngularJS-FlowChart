@@ -1,5 +1,40 @@
+/*
+Generic reset.
+*/
 
 * {
-	margin: 0;
 	padding: 0;
+	margin: 0;
 }
+
+.test {
+	border: 5px red solid;
+	padding: 10;
+	margin: 10;
+	font-family: "Times New Roman";
+	font-style: italic;
+}
+
+/*
+Styles for nodes and connectors.
+*/
+
+.node-rect {
+	stroke: black;
+	stroke-width: 2;
+	fill: url(#nodeBackgroundGradient); 
+}
+
+.connector-circle {
+    fill: white;
+    stroke: black;
+    stroke-width: 2;
+}
+
+/*
+Style for the connection being dragged out.
+*/
+.dragging-connection {
+	stroke: blue;
+	stroke-width: 2;
+}	

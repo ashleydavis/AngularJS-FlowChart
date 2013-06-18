@@ -31,19 +31,13 @@
     ng-attr-transform="translate({{node.x}}, {{node.y}})"
     >
     <rect 
+      class="node-rect"
       ry="10" 
       rx="10" 
-      fill="url(#nodeBackgroundGradient)" 
-      stroke="#000000" 
-      stroke-width="2" 
-      stroke-dasharray="null" 
-      stroke-linejoin="null" 
-      stroke-linecap="null" 
       x="80" 
       y="50" 
       width="200" 
       height="150" 
-      id="node"
       >
     </rect>
 
@@ -58,16 +52,11 @@
         >
         {{connector.name}}
       </text>
-      <circle             
+      <circle       
+        class="connector-circle"      
         r="10" 
         ng-attr-cx="{{computeLocalInputConnectorX($index)}}"
         ng-attr-cy="{{computeLocalInputConnectorY($index)}}"
-        stroke-linecap="null" 
-        stroke-linejoin="null" 
-        stroke-dasharray="null" 
-        stroke-width="2" 
-        stroke="#000000" 
-        fill="#ffffff"
         />
     </g>
 
@@ -83,15 +72,10 @@
         {{connector.name}}
       </text>
       <circle             
+        class="connector-circle"      
         r="10" 
         ng-attr-cy="{{100 + ($index * 36.5)}}" 
         cx="280" 
-        stroke-linecap="null" 
-        stroke-linejoin="null" 
-        stroke-dasharray="null" 
-        stroke-width="2" 
-        stroke="#000000" 
-        fill="#ffffff"
         />
     </g>
 
@@ -101,12 +85,6 @@
       font-size="24" 
       y="80" 
       x="183" 
-      stroke-linecap="null" 
-      stroke-linejoin="null" 
-      stroke-dasharray="null" 
-      stroke-width="0" 
-      stroke="#000000" 
-      fill="#000000"
       >
       {{node.title}}
     </text>
@@ -114,13 +92,14 @@
 
   <!-- Represents the connection being dragged out. -->
   <line
+    class="dragging-connection"
     ng-if="draggingConnection"
     ng-attr-x1="{{draggingConnectorPos.x}}"
     ng-attr-y1="{{draggingConnectorPos.y}}"
     ng-attr-x2="{{dragPoint.x}}"
     ng-attr-y2="{{dragPoint.y}}"
-    style="stroke:rgb(255,0,0);stroke-width:2"
     >
   </line>
 
 </svg>
+
