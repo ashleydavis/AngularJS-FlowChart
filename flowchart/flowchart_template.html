@@ -1,125 +1,126 @@
-<div>
-    <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="svg_3">
-        <stop offset="0.01044" stop-opacity="0.99609" stop-color="#007fff"/>
-        <stop offset="0.99481" stop-opacity="0.99609" stop-color="#aaffff"/>
-      </linearGradient>
-      <linearGradient spreadMethod="pad" y2="0" x2="0" y1="1" x1="0" id="svg_11">
-        <stop offset="0.01044" stop-opacity="0.99609" stop-color="#007fff"/>
-        <stop offset="0.99481" stop-opacity="0.99609" stop-color="#ffffff"/>
-      </linearGradient>
-      <linearGradient spreadMethod="pad" y2="0" x2="0" y1="1" x1="0" id="svg_12">
-        <stop offset="0" stop-opacity="0.99609" stop-color="#00bfbf"/>
-        <stop offset="0.49481" stop-opacity="0.99609" stop-color="#ffffff"/>
-      </linearGradient>
-      <linearGradient spreadMethod="pad" y2="0" x2="0" y1="1" x1="0" id="svg_13">
-        <stop offset="0" stop-opacity="0.99609" stop-color="#56aaff"/>
-        <stop offset="0.63934" stop-opacity="0.99609" stop-color="#aaaaff"/>
-      </linearGradient>
-      <linearGradient 
-        spreadMethod="pad" 
-        y2="0" 
-        x2="0" 
-        y1="1" 
-        x1="0" 
-        id="nodeBackgroundGradient"
-        >
-        <stop 
-          offset="0" 
-          stop-opacity="0.99609" 
-          stop-color="#56aaff"
-          />
-          <stop 
-          offset="0.63934" 
-          stop-opacity="0.99219" 
-          stop-color="#d0d0e5"
-          />
-      </linearGradient>
-    </defs>
-    <g
-      ng-repeat="node in chart.nodes"
-      ng-mousedown="nodeMouseDown($event, $index)"
-      ng-attr-transform="translate({{node.x}}, {{node.y}})"
+<svg 
+  class="draggable-container"
+  width="100%" 
+  height="100%" 
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <linearGradient 
+      spreadMethod="pad" 
+      y2="0" 
+      x2="0" 
+      y1="1" 
+      x1="0" 
+      id="nodeBackgroundGradient"
       >
-      <rect 
-        ry="10" 
-        rx="10" 
-        fill="url(#nodeBackgroundGradient)" 
-        stroke="#000000" 
-        stroke-width="2" 
-        stroke-dasharray="null" 
-        stroke-linejoin="null" 
-        stroke-linecap="null" 
-        x="80" 
-        y="50" 
-        width="200" 
-        height="150" 
-        id="node"
+      <stop 
+        offset="0" 
+        stop-opacity="0.99609" 
+        stop-color="#56aaff"
         />
-  
-        <g
-          ng-repeat="connector in node.inputConnectors"
-          >
-          <text
-            ng-attr-y="{{100 + ($index * 36.5)}}" 
-            x="100"
-            alignment-baseline="middle"
-            >
-            {{connector.name}}
-          </text>
-          <circle             
-            r="10" 
-            ng-attr-cy="{{100 + ($index * 36.5)}}" 
-            cx="80" 
-            stroke-linecap="null" 
-            stroke-linejoin="null" 
-            stroke-dasharray="null" 
-            stroke-width="2" 
-            stroke="#000000" 
-            fill="#ffffff"
-            />
-        </g>
+        <stop 
+        offset="0.63934" 
+        stop-opacity="0.99219" 
+        stop-color="#d0d0e5"
+        />
+    </linearGradient>
+  </defs>
+  <g
+    ng-repeat="node in chart.nodes"
+    ng-mousedown="nodeMouseDown($event, $index)"
+    ng-attr-transform="translate({{node.x}}, {{node.y}})"
+    >
+    <rect 
+      ry="10" 
+      rx="10" 
+      fill="url(#nodeBackgroundGradient)" 
+      stroke="#000000" 
+      stroke-width="2" 
+      stroke-dasharray="null" 
+      stroke-linejoin="null" 
+      stroke-linecap="null" 
+      x="80" 
+      y="50" 
+      width="200" 
+      height="150" 
+      id="node"
+      >
+    </rect>
 
-        <g
-          ng-repeat="connector in node.outputConnectors"
-          >
-          <text
-            ng-attr-y="{{100 + ($index * 36.5)}}" 
-            x="260"
-            text-anchor="end"
-            alignment-baseline="middle"
-            >
-            {{connector.name}}
-          </text>
-          <circle             
-            r="10" 
-            ng-attr-cy="{{100 + ($index * 36.5)}}" 
-            cx="280" 
-            stroke-linecap="null" 
-            stroke-linejoin="null" 
-            stroke-dasharray="null" 
-            stroke-width="2" 
-            stroke="#000000" 
-            fill="#ffffff"
-            />
-        </g>
+    <g
+      ng-repeat="connector in node.inputConnectors"
+      ng-mousedown="inputConnectorMouseDown($event, node, connector, $index)"
+      >
+      <text
+        ng-attr-x="{{computeLocalInputConnectorX($index) + 20}}"
+        ng-attr-y="{{computeLocalInputConnectorY($index)}}"
+        alignment-baseline="middle"
+        >
+        {{connector.name}}
+      </text>
+      <circle             
+        r="10" 
+        ng-attr-cx="{{computeLocalInputConnectorX($index)}}"
+        ng-attr-cy="{{computeLocalInputConnectorY($index)}}"
+        stroke-linecap="null" 
+        stroke-linejoin="null" 
+        stroke-dasharray="null" 
+        stroke-width="2" 
+        stroke="#000000" 
+        fill="#ffffff"
+        />
+    </g>
 
-        <text 
-          text-anchor="middle" 
-          font-family="serif" 
-          font-size="24" 
-          y="80" 
-          x="183" 
-          stroke-linecap="null" 
-          stroke-linejoin="null" 
-          stroke-dasharray="null" 
-          stroke-width="0" 
-          stroke="#000000" 
-          fill="#000000"
-          >
-          {{node.title}}
-        </text>
-      </g>
-    </svg>
-</div>
+    <g
+      ng-repeat="connector in node.outputConnectors"
+      >
+      <text
+        ng-attr-y="{{100 + ($index * 36.5)}}" 
+        x="260"
+        text-anchor="end"
+        alignment-baseline="middle"
+        >
+        {{connector.name}}
+      </text>
+      <circle             
+        r="10" 
+        ng-attr-cy="{{100 + ($index * 36.5)}}" 
+        cx="280" 
+        stroke-linecap="null" 
+        stroke-linejoin="null" 
+        stroke-dasharray="null" 
+        stroke-width="2" 
+        stroke="#000000" 
+        fill="#ffffff"
+        />
+    </g>
+
+    <text 
+      text-anchor="middle" 
+      font-family="serif" 
+      font-size="24" 
+      y="80" 
+      x="183" 
+      stroke-linecap="null" 
+      stroke-linejoin="null" 
+      stroke-dasharray="null" 
+      stroke-width="0" 
+      stroke="#000000" 
+      fill="#000000"
+      >
+      {{node.title}}
+    </text>
+  </g>
+
+  <!-- Represents the connection being dragged out. -->
+  <line
+    ng-if="draggingConnection"
+    ng-attr-x1="{{draggingConnectorPos.x}}"
+    ng-attr-y1="{{draggingConnectorPos.y}}"
+    ng-attr-x2="{{dragPoint.x}}"
+    ng-attr-y2="{{dragPoint.y}}"
+    style="stroke:rgb(255,0,0);stroke-width:2"
+    >
+  </line>
+
+</svg>
