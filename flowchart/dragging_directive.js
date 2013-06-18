@@ -25,7 +25,7 @@ angular.module('dragging', ['mouseCapture', ] )
   			var draggingElementOffset = draggingElement.offset();
   			var startOffsetX = evt.clientX - draggingElementOffset.left;
   			var startOffsetY = evt.clientY - draggingElementOffset.top;
-  			var parentElement = draggingElement.parent();
+  			var parentElement = draggingElement.closest('.draggable-container') || draggingElement.parent();
   			var parentOffset = parentElement.offset();
 
   			var dragging = false;
@@ -44,7 +44,9 @@ angular.module('dragging', ['mouseCapture', ] )
 						dragging = true;
 
 						if (config.dragStarted) {
-							config.dragStarted();
+							var relativeX = (evt.clientX - parentOffset.left) - startOffsetX;
+							var relativeY = (evt.clientY - parentOffset.top) - startOffsetY;
+							config.dragStarted(relativeX, relativeY);
 						}
 					}
 				}
