@@ -90,7 +90,7 @@
     </text>
   </g>
 
-  <!-- Represents the connection being dragged out. -->
+  <!-- Represents the connection being dragged out. 
   <line
     class="dragging-connection"
     ng-if="draggingConnection"
@@ -100,6 +100,39 @@
     ng-attr-y2="{{dragPoint.y}}"
     >
   </line>
+    ng-if="draggingConnection"
+  -->
+
+  <path
+    class="dragging-connection"
+    ng-attr-d="M {{draggingConnectorPos.x}}, {{draggingConnectorPos.y}}
+               C {{draggingConnectorPos.x-tangentOffset}}, {{draggingConnectorPos.y}}
+                 {{dragPoint.x+tangentOffset}}, {{dragPoint.y}}
+                 {{dragPoint.x}}, {{dragPoint.y}}"
+    fill="transparent"
+    >
+  </path>
+
+  <circle
+      r="5" 
+      ng-attr-cx="{{draggingConnectorPos.x-tangentOffset}}" 
+      ng-attr-cy="{{draggingConnectorPos.y}}" 
+      stroke="red"
+      stroke-width="1"
+      fill="transparent"
+      >
+  </circle>
+
+  <circle
+      r="5" 
+      ng-attr-cx="{{dragPoint.x+tangentOffset}}" 
+      ng-attr-cy="{{dragPoint.y}}" 
+      stroke="blue"
+      stroke-width="1"
+      fill="transparent"
+      >
+  </circle>
+  
 
 </svg>
 
