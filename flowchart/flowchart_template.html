@@ -100,23 +100,34 @@
     ng-attr-y2="{{dragPoint.y}}"
     >
   </line>
-    ng-if="draggingConnection"
   -->
 
   <path
+    ng-if="draggingConnection"
     class="dragging-connection"
-    ng-attr-d="M {{draggingConnectorPos.x}}, {{draggingConnectorPos.y}}
-               C {{draggingConnectorPos.x-tangentOffset}}, {{draggingConnectorPos.y}}
-                 {{dragPoint.x+tangentOffset}}, {{dragPoint.y}}
-                 {{dragPoint.x}}, {{dragPoint.y}}"
+    ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
+               C {{dragTangent1.x}}, {{dragTangent1.y}}
+                 {{dragTangent2.x}}, {{dragTangent2.y}}
+                 {{dragPoint2.x}}, {{dragPoint2.y}}"
     fill="transparent"
     >
   </path>
 
+  <!-- Debug
+  <text
+    x="10"
+    y="40"
+    >
+    M {{dragPoint1.x}}, {{dragPoint1.y}}
+               C {{dragTangent1.x}}, {{dragTangent1.y}}
+                 {{dragTangent2.x}}, {{dragTangent2.y}}
+                 {{dragPoint2.x}}, {{dragPoint2.y}}
+  </text>
+
   <circle
       r="5" 
-      ng-attr-cx="{{draggingConnectorPos.x-tangentOffset}}" 
-      ng-attr-cy="{{draggingConnectorPos.y}}" 
+      ng-attr-cx="{{dragTangent1.x}}" 
+      ng-attr-cy="{{dragTangent1.y}}" 
       stroke="red"
       stroke-width="1"
       fill="transparent"
@@ -125,13 +136,14 @@
 
   <circle
       r="5" 
-      ng-attr-cx="{{dragPoint.x+tangentOffset}}" 
-      ng-attr-cy="{{dragPoint.y}}" 
+      ng-attr-cx="{{dragTangent2.x}}" 
+      ng-attr-cy="{{dragTangent2.y}}" 
       stroke="blue"
       stroke-width="1"
       fill="transparent"
       >
   </circle>
+  -->
   
 
 </svg>
