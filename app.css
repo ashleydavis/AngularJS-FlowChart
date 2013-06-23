@@ -37,4 +37,5 @@ Style for the connection being dragged out.
 .dragging-connection {
 	stroke: blue;
 	stroke-width: 2;
+	fill: transparent;
 }	

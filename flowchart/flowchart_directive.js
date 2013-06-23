@@ -16,6 +16,7 @@ angular.module('flowChart', ['dragging'] )
   		// Init data-model variables.
   		//
   		$scope.draggingConnection = false;
+  		$scope.tangentOffset = 100;
 
   		//
   		// Compute the position of a connector relative to its node.
@@ -75,6 +76,14 @@ angular.module('flowChart', ['dragging'] )
 
 		};
 
+		//
+		// Compute the tangent for the bezier curve.
+		//
+		var computeDraggingTangent = function () {
+
+			$scope.tangentOffset = Math.abs($scope.dragPoint.x - $scope.draggingConnectorPos.x) / 2;
+		};
+
 		$scope.inputConnectorMouseDown = function (evt, node, connector, connectorIndex) {
 
 			dragging.startDrag(evt, {
@@ -83,6 +92,7 @@ angular.module('flowChart', ['dragging'] )
 
 					$scope.dragPoint.x = x;
 					$scope.dragPoint.y = y;
+					computeDraggingTangent();
 				},
 
 				dragStarted: function (x, y) {
@@ -92,13 +102,14 @@ angular.module('flowChart', ['dragging'] )
 						x: x,
 						y: y
 					};
+					computeDraggingTangent();
 				},
 
 				dragEnded: function () {
-					$scope.draggingConnection = false;
-					delete $scope.draggingConnection;
-					delete $scope.draggingConnectorPos;
-					delete $scope.dragPoint;
+					//$scope.draggingConnection = false;
+					//delete $scope.draggingConnection;
+					//delete $scope.draggingConnectorPos;
+					//delete $scope.dragPoint;
 				},
 
 			});
