@@ -16,7 +16,6 @@ angular.module('flowChart', ['dragging'] )
   		// Init data-model variables.
   		//
   		$scope.draggingConnection = false;
-  		$scope.tangentOffset = 100;
 
   		//
   		// Compute the position of a connector relative to its node.
@@ -81,35 +80,61 @@ angular.module('flowChart', ['dragging'] )
 		//
 		var computeDraggingTangent = function () {
 
-			$scope.tangentOffset = Math.abs($scope.dragPoint.x - $scope.draggingConnectorPos.x) / 2;
+			var tangentOffset = Math.abs($scope.dragPoint2.x - $scope.dragPoint1.x) / 2;
+			$scope.dragTangent1 = {
+				x: $scope.dragPoint1.x - tangentOffset,
+				y: $scope.dragPoint1.y
+			};
+			$scope.dragTangent2 = {
+				x: $scope.dragPoint2.x + tangentOffset,
+				y: $scope.dragPoint2.y
+			};
 		};
 
+		//
+		// Handle mousedown on an input connector.
+		//
 		$scope.inputConnectorMouseDown = function (evt, node, connector, connectorIndex) {
 
+			//
+			// Initiate dragging out of a connection.
+			//
 			dragging.startDrag(evt, {
 
-				dragging: function (deltaX, deltaY, x, y) {
-
-					$scope.dragPoint.x = x;
-					$scope.dragPoint.y = y;
-					computeDraggingTangent();
-				},
-
+				//
+				// Called when the mouse has moved greater than the threshold distance
+				// and dragging has commenced.
+				//
 				dragStarted: function (x, y) {
 					$scope.draggingConnection = true;
-					$scope.draggingConnectorPos = computeConnectorPos(node, connectorIndex);
-					$scope.dragPoint = {
+					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex);
+					$scope.dragPoint2 = {
 						x: x,
 						y: y
 					};
 					computeDraggingTangent();
 				},
 
+				//
+				// Called on mousemove while dragging out a connection.
+				//
+				dragging: function (deltaX, deltaY, x, y) {
+
+					$scope.dragPoint2.x = x;
+					$scope.dragPoint2.y = y;
+					computeDraggingTangent();
+				},
+
+				//
+				// Clean up when dragging has finished.
+				//
 				dragEnded: function () {
-					//$scope.draggingConnection = false;
-					//delete $scope.draggingConnection;
-					//delete $scope.draggingConnectorPos;
-					//delete $scope.dragPoint;
+					$scope.draggingConnection = false;
+					delete $scope.draggingConnection;
+					delete $scope.dragPoint1;
+					delete $scope.dragTangent1;
+					delete $scope.dragPoint2;
+					delete $scope.dragTangent2;
 				},
 
 			});
