@@ -15,7 +15,7 @@ angular.module('flowChart', ['dragging'] )
   		//
   		// Init data-model variables.
   		//
-  		$scope.draggingConnection = false;
+  		$scope.draggingInputConnection = false;
 
   		//
   		// Compute the position of a connector relative to its node.
@@ -24,17 +24,24 @@ angular.module('flowChart', ['dragging'] )
 			return 80;
 		};
 
-  		$scope.computeLocalInputConnectorY = function (connectorIndex) {
+  		$scope.computeLocalOutputConnectorX = function (connectorIndex) {
+			return 280;
+		};
+
+  		$scope.computeLocalConnectorY = function (connectorIndex) {
 			return 100 + (connectorIndex * 36.5);
 		};
 
   		//
   		// Compute the position of a connector in the graph.
   		//
-  		var computeConnectorPos = function (node, connectorIndex) {
+  		var computeConnectorPos = function (node, connectorIndex, inputConnector) {
   			return {
-  				x: node.x + $scope.computeLocalInputConnectorX(connectorIndex),
-  				y: node.y + $scope.computeLocalInputConnectorY(connectorIndex),
+  				x: node.x + 
+  					(inputConnector ? 
+  						$scope.computeLocalInputConnectorX(connectorIndex) :
+  						$scope.computeLocalOutputConnectorX(connectorIndex)),
+  				y: node.y + $scope.computeLocalConnectorY(connectorIndex),
   			};
   		};
 
@@ -80,13 +87,24 @@ angular.module('flowChart', ['dragging'] )
 		//
 		var computeDraggingTangent = function () {
 
-			var tangentOffset = Math.abs($scope.dragPoint2.x - $scope.dragPoint1.x) / 2;
+			/*
+			if ($scope.dragPoint1.x > $scope.dragPoint2.x) {
+				//
+				// Flip the points so the bezier curve looks ok.
+				//
+				var tmp = Object.clone($scope.dragPoint1);
+				$scope.dragPoint1 = $scope.dragPoint2;
+				$scope.dragPoint2 = tmp;
+			}
+			*/
+
+			var tangentOffset = ($scope.dragPoint2.x - $scope.dragPoint1.x) / 2;
 			$scope.dragTangent1 = {
-				x: $scope.dragPoint1.x - tangentOffset,
+				x: $scope.dragPoint1.x + tangentOffset,
 				y: $scope.dragPoint1.y
 			};
 			$scope.dragTangent2 = {
-				x: $scope.dragPoint2.x + tangentOffset,
+				x: $scope.dragPoint2.x - tangentOffset,
 				y: $scope.dragPoint2.y
 			};
 		};
@@ -106,8 +124,8 @@ angular.module('flowChart', ['dragging'] )
 				// and dragging has commenced.
 				//
 				dragStarted: function (x, y) {
-					$scope.draggingConnection = true;
-					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex);
+					$scope.draggingInputConnection = true;
+					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, true);
 					$scope.dragPoint2 = {
 						x: x,
 						y: y
@@ -120,8 +138,11 @@ angular.module('flowChart', ['dragging'] )
 				//
 				dragging: function (deltaX, deltaY, x, y) {
 
-					$scope.dragPoint2.x = x;
-					$scope.dragPoint2.y = y;
+					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, true);
+					$scope.dragPoint2 = {
+						x: x,
+						y: y
+					};
 					computeDraggingTangent();
 				},
 
@@ -129,7 +150,7 @@ angular.module('flowChart', ['dragging'] )
 				// Clean up when dragging has finished.
 				//
 				dragEnded: function () {
-					$scope.draggingConnection = false;
+					$scope.draggingInputConnection = false;
 					delete $scope.draggingConnection;
 					delete $scope.dragPoint1;
 					delete $scope.dragTangent1;
@@ -140,6 +161,57 @@ angular.module('flowChart', ['dragging'] )
 			});
 		};
 
+		//
+		// Handle mousedown on an output connector.
+		//
+		$scope.outputConnectorMouseDown = function (evt, node, connector, connectorIndex) {
+
+			//
+			// Initiate dragging out of a connection.
+			//
+			dragging.startDrag(evt, {
+
+				//
+				// Called when the mouse has moved greater than the threshold distance
+				// and dragging has commenced.
+				//
+				dragStarted: function (x, y) {
+					$scope.draggingOutputConnection = true;
+					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, false);
+					$scope.dragPoint2 = {
+						x: x,
+						y: y
+					};
+					computeDraggingTangent();
+				},
+
+				//
+				// Called on mousemove while dragging out a connection.
+				//
+				dragging: function (deltaX, deltaY, x, y) {
+
+					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, false);
+					$scope.dragPoint2 = {
+						x: x,
+						y: y
+					};
+					computeDraggingTangent();
+				},
+
+				//
+				// Clean up when dragging has finished.
+				//
+				dragEnded: function () {
+					$scope.draggingOutputConnection = false;
+					delete $scope.draggingConnection;
+					delete $scope.dragPoint1;
+					delete $scope.dragTangent1;
+					delete $scope.dragPoint2;
+					delete $scope.dragTangent2;
+				},
+
+			});
+		};
   	},
   };
 })
