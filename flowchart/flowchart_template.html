@@ -47,7 +47,7 @@
       >
       <text
         ng-attr-x="{{computeLocalInputConnectorX($index) + 20}}"
-        ng-attr-y="{{computeLocalInputConnectorY($index)}}"
+        ng-attr-y="{{computeLocalConnectorY($index)}}"
         alignment-baseline="middle"
         >
         {{connector.name}}
@@ -56,15 +56,16 @@
         class="connector-circle"      
         r="10" 
         ng-attr-cx="{{computeLocalInputConnectorX($index)}}"
-        ng-attr-cy="{{computeLocalInputConnectorY($index)}}"
+        ng-attr-cy="{{computeLocalConnectorY($index)}}"
         />
     </g>
 
     <g
       ng-repeat="connector in node.outputConnectors"
+      ng-mousedown="outputConnectorMouseDown($event, node, connector, $index)"
       >
       <text
-        ng-attr-y="{{100 + ($index * 36.5)}}" 
+        ng-attr-y="{{computeLocalConnectorY($index)}}"
         x="260"
         text-anchor="end"
         alignment-baseline="middle"
@@ -74,8 +75,8 @@
       <circle             
         class="connector-circle"      
         r="10" 
-        ng-attr-cy="{{100 + ($index * 36.5)}}" 
-        cx="280" 
+        ng-attr-cx="{{computeLocalOutputConnectorX($index)}}"
+        ng-attr-cy="{{computeLocalConnectorY($index)}}"
         />
     </g>
 
@@ -103,7 +104,18 @@
   -->
 
   <path
-    ng-if="draggingConnection"
+    ng-if="draggingInputConnection"
+    class="dragging-connection"
+    ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
+               C {{dragTangent1.x}}, {{dragTangent1.y}}
+                 {{dragTangent2.x}}, {{dragTangent2.y}}
+                 {{dragPoint2.x}}, {{dragPoint2.y}}"
+    fill="transparent"
+    >
+  </path>
+
+  <path
+    ng-if="draggingOutputConnection"
     class="dragging-connection"
     ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
                C {{dragTangent1.x}}, {{dragTangent1.y}}
@@ -123,7 +135,7 @@
                  {{dragTangent2.x}}, {{dragTangent2.y}}
                  {{dragPoint2.x}}, {{dragPoint2.y}}
   </text>
-
+-->
   <circle
       r="5" 
       ng-attr-cx="{{dragTangent1.x}}" 
@@ -143,7 +155,22 @@
       fill="transparent"
       >
   </circle>
-  -->
+  
+  <circle
+      r="5" 
+      ng-attr-cx="{{dragPoint1.x}}" 
+      ng-attr-cy="{{dragPoint1.y}}" 
+      fill="black"
+      >
+  </circle>
+
+  <circle
+      r="5" 
+      ng-attr-cx="{{dragPoint2.x}}" 
+      ng-attr-cy="{{dragPoint2.y}}" 
+      fill="black"
+      >
+  </circle>
   
 
 </svg>
