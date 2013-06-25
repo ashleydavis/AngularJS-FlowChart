@@ -3,7 +3,7 @@
   width="100%" 
   height="100%" 
   xmlns="http://www.w3.org/2000/svg"
->
+  >
   <defs>
     <linearGradient 
       spreadMethod="pad" 
@@ -54,7 +54,7 @@
       </text>
       <circle       
         class="connector-circle"      
-        r="10" 
+        ng-attr-r="{{connectorSize}}" 
         ng-attr-cx="{{computeLocalInputConnectorX($index)}}"
         ng-attr-cy="{{computeLocalConnectorY($index)}}"
         />
@@ -74,7 +74,7 @@
       </text>
       <circle             
         class="connector-circle"      
-        r="10" 
+        ng-attr-r="{{connectorSize}}" 
         ng-attr-cx="{{computeLocalOutputConnectorX($index)}}"
         ng-attr-cy="{{computeLocalConnectorY($index)}}"
         />
@@ -126,6 +126,7 @@
   </text>
 -->
   <circle
+      ng-if="draggingConnection"
       r="5" 
       ng-attr-cx="{{dragTangent1.x}}" 
       ng-attr-cy="{{dragTangent1.y}}" 
@@ -136,6 +137,7 @@
   </circle>
 
   <circle
+      ng-if="draggingConnection"
       r="5" 
       ng-attr-cx="{{dragTangent2.x}}" 
       ng-attr-cy="{{dragTangent2.y}}" 
@@ -146,6 +148,7 @@
   </circle>
   
   <circle
+      ng-if="draggingConnection"  
       r="5" 
       ng-attr-cx="{{dragPoint1.x}}" 
       ng-attr-cy="{{dragPoint1.y}}" 
@@ -154,6 +157,7 @@
   </circle>
 
   <circle
+      ng-if="draggingConnection"
       r="5" 
       ng-attr-cx="{{dragPoint2.x}}" 
       ng-attr-cy="{{dragPoint2.y}}" 

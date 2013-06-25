@@ -39,3 +39,7 @@ Style for the connection being dragged out.
 	stroke-width: 2;
 	fill: transparent;
 }	
+
+.draggable-container {
+	border: solid 1px blue;
+}
