@@ -1,3 +1,31 @@
+//
+// http://upshots.org/javascript/jquery-hittest
+//
+
+/*
+ * jQuery "hitTest" plugin
+ * @warning: does not work with elements that are "display:hidden"
+ * @param {Number} x The x coordinate to test for collision
+ * @param {Number} y The y coordinate to test for collision
+ * @return {Boolean} True if the given jQuery object's rectangular bounds contain the point defined by params x,y
+ */
+(function($){
+    $.fn.hitTest = function (x, y) {
+        var bounds = this.offset();
+        bounds.right = bounds.left + this.outerWidth();
+        bounds.bottom = bounds.top + this.outerHeight();
+        return x >= bounds.left && x <= bounds.right && y <= bounds.bottom && y >= bounds.top;
+        /*
+        if (isHit) {
+        	if (this.children().length > 0) {
+
+        	}
+
+        }
+        */
+    };
+})(jQuery);
+
 
 angular.module('flowChart', ['dragging'] )
 
@@ -16,6 +44,7 @@ angular.module('flowChart', ['dragging'] )
   		// Init data-model variables.
   		//
   		$scope.draggingConnection = false;
+  		$scope.connectorSize = 10;
 
   		//
   		// Compute the position of a connector relative to its node.
@@ -96,6 +125,20 @@ angular.module('flowChart', ['dragging'] )
 				x: $scope.dragPoint2.x - tangentOffset,
 				y: $scope.dragPoint2.y
 			};
+		};
+
+		//
+		// Hit test and retreive node and connector that was hit at the specified coordinates.
+		// isInputConnector specifies whether you want input connectors or output connectors.
+		//
+		var hitTestForConnector = function (x, y, isInputConnector) {
+
+			// http://stackoverflow.com/questions/2174640/hit-testing-svg-shapes
+
+
+			var el = document.elementFromPoint(x, y);
+
+
 		};
 
 		//
