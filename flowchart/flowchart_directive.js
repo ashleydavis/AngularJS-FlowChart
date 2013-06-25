@@ -11,10 +11,13 @@
  */
 (function($){
     $.fn.hitTest = function (x, y) {
-        var bounds = this.offset();
-        bounds.right = bounds.left + this.outerWidth();
-        bounds.bottom = bounds.top + this.outerHeight();
-        return x >= bounds.left && x <= bounds.right && y <= bounds.bottom && y >= bounds.top;
+    	return this.filter(function () {
+    		var el = $(this);
+	        var bounds = el.offset();
+	        bounds.right = bounds.left + el.outerWidth();
+	        bounds.bottom = bounds.top + el.outerHeight();
+	        return x >= bounds.left && x <= bounds.right && y <= bounds.bottom && y >= bounds.top;
+	    });
         /*
         if (isHit) {
         	if (this.children().length > 0) {
