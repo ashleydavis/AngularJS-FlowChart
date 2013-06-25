@@ -43,7 +43,7 @@
 
     <g
       ng-repeat="connector in node.inputConnectors"
-      ng-mousedown="inputConnectorMouseDown($event, node, connector, $index)"
+      ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
       >
       <text
         ng-attr-x="{{computeLocalInputConnectorX($index) + 20}}"
@@ -62,7 +62,7 @@
 
     <g
       ng-repeat="connector in node.outputConnectors"
-      ng-mousedown="outputConnectorMouseDown($event, node, connector, $index)"
+      ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
       >
       <text
         ng-attr-y="{{computeLocalConnectorY($index)}}"
