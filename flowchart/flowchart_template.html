@@ -1,6 +1,7 @@
 <svg 
   class="draggable-container"
   xmlns="http://www.w3.org/2000/svg"
+  ng-mousemove="mouseMove($event)"
   >
   <defs>
     <linearGradient 
@@ -42,6 +43,7 @@
     <g
       ng-repeat="connector in node.inputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
+      class="connector input-connector"
       >
       <text
         ng-attr-x="{{computeLocalInputConnectorX($index) + 20}}"
@@ -61,6 +63,7 @@
     <g
       ng-repeat="connector in node.outputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
+      class="connector output-connector"
       >
       <text
         ng-attr-y="{{computeLocalConnectorY($index)}}"

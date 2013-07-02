@@ -46,7 +46,7 @@ angular.module('dragging', ['mouseCapture', ] )
 						if (config.dragStarted) {
 							var relativeX = (evt.clientX - parentOffset.left) - startOffsetX;
 							var relativeY = (evt.clientY - parentOffset.top) - startOffsetY;
-							config.dragStarted(relativeX, relativeY);
+							config.dragStarted(relativeX, relativeY, evt);
 						}
 					}
 				}
@@ -56,7 +56,7 @@ angular.module('dragging', ['mouseCapture', ] )
 						var deltaY = evt.clientY - y;
 						var relativeX = (evt.clientX - parentOffset.left) - startOffsetX;
 						var relativeY = (evt.clientY - parentOffset.top) - startOffsetY;
-						config.dragging(deltaX, deltaY, relativeX, relativeY);
+						config.dragging(deltaX, deltaY, relativeX, relativeY, evt);
 					}
 
 					x = evt.clientX;
@@ -67,7 +67,7 @@ angular.module('dragging', ['mouseCapture', ] )
 	  		//
 	  		// Handler for when mouse capture is released.
 	  		//
-	  		var released = function(evt) {
+	  		var released = function() {
 
 	  			if (dragging) {
   					if (config.dragEnded) {

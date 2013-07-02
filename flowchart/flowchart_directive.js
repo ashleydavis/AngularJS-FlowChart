@@ -1,35 +1,3 @@
-//
-// http://upshots.org/javascript/jquery-hittest
-//
-
-/*
- * jQuery "hitTest" plugin
- * @warning: does not work with elements that are "display:hidden"
- * @param {Number} x The x coordinate to test for collision
- * @param {Number} y The y coordinate to test for collision
- * @return {Boolean} True if the given jQuery object's rectangular bounds contain the point defined by params x,y
- */
-(function($){
-    $.fn.hitTest = function (x, y) {
-    	return this.filter(function () {
-    		var el = $(this);
-	        var bounds = el.offset();
-	        bounds.right = bounds.left + el.outerWidth();
-	        bounds.bottom = bounds.top + el.outerHeight();
-	        return x >= bounds.left && x <= bounds.right && y <= bounds.bottom && y >= bounds.top;
-	    });
-        /*
-        if (isHit) {
-        	if (this.children().length > 0) {
-
-        	}
-
-        }
-        */
-    };
-})(jQuery);
-
-
 angular.module('flowChart', ['dragging'] )
 
 .directive('flowChart', function(dragging) {
@@ -48,6 +16,31 @@ angular.module('flowChart', ['dragging'] )
   		//
   		$scope.draggingConnection = false;
   		$scope.connectorSize = 10;
+
+  		//
+  		// Find the element that is the parent connector of the particular element.
+  		//
+  		var findParentConnector = function (element) {
+
+  			if (element.length == 0)
+  			{
+  				return null;
+  			}
+
+			if (hasClassSVG(element, 'connector')) {
+  				return element;
+  			}
+
+  			return findParentConnector(element.parent());
+  		};
+
+  		$scope.mouseMove = function (evt) {
+
+			var hoverElement = findParentConnector($(document.elementFromPoint(evt.clientX, evt.clientY)));
+			if (hoverElement) { // && $(hoverElement).hasClass('connector')) {
+				console.log(hoverElement);
+			}
+  		};
 
   		//
   		// Compute the position of a connector relative to its node.
@@ -90,9 +83,7 @@ angular.module('flowChart', ['dragging'] )
 
 			dragging.startDrag(evt, {
 
-				dragging: function (deltaX, deltaY) {
-
-					//console.log("dragging: " + deltaX + ", " + deltaY);
+				dragging: function (deltaX, deltaY, x, y) {
 
 					node.x += deltaX;
 					node.y += deltaY;
@@ -149,6 +140,9 @@ angular.module('flowChart', ['dragging'] )
 		//
 		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
 
+			console.log("dragging: " + evt.clientX + ", " + evt.clientY);//fio:
+
+
 			//
 			// Initiate dragging out of a connection.
 			//
@@ -159,6 +153,7 @@ angular.module('flowChart', ['dragging'] )
 				// and dragging has commenced.
 				//
 				dragStarted: function (x, y) {
+
 					$scope.draggingConnection = true;
 					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
 					$scope.dragPoint2 = {
@@ -171,7 +166,7 @@ angular.module('flowChart', ['dragging'] )
 				//
 				// Called on mousemove while dragging out a connection.
 				//
-				dragging: function (deltaX, deltaY, x, y) {
+				dragging: function (deltaX, deltaY, x, y, evt) {
 					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
 					$scope.dragPoint2 = {
 						x: x,
