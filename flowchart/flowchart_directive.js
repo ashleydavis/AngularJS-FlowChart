@@ -27,32 +27,82 @@ angular.module('flowChart', ['dragging'] )
   		$scope.connectorSize = 10;
 
   		//
+  		// Reference to the connector that the mouse is currently over.
+  		//
+  		var mouseOverConnector = null;
+
+  		//
+  		// The class for connectors.
+  		//
+  		var connectorClass = 'connector';
+
+  		//
   		// Find the element that is the parent connector of the particular element.
   		//
   		var findParentConnector = function (element) {
 
+  			//
+  			// Reached the root.
+  			//
   			if (element.length == 0)
   			{
   				return null;
   			}
 
-			if (hasClassSVG(element, 'connector')) {
+  			// 
+  			// Check if the element has the class that identifies it as a connector.
+  			//
+			if (hasClassSVG(element, connectorClass)) {
+				//
+				// Found the connector element.
+				//
   				return element;
   			}
 
+  			//
+  			// Recursively search parent elements.
+  			//
   			return findParentConnector(element.parent());
   		};
 
   		//
-  		// Called for example mouse move on the svg element.
+  		// Called for each mouse move on the svg element.
   		//
   		$scope.mouseMove = function (evt) {
 
-			var hoverElement = findParentConnector($(document.elementFromPoint(evt.clientX, evt.clientY)));
-			if (hoverElement) { // && $(hoverElement).hasClass('connector')) {
-				console.log(hoverElement);
-				console.log(hoverElement.scope());
+  			//
+  			// Need to figure out if the mouse is currently over a connector.
+  			//
+  			var curMouseOverConnector = null;
+
+  			//
+  			// Retreive the element the mouse is currently over.
+  			//
+  			var mouseOverElement = document.elementFromPoint(evt.clientX, evt.clientY);
+
+  			//
+  			// Find the parent element, if any, that is a connector.
+  			//
+			var hoverElement = findParentConnector($(mouseOverElement));
+			if (hoverElement) {
+				var connectorScope = hoverElement.scope();
+				curMouseOverConnector = connectorScope.connector;
 			}
+
+			if (curMouseOverConnector != mouseOverConnector) {
+				if (mouseOverConnector) {
+					// Clear the previous 'mouse over' connector.
+					mouseOverConnector.isMouseOver = false;
+				}
+
+				// Mark the connector as 'mouse over' so that we can change its appearance from the view.
+				if (curMouseOverConnector) {
+					curMouseOverConnector.isMouseOver = true; 
+				}
+
+				mouseOverConnector = curMouseOverConnector;
+			}
+
   		};
 
   		//
