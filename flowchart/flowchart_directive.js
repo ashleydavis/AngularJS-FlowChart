@@ -1,5 +1,11 @@
+//
+// Flowchart module.
+//
 angular.module('flowChart', ['dragging'] )
 
+//
+// Flowchart directive.
+//
 .directive('flowChart', function(dragging) {
   return {
   	restrict: 'E',
@@ -9,6 +15,9 @@ angular.module('flowChart', ['dragging'] )
   		chart: "=",
   	},
 
+  	//
+  	// Angular link function, called to attach the directive's element to the its scope (its data-model).
+  	//
   	link: function($scope, $element, $attrs) {
 
   		//
@@ -34,11 +43,15 @@ angular.module('flowChart', ['dragging'] )
   			return findParentConnector(element.parent());
   		};
 
+  		//
+  		// Called for example mouse move on the svg element.
+  		//
   		$scope.mouseMove = function (evt) {
 
 			var hoverElement = findParentConnector($(document.elementFromPoint(evt.clientX, evt.clientY)));
 			if (hoverElement) { // && $(hoverElement).hasClass('connector')) {
 				console.log(hoverElement);
+				console.log(hoverElement.scope());
 			}
   		};
 
