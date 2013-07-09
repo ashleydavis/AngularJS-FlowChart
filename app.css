@@ -31,6 +31,12 @@ Styles for nodes and connectors.
     stroke-width: 2;
 }
 
+.selected-connector-circle {
+    fill: white;
+    stroke: red;
+    stroke-width: 3;
+}
+
 /*
 Style for the connection being dragged out.
 */
