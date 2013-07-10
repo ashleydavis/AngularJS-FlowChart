@@ -65,38 +65,52 @@ angular.module('flowChart', ['dragging'] )
   			return findParentConnector(element.parent());
   		};
 
+		//
+		// Hit test and retreive node and connector that was hit at the specified coordinates.
+		// type specifies whether you want input, output or both.
+		//
+		var hitTestForConnector = function (clientX, clientY, type) {
+
+  			//
+  			// Retreive the element the mouse is currently over.
+  			//
+  			var mouseOverElement = document.elementFromPoint(clientX, clientY);
+  			if (!mouseOverElement) {
+  				return null;
+  			}
+
+  			//
+  			// Find the parent element, if any, that is a connector.
+  			//
+			var hoverElement = findParentConnector($(mouseOverElement));
+			if (!hoverElement) {
+				return null;
+			}
+
+			var connectorScope = hoverElement.scope();
+			return connectorScope.connector;
+		};
+
   		//
   		// Called for each mouse move on the svg element.
   		//
   		$scope.mouseMove = function (evt) {
 
   			//
-  			// Need to figure out if the mouse is currently over a connector.
+  			// Retreive the connector the mouse is currently over.
   			//
-  			var curMouseOverConnector = null;
-
-  			//
-  			// Retreive the element the mouse is currently over.
-  			//
-  			var mouseOverElement = document.elementFromPoint(evt.clientX, evt.clientY);
-
-  			//
-  			// Find the parent element, if any, that is a connector.
-  			//
-			var hoverElement = findParentConnector($(mouseOverElement));
-			if (hoverElement) {
-				var connectorScope = hoverElement.scope();
-				curMouseOverConnector = connectorScope.connector;
-			}
-
+  			var curMouseOverConnector = hitTestForConnector(evt.clientX, evt.clientY);
 			if (curMouseOverConnector != mouseOverConnector) {
+
 				if (mouseOverConnector) {
+
 					// Clear the previous 'mouse over' connector.
 					mouseOverConnector.isMouseOver = false;
 				}
 
 				// Mark the connector as 'mouse over' so that we can change its appearance from the view.
 				if (curMouseOverConnector) {
+
 					curMouseOverConnector.isMouseOver = true; 
 				}
 
@@ -185,26 +199,9 @@ angular.module('flowChart', ['dragging'] )
 		};
 
 		//
-		// Hit test and retreive node and connector that was hit at the specified coordinates.
-		// isInputConnector specifies whether you want input connectors or output connectors.
-		//
-		var hitTestForConnector = function (x, y, isInputConnector) {
-
-			// http://stackoverflow.com/questions/2174640/hit-testing-svg-shapes
-
-
-			var el = document.elementFromPoint(x, y);
-
-
-		};
-
-		//
 		// Handle mousedown on an input connector.
 		//
 		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
-
-			console.log("dragging: " + evt.clientX + ", " + evt.clientY);//fio:
-
 
 			//
 			// Initiate dragging out of a connection.
