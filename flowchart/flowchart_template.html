@@ -104,17 +104,37 @@
   </line>
   -->
 
-  <path
+  <g
     ng-if="draggingConnection"
-    class="dragging-connection"
-    ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
-               C {{dragTangent1.x}}, {{dragTangent1.y}}
-                 {{dragTangent2.x}}, {{dragTangent2.y}}
-                 {{dragPoint2.x}}, {{dragPoint2.y}}"
-    fill="transparent"
     >
-  </path>
+    <path
+      class="dragging-connection"
+      ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
+                 C {{dragTangent1.x}}, {{dragTangent1.y}}
+                   {{dragTangent2.x}}, {{dragTangent2.y}}
+                   {{dragPoint2.x}}, {{dragPoint2.y}}"
+      fill="transparent"
+      >
+    </path>
 
+    <circle
+        r="5" 
+        ng-attr-cx="{{dragPoint1.x}}" 
+        ng-attr-cy="{{dragPoint1.y}}" 
+        fill="black"
+        style="pointer-events: none;"
+        >
+    </circle>
+
+    <circle
+        r="5" 
+        ng-attr-cx="{{dragPoint2.x}}" 
+        ng-attr-cy="{{dragPoint2.y}}" 
+        fill="black"
+        style="pointer-events: none;"
+        >
+    </circle>
+  </g>
   <!-- Debug
   <text
     x="10"
@@ -151,24 +171,5 @@
       >
   </circle>
   
-  <circle
-      ng-if="draggingConnection"  
-      r="5" 
-      ng-attr-cx="{{dragPoint1.x}}" 
-      ng-attr-cy="{{dragPoint1.y}}" 
-      fill="black"
-      >
-  </circle>
-
-  <circle
-      ng-if="draggingConnection"
-      r="5" 
-      ng-attr-cx="{{dragPoint2.x}}" 
-      ng-attr-cy="{{dragPoint2.y}}" 
-      fill="black"
-      >
-  </circle>
-  
-
 </svg>
 
