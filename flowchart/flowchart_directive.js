@@ -44,8 +44,7 @@ angular.module('flowChart', ['dragging'] )
   			//
   			// Reached the root.
   			//
-  			if (element.length == 0)
-  			{
+  			if (element.length == 0) {
   				return null;
   			}
 
