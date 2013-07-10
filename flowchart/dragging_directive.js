@@ -44,9 +44,9 @@ angular.module('dragging', ['mouseCapture', ] )
 						dragging = true;
 
 						if (config.dragStarted) {
-							var relativeX = (evt.clientX - parentOffset.left) - startOffsetX;
-							var relativeY = (evt.clientY - parentOffset.top) - startOffsetY;
-							config.dragStarted(relativeX, relativeY, evt);
+							var relativeX = evt.clientX - parentOffset.left;
+							var relativeY = evt.clientY - parentOffset.top;
+							config.dragStarted(relativeX, relativeY, evt, startOffsetX, startOffsetY);
 						}
 					}
 				}
@@ -54,9 +54,9 @@ angular.module('dragging', ['mouseCapture', ] )
 					if (config.dragging) {
 						var deltaX = evt.clientX - x;
 						var deltaY = evt.clientY - y;
-						var relativeX = (evt.clientX - parentOffset.left) - startOffsetX;
-						var relativeY = (evt.clientY - parentOffset.top) - startOffsetY;
-						config.dragging(deltaX, deltaY, relativeX, relativeY, evt);
+						var relativeX = evt.clientX - parentOffset.left;
+						var relativeY = evt.clientY - parentOffset.top;
+						config.dragging(deltaX, deltaY, relativeX, relativeY, evt, startOffsetX, startOffsetY);
 					}
 
 					x = evt.clientX;
