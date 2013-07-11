@@ -21,43 +21,7 @@ angular.module('flowChart', ['dragging'] )
   	// it is painful to unit test a directive without instantiating the DOM 
   	// (which is possible, just not ideal).
   	//
-  	controller: function () {
-
-  		//
-  		// The class for connectors.
-  		//todo: should be configurable.
-  		//
-  		var connectorClass = 'connector';
-
-  		//
-  		// Find the element that is the parent connector of the particular element.
-  		//
-  		this.findParentConnector = function (element) {
-
-  			//
-  			// Reached the root.
-  			//
-  			if (element.length == 0) {
-  				return null;
-  			}
-
-  			// 
-  			// Check if the element has the class that identifies it as a connector.
-  			//
-			if (hasClassSVG(element, connectorClass)) {
-				//
-				// Found the connector element.
-				//
-  				return element;
-  			}
-
-  			//
-  			// Recursively search parent elements.
-  			//
-  			return this.findParentConnector(element.parent());
-  		};
-
-  	},
+  	controller: FlowChartController,
 
   	//
   	// Angular link function, called to attach the directive's element to the its scope (its data-model).
@@ -264,3 +228,46 @@ angular.module('flowChart', ['dragging'] )
 })
 ;
 
+//
+// Controller for the flowchart directive.
+// Having a separate controller is better for unit testing, otherwise
+// it is painful to unit test a directive without instantiating the DOM 
+// (which is possible, just not ideal).
+//
+function FlowChartController () {
+
+	//
+	// The class for connectors.
+	//todo: should be configurable.
+	//
+	var connectorClass = 'connector';
+
+	//
+	// Find the element that is the parent connector of the particular element.
+	//
+	this.findParentConnector = function (element) {
+
+	//
+	// Reached the root.
+	//
+	if (element.length == 0) {
+		return null;
+	}
+
+	// 
+	// Check if the element has the class that identifies it as a connector.
+	//
+	if (hasClassSVG(element, connectorClass)) {
+		//
+		// Found the connector element.
+		//
+		return element;
+	}
+
+		//
+		// Recursively search parent elements.
+		//
+		return this.findParentConnector(element.parent());
+	};
+
+}
