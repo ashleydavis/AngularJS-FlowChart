@@ -22,33 +22,17 @@ angular.module('flowChart', ['dragging'] )
   	// (which is possible, just not ideal).
   	//
   	controller: function () {
-  	},
-
-  	//
-  	// Angular link function, called to attach the directive's element to the its scope (its data-model).
-  	//
-  	link: function($scope, $element, $attrs) {
-
-  		//
-  		// Init data-model variables.
-  		//
-  		$scope.draggingConnection = false;
-  		$scope.connectorSize = 10;
-
-  		//
-  		// Reference to the connector that the mouse is currently over.
-  		//
-  		var mouseOverConnector = null;
 
   		//
   		// The class for connectors.
+  		//todo: should be configurable.
   		//
   		var connectorClass = 'connector';
 
   		//
   		// Find the element that is the parent connector of the particular element.
   		//
-  		var findParentConnector = function (element) {
+  		this.findParentConnector = function (element) {
 
   			//
   			// Reached the root.
@@ -70,8 +54,26 @@ angular.module('flowChart', ['dragging'] )
   			//
   			// Recursively search parent elements.
   			//
-  			return findParentConnector(element.parent());
+  			return this.findParentConnector(element.parent());
   		};
+
+  	},
+
+  	//
+  	// Angular link function, called to attach the directive's element to the its scope (its data-model).
+  	//
+  	link: function($scope, $element, $attrs, controller) {
+
+  		//
+  		// Init data-model variables.
+  		//
+  		$scope.draggingConnection = false;
+  		$scope.connectorSize = 10;
+
+  		//
+  		// Reference to the connector that the mouse is currently over.
+  		//
+  		var mouseOverConnector = null;
 
 		//
 		// Hit test and retreive node and connector that was hit at the specified coordinates.
@@ -90,7 +92,7 @@ angular.module('flowChart', ['dragging'] )
   			//
   			// Find the parent element, if any, that is a connector.
   			//
-			var hoverElement = findParentConnector($(mouseOverElement));
+			var hoverElement = controller.findParentConnector($(mouseOverElement));
 			if (!hoverElement) {
 				return null;
 			}
