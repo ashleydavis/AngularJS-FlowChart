@@ -240,29 +240,29 @@ function FlowChartController () {
 	// The class for connectors.
 	//todo: should be configurable.
 	//
-	var connectorClass = 'connector';
+	this.connectorClass = 'connector';
 
 	//
 	// Find the element that is the parent connector of the particular element.
 	//
 	this.findParentConnector = function (element) {
 
-	//
-	// Reached the root.
-	//
-	if (element.length == 0) {
-		return null;
-	}
+		//
+		// Reached the root.
+		//
+		if (element == null || element.length == 0) {
+			return null;
+		}
 
-	// 
-	// Check if the element has the class that identifies it as a connector.
-	//
-	if (hasClassSVG(element, connectorClass)) {
+		// 
+		// Check if the element has the class that identifies it as a connector.
 		//
-		// Found the connector element.
-		//
-		return element;
-	}
+		if (hasClassSVG(element, this.connectorClass)) {
+			//
+			// Found the connector element.
+			//
+			return element;
+		}
 
 		//
 		// Recursively search parent elements.
