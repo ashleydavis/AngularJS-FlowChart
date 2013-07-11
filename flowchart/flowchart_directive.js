@@ -16,6 +16,15 @@ angular.module('flowChart', ['dragging'] )
   	},
 
   	//
+  	// Controller for the flowchart directive.
+  	// Having a separate controller is better for unit testing, otherwise
+  	// it is painful to unit test a directive without instantiating the DOM 
+  	// (which is possible, just not ideal).
+  	//
+  	controller: function () {
+  	},
+
+  	//
   	// Angular link function, called to attach the directive's element to the its scope (its data-model).
   	//
   	link: function($scope, $element, $attrs) {
