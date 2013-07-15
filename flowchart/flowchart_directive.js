@@ -6,7 +6,7 @@ angular.module('flowChart', ['dragging'] )
 //
 // Flowchart directive.
 //
-.directive('flowChart', function(dragging) {
+.directive('flowChart', function() {
   return {
   	restrict: 'E',
   	templateUrl: "flowchart/flowchart_template.html",
@@ -28,130 +28,7 @@ angular.module('flowChart', ['dragging'] )
   	//
   	link: function($scope, $element, $attrs, controller) {
 
-  		//
-  		// Init data-model variables.
-  		//
-  		$scope.draggingConnection = false;
-  		$scope.connectorSize = 10;
 
-  		//
-  		// Reference to the connector that the mouse is currently over.
-  		//
-  		var mouseOverConnector = null;
-
-  		//
-  		// Called for each mouse move on the svg element.
-  		//
-  		$scope.mouseMove = function (evt) {
-
-  			//
-  			// Retreive the connector the mouse is currently over.
-  			//
-  			var curMouseOverConnector = controller.hitTestForConnector(evt.clientX, evt.clientY);
-			if (curMouseOverConnector != mouseOverConnector) {
-
-				if (mouseOverConnector) {
-
-					// Clear the previous 'mouse over' connector.
-					mouseOverConnector.isMouseOver = false;
-				}
-
-				// Mark the connector as 'mouse over' so that we can change its appearance from the view.
-				if (curMouseOverConnector) {
-
-					curMouseOverConnector.isMouseOver = true; 
-				}
-
-				mouseOverConnector = curMouseOverConnector;
-			}
-
-  		};
-
-		$scope.nodeMouseDown = function (evt, nodeIndex) {
-
-			var nodes = $scope.chart.nodes;
-			var node = nodes[nodeIndex];
-
-			// Move node to the end of the list so it is rendered after all the other.
-			// This is the way Z-order is done in SVG.
-
-			nodes.splice(nodeIndex, 1);
-			nodes.push(node);			
-
-			dragging.startDrag(evt, {
-
-				dragging: function (deltaX, deltaY, x, y) {
-
-					node.x += deltaX;
-					node.y += deltaY;
-				},
-
-				dragStarted: function () {
-					console.log("Drag started...");
-				},
-
-				dragEnded: function () {
-					console.log("Drag ended...");
-				},
-
-				clicked: function () {
-					console.log("Clicked ...");
-				},
-
-			});
-
-		};
-
-		//
-		// Handle mousedown on an input connector.
-		//
-		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
-
-			//
-			// Initiate dragging out of a connection.
-			//
-			dragging.startDrag(evt, {
-
-				//
-				// Called when the mouse has moved greater than the threshold distance
-				// and dragging has commenced.
-				//
-				dragStarted: function (x, y) {
-
-					$scope.draggingConnection = true;
-					$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
-					$scope.dragPoint2 = {
-						x: x,
-						y: y
-					};
-					controller.computeDraggingTangent();
-				},
-
-				//
-				// Called on mousemove while dragging out a connection.
-				//
-				dragging: function (deltaX, deltaY, x, y, evt) {
-					$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
-					$scope.dragPoint2 = {
-						x: x,
-						y: y
-					};
-					controller.computeDraggingTangent();
-				},
-
-				//
-				// Clean up when dragging has finished.
-				//
-				dragEnded: function () {
-					$scope.draggingConnection = false;
-					delete $scope.dragPoint1;
-					delete $scope.dragTangent1;
-					delete $scope.dragPoint2;
-					delete $scope.dragTangent2;
-				},
-
-			});
-		};
 
  	},
   };
@@ -164,7 +41,9 @@ angular.module('flowChart', ['dragging'] )
 // it is painful to unit test a directive without instantiating the DOM 
 // (which is possible, just not ideal).
 //
-function FlowChartController ($scope) {
+function FlowChartController ($scope, dragging) {
+
+	var controller = this;
 
 	//
 	// Reference to the document and jQuery, can be overridden for testting.
@@ -174,6 +53,17 @@ function FlowChartController ($scope) {
 	this.jQuery = function (element) {
 		return $(element);
 	}
+
+	//
+	// Init data-model variables.
+	//
+	$scope.draggingConnection = false;
+	$scope.connectorSize = 10;
+
+	//
+	// Reference to the connector that the mouse is currently over.
+	//
+	var mouseOverConnector = null;
 
 	//
 	// The class for connectors.
@@ -277,5 +167,119 @@ function FlowChartController ($scope) {
 			x: $scope.dragPoint2.x - tangentOffset,
 			y: $scope.dragPoint2.y
 		};
+	};
+
+	//
+	// Called for each mouse move on the svg element.
+	//
+	$scope.mouseMove = function (evt) {
+
+		//
+		// Retreive the connector the mouse is currently over.
+		//
+		var curMouseOverConnector = controller.hitTestForConnector(evt.clientX, evt.clientY);
+		if (curMouseOverConnector != mouseOverConnector) {
+
+			if (mouseOverConnector) {
+
+				// Clear the previous 'mouse over' connector.
+				mouseOverConnector.isMouseOver = false;
+			}
+
+			// Mark the connector as 'mouse over' so that we can change its appearance from the view.
+			if (curMouseOverConnector) {
+
+				curMouseOverConnector.isMouseOver = true; 
+			}
+
+			mouseOverConnector = curMouseOverConnector;
+		}
+
+	};
+
+	$scope.nodeMouseDown = function (evt, nodeIndex) {
+
+		var nodes = $scope.chart.nodes;
+		var node = nodes[nodeIndex];
+
+		// Move node to the end of the list so it is rendered after all the other.
+		// This is the way Z-order is done in SVG.
+
+		nodes.splice(nodeIndex, 1);
+		nodes.push(node);			
+
+		dragging.startDrag(evt, {
+
+			dragging: function (deltaX, deltaY, x, y) {
+
+				node.x += deltaX;
+				node.y += deltaY;
+			},
+
+			dragStarted: function () {
+				console.log("Drag started...");
+			},
+
+			dragEnded: function () {
+				console.log("Drag ended...");
+			},
+
+			clicked: function () {
+				console.log("Clicked ...");
+			},
+
+		});
+
+	};
+
+	//
+	// Handle mousedown on an input connector.
+	//
+	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
+
+		//
+		// Initiate dragging out of a connection.
+		//
+		dragging.startDrag(evt, {
+
+			//
+			// Called when the mouse has moved greater than the threshold distance
+			// and dragging has commenced.
+			//
+			dragStarted: function (x, y) {
+
+				$scope.draggingConnection = true;
+				$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint2 = {
+					x: x,
+					y: y
+				};
+				controller.computeDraggingTangent();
+			},
+
+			//
+			// Called on mousemove while dragging out a connection.
+			//
+			dragging: function (deltaX, deltaY, x, y, evt) {
+				$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint2 = {
+					x: x,
+					y: y
+				};
+				controller.computeDraggingTangent();
+			},
+
+			//
+			// Clean up when dragging has finished.
+			//
+			dragEnded: function () {
+				$scope.draggingConnection = false;
+				delete $scope.dragPoint1;
+				delete $scope.dragTangent1;
+				delete $scope.dragPoint2;
+				delete $scope.dragTangent2;
+			},
+
+		});
 	};
 }
