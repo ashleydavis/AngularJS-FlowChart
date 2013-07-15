@@ -18,21 +18,27 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns null when at root 1', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		expect(testObject.findParentConnector(null)).toBe(null);
 	});
 
 	it('findParentConnector returns null when at root 2', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		expect(testObject.findParentConnector([])).toBe(null);
 	});
 
 	it('findParentConnector returns element when it has connector class', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		var mockElement = createMockElement(testObject.connectorClass);
 
@@ -41,7 +47,9 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns parent when it has connector class', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		var mockParent = createMockElement(testObject.connectorClass);
 		var mockElement = createMockElement('', mockParent);
@@ -51,7 +59,9 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns null when no element hit', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		// Mock out the document.
 		testObject.document = {
@@ -66,7 +76,9 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns null when the hit element has no parent connector', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		var mockElement = {
 			attr: function () {
@@ -94,7 +106,9 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns the connector when found', function () {
 
-		var testObject = new FlowChartController();
+		var mockScope = {};
+
+		var testObject = new FlowChartController(mockScope);
 
 		var mockConnector = {};
 
