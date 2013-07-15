@@ -67,34 +67,6 @@ angular.module('flowChart', ['dragging'] )
 
   		};
 
-  		//
-  		// Compute the position of a connector relative to its node.
-  		//
-  		$scope.computeLocalInputConnectorX = function (connectorIndex) {
-			return 80;
-		};
-
-  		$scope.computeLocalOutputConnectorX = function (connectorIndex) {
-			return 280;
-		};
-
-  		$scope.computeLocalConnectorY = function (connectorIndex) {
-			return 100 + (connectorIndex * 36.5);
-		};
-
-  		//
-  		// Compute the position of a connector in the graph.
-  		//
-  		var computeConnectorPos = function (node, connectorIndex, inputConnector) {
-  			return {
-  				x: node.x + 
-  					(inputConnector ? 
-  						$scope.computeLocalInputConnectorX(connectorIndex) :
-  						$scope.computeLocalOutputConnectorX(connectorIndex)),
-  				y: node.y + $scope.computeLocalConnectorY(connectorIndex),
-  			};
-  		};
-
 		$scope.nodeMouseDown = function (evt, nodeIndex) {
 
 			var nodes = $scope.chart.nodes;
@@ -163,7 +135,7 @@ angular.module('flowChart', ['dragging'] )
 				dragStarted: function (x, y) {
 
 					$scope.draggingConnection = true;
-					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
 					$scope.dragPoint2 = {
 						x: x,
 						y: y
@@ -175,7 +147,7 @@ angular.module('flowChart', ['dragging'] )
 				// Called on mousemove while dragging out a connection.
 				//
 				dragging: function (deltaX, deltaY, x, y, evt) {
-					$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
+					$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
 					$scope.dragPoint2 = {
 						x: x,
 						y: y
@@ -208,7 +180,7 @@ angular.module('flowChart', ['dragging'] )
 // it is painful to unit test a directive without instantiating the DOM 
 // (which is possible, just not ideal).
 //
-function FlowChartController () {
+function FlowChartController ($scope) {
 
 	//
 	// Reference to the document and jQuery, can be overridden for testting.
@@ -277,5 +249,33 @@ function FlowChartController () {
 
 		var connectorScope = hoverElement.scope();
 		return connectorScope.connector;
+	};
+
+	//
+	// Compute the position of a connector relative to its node.
+	//
+	$scope.computeLocalInputConnectorX = function (connectorIndex) {
+		return 80;
+	};
+
+	$scope.computeLocalOutputConnectorX = function (connectorIndex) {
+		return 280;
+	};
+
+	$scope.computeLocalConnectorY = function (connectorIndex) {
+		return 100 + (connectorIndex * 36.5);
+	};
+
+	//
+	// Compute the position of a connector in the graph.
+	//
+	this.computeConnectorPos = function (node, connectorIndex, inputConnector) {
+		return {
+			x: node.x + 
+				(inputConnector ? 
+					$scope.computeLocalInputConnectorX(connectorIndex) :
+					$scope.computeLocalOutputConnectorX(connectorIndex)),
+			y: node.y + $scope.computeLocalConnectorY(connectorIndex),
+		};
 	};
 }
