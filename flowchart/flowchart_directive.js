@@ -103,22 +103,6 @@ angular.module('flowChart', ['dragging'] )
 		};
 
 		//
-		// Compute the tangent for the bezier curve.
-		//
-		var computeDraggingTangent = function () {
-
-			var tangentOffset = ($scope.dragPoint2.x - $scope.dragPoint1.x) / 2;
-			$scope.dragTangent1 = {
-				x: $scope.dragPoint1.x + tangentOffset,
-				y: $scope.dragPoint1.y
-			};
-			$scope.dragTangent2 = {
-				x: $scope.dragPoint2.x - tangentOffset,
-				y: $scope.dragPoint2.y
-			};
-		};
-
-		//
 		// Handle mousedown on an input connector.
 		//
 		$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
@@ -140,7 +124,7 @@ angular.module('flowChart', ['dragging'] )
 						x: x,
 						y: y
 					};
-					computeDraggingTangent();
+					controller.computeDraggingTangent();
 				},
 
 				//
@@ -152,7 +136,7 @@ angular.module('flowChart', ['dragging'] )
 						x: x,
 						y: y
 					};
-					computeDraggingTangent();
+					controller.computeDraggingTangent();
 				},
 
 				//
@@ -276,6 +260,22 @@ function FlowChartController ($scope) {
 					$scope.computeLocalInputConnectorX(connectorIndex) :
 					$scope.computeLocalOutputConnectorX(connectorIndex)),
 			y: node.y + $scope.computeLocalConnectorY(connectorIndex),
+		};
+	};
+
+	//
+	// Compute the tangent for the bezier curve.
+	//
+	this.computeDraggingTangent = function () {
+
+		var tangentOffset = ($scope.dragPoint2.x - $scope.dragPoint1.x) / 2;
+		$scope.dragTangent1 = {
+			x: $scope.dragPoint1.x + tangentOffset,
+			y: $scope.dragPoint1.y
+		};
+		$scope.dragTangent2 = {
+			x: $scope.dragPoint2.x - tangentOffset,
+			y: $scope.dragPoint2.y
 		};
 	};
 }
