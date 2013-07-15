@@ -39,32 +39,6 @@ angular.module('flowChart', ['dragging'] )
   		//
   		var mouseOverConnector = null;
 
-		//
-		// Hit test and retreive node and connector that was hit at the specified coordinates.
-		// type specifies whether you want input, output or both.
-		//
-		var hitTestForConnector = function (clientX, clientY, type) {
-
-  			//
-  			// Retreive the element the mouse is currently over.
-  			//
-  			var mouseOverElement = document.elementFromPoint(clientX, clientY);
-  			if (!mouseOverElement) {
-  				return null;
-  			}
-
-  			//
-  			// Find the parent element, if any, that is a connector.
-  			//
-			var hoverElement = controller.findParentConnector($(mouseOverElement));
-			if (!hoverElement) {
-				return null;
-			}
-
-			var connectorScope = hoverElement.scope();
-			return connectorScope.connector;
-		};
-
   		//
   		// Called for each mouse move on the svg element.
   		//
@@ -73,7 +47,7 @@ angular.module('flowChart', ['dragging'] )
   			//
   			// Retreive the connector the mouse is currently over.
   			//
-  			var curMouseOverConnector = hitTestForConnector(evt.clientX, evt.clientY);
+  			var curMouseOverConnector = controller.hitTestForConnector(evt.clientX, evt.clientY);
 			if (curMouseOverConnector != mouseOverConnector) {
 
 				if (mouseOverConnector) {
@@ -237,6 +211,15 @@ angular.module('flowChart', ['dragging'] )
 function FlowChartController () {
 
 	//
+	// Reference to the document and jQuery, can be overridden for testting.
+	//
+	this.document = document;
+
+	this.jQuery = function (element) {
+		return $(element);
+	}
+
+	//
 	// The class for connectors.
 	//todo: should be configurable.
 	//
@@ -270,4 +253,29 @@ function FlowChartController () {
 		return this.findParentConnector(element.parent());
 	};
 
+	//
+	// Hit test and retreive node and connector that was hit at the specified coordinates.
+	// type specifies whether you want input, output or both.
+	//
+	this.hitTestForConnector = function (clientX, clientY, type) {
+
+		//
+		// Retreive the element the mouse is currently over.
+		//
+		var mouseOverElement = this.document.elementFromPoint(clientX, clientY);
+		if (!mouseOverElement) {
+			return null;
+		}
+
+		//
+		// Find the parent element, if any, that is a connector.
+		//
+		var hoverElement = this.findParentConnector(this.jQuery(mouseOverElement));
+		if (!hoverElement) {
+			return null;
+		}
+
+		var connectorScope = hoverElement.scope();
+		return connectorScope.connector;
+	};
 }

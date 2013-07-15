@@ -48,4 +48,83 @@ describe('flowchart', function () {
 
 		expect(testObject.findParentConnector(mockElement)).toBe(mockParent);
 	});
+
+	it('hitTestForConnector returns null when no element hit', function () {
+
+		var testObject = new FlowChartController();
+
+		// Mock out the document.
+		testObject.document = {
+			elementFromPoint: function () {
+				return null;
+			},
+		};
+
+		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(null);
+	});
+
+
+	it('hitTestForConnector returns null when the hit element has no parent connector', function () {
+
+		var testObject = new FlowChartController();
+
+		var mockElement = {
+			attr: function () {
+
+			},
+
+			parent: function () {
+				return null;
+			},
+		};
+
+		// Mock out the document and jQuery.
+		testObject.document = {
+			elementFromPoint: function () {
+				return mockElement;
+			},
+		};
+
+		testObject.jQuery = function (input) {
+			return input;
+		};
+
+		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(null);
+	});
+
+	it('hitTestForConnector returns the connector when found', function () {
+
+		var testObject = new FlowChartController();
+
+		var mockConnector = {};
+
+		var mockElement = {
+			attr: function () {
+				return testObject.connectorClass;
+			},
+
+			parent: function () {
+				return null;
+			},
+
+			scope: function () {
+				return {
+					connector: mockConnector,
+				};
+			},
+		};
+
+		// Mock out the document and jQuery.
+		testObject.document = {
+			elementFromPoint: function () {
+				return mockElement;
+			},
+		};
+
+		testObject.jQuery = function (input) {
+			return input;
+		};
+
+		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(mockConnector);
+	});	
 });
