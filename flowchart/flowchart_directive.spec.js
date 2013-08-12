@@ -141,4 +141,37 @@ describe('flowchart', function () {
 
 		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(mockConnector);
 	});	
+
+	it('test node is selected when clicked', function () {
+
+		var mockNode = {
+			selected: false,
+		};
+
+		var mockScope = {
+			chart: {
+				nodes: [
+					mockNode
+				],
+			},			
+		};
+
+		var mockDragging = {
+			startDrag: function (evt, config) {
+				config.clicked();
+			},
+		};
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.nodeMouseDown(mockEvt, 0);
+
+		expect(mockNode.selected).toBe(true);
+
+
+
+
+	});
 });
