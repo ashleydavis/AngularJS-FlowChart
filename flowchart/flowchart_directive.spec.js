@@ -142,6 +142,34 @@ describe('flowchart', function () {
 		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(mockConnector);
 	});	
 
+	it('test dragging is started on node mouse down', function () {
+
+		var mockNode = {
+			selected: false,
+		};
+
+		var mockScope = {
+			chart: {
+				nodes: [
+					mockNode
+				],
+			},			
+		};
+
+		var mockDragging = {
+			startDrag: jasmine.createSpy(),
+		};
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.nodeMouseDown(mockEvt, 0);
+
+		expect(mockDragging.startDrag).toHaveBeenCalled();
+
+	});
+
 	it('test node is selected when clicked', function () {
 
 		var mockNode = {
@@ -169,9 +197,5 @@ describe('flowchart', function () {
 		mockScope.nodeMouseDown(mockEvt, 0);
 
 		expect(mockNode.selected).toBe(true);
-
-
-
-
 	});
 });
