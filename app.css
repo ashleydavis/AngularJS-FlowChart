@@ -25,6 +25,12 @@ Styles for nodes and connectors.
 	fill: url(#nodeBackgroundGradient); 
 }
 
+.selected-node-rect {
+	stroke: red;
+	stroke-width: 2;
+	fill: url(#nodeBackgroundGradient); 
+}
+
 .connector-circle {
     fill: white;
     stroke: black;

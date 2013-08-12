@@ -30,7 +30,7 @@
     ng-attr-transform="translate({{node.x}}, {{node.y}})"
     >
     <rect 
-      class="node-rect"
+      ng-attr-class="{{node.selected && 'selected-node-rect' || 'node-rect'}}"
       ry="10" 
       rx="10" 
       x="80" 
