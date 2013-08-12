@@ -225,7 +225,7 @@ function FlowChartController ($scope, dragging) {
 			},
 
 			clicked: function () {
-				console.log("Clicked ...");
+				node.selected = true;
 			},
 
 		});
