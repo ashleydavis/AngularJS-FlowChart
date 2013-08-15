@@ -16,6 +16,20 @@ describe('flowchart', function () {
 		};
 	}
 
+	//
+	// Create a mock scope and add any arguments as mock nodes.
+	//
+	var createMockScope = function (mockNodes) {
+
+		var mockScope = {
+			chart: {
+				nodes: mockNodes
+			},			
+		};
+
+		return mockScope;
+	}
+
 	it('findParentConnector returns null when at root 1', function () {
 
 		var mockScope = {};
@@ -148,13 +162,7 @@ describe('flowchart', function () {
 			selected: false,
 		};
 
-		var mockScope = {
-			chart: {
-				nodes: [
-					mockNode
-				],
-			},			
-		};
+		var mockScope = createMockScope([mockNode]);
 
 		var mockDragging = {
 			startDrag: jasmine.createSpy(),
@@ -176,13 +184,7 @@ describe('flowchart', function () {
 			selected: false,
 		};
 
-		var mockScope = {
-			chart: {
-				nodes: [
-					mockNode
-				],
-			},			
-		};
+		var mockScope = createMockScope([mockNode]);
 
 		var mockDragging = {
 			startDrag: function (evt, config) {
@@ -209,14 +211,7 @@ describe('flowchart', function () {
 			selected: true,
 		};
 
-		var mockScope = {
-			chart: {
-				nodes: [
-					mockNode1,
-					mockNode2
-				],
-			},			
-		};
+		var mockScope = createMockScope([mockNode1, mockNode2]);
 
 		var mockDragging = {
 			startDrag: function (evt, config) {
@@ -242,14 +237,7 @@ describe('flowchart', function () {
 			selected: false,
 		};
 
-		var mockScope = {
-			chart: {
-				nodes: [
-					mockSelectedNode,
-					mockClickedNode
-				],
-			},			
-		};
+		var mockScope = createMockScope([mockSelectedNode, mockClickedNode]);
 
 		var mockDragging = {
 			startDrag: function (evt, config) {
@@ -273,13 +261,7 @@ describe('flowchart', function () {
 			selected: true,
 		};
 
-		var mockScope = {
-			chart: {
-				nodes: [
-					mockSelectedNode,
-				],
-			},			
-		};
+		var mockScope = createMockScope([mockSelectedNode]);
 
 		var mockDragging = {
 			startDrag: function (evt, config) {
