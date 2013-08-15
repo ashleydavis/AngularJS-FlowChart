@@ -180,6 +180,12 @@ function FlowChartController ($scope, dragging) {
 		}
 	};
 
+	$scope.mouseDown = function (evt) {
+
+		controller.deselectAllNodes();
+
+	};
+
 	//
 	// Called for each mouse move on the svg element.
 	//

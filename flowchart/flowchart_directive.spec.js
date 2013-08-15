@@ -231,6 +231,7 @@ describe('flowchart', function () {
 		expect(mockNode1.selected).toBe(false);
 		expect(mockNode2.selected).toBe(false);
 	});
+
 	it('test other nodes are deselected when a node is clicked', function () {
 
 		var mockSelectedNode = {
@@ -265,4 +266,33 @@ describe('flowchart', function () {
 		expect(mockSelectedNode.selected).toBe(false);
 		expect(mockClickedNode.selected).toBe(true);
 	});
+
+	it('test nodes are deselected when background is clicked', function () {
+
+		var mockSelectedNode = {
+			selected: true,
+		};
+
+		var mockScope = {
+			chart: {
+				nodes: [
+					mockSelectedNode,
+				],
+			},			
+		};
+
+		var mockDragging = {
+			startDrag: function (evt, config) {
+				config.clicked();
+			},
+		};
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.mouseDown(mockEvt);
+
+		expect(mockSelectedNode.selected).toBe(false);
+	});	
 });
