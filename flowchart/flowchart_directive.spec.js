@@ -4,7 +4,7 @@ describe('flowchart', function () {
 	// 
 	// Create a mock DOM element.
 	//
-	var createMockElement = function(attr, parent) {
+	var createMockElement = function(attr, parent, scope) {
 		return {
 			attr: function() {
 				return attr;
@@ -13,6 +13,11 @@ describe('flowchart', function () {
 			parent: function () {
 				return parent;
 			},		
+
+			scope: function () {
+				return scope || {};
+			},
+
 		};
 	}
 
@@ -94,15 +99,7 @@ describe('flowchart', function () {
 
 		var testObject = new FlowChartController(mockScope);
 
-		var mockElement = {
-			attr: function () {
-
-			},
-
-			parent: function () {
-				return null;
-			},
-		};
+		var mockElement = createMockElement(null, null);
 
 		// Mock out the document and jQuery.
 		testObject.document = {
@@ -125,22 +122,8 @@ describe('flowchart', function () {
 		var testObject = new FlowChartController(mockScope);
 
 		var mockConnector = {};
-
-		var mockElement = {
-			attr: function () {
-				return testObject.connectorClass;
-			},
-
-			parent: function () {
-				return null;
-			},
-
-			scope: function () {
-				return {
-					connector: mockConnector,
-				};
-			},
-		};
+		var mockConnectorScope = { connector: mockConnector };
+		var mockElement = createMockElement(testObject.connectorClass, null, mockConnectorScope);
 
 		// Mock out the document and jQuery.
 		testObject.document = {
