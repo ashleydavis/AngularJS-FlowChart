@@ -93,17 +93,36 @@
     </text>
   </g>
 
-  <!-- Represents the connection being dragged out. 
-  <line
-    class="dragging-connection"
-    ng-if="draggingConnection"
-    ng-attr-x1="{{draggingConnectorPos.x}}"
-    ng-attr-y1="{{draggingConnectorPos.y}}"
-    ng-attr-x2="{{dragPoint.x}}"
-    ng-attr-y2="{{dragPoint.y}}"
-    >
-  </line>
-  -->
+  <g>
+    <g
+      ng-repeat="connection in chart.connections"
+      >
+      <path
+        class="dragging-connection dragging-connection-line"
+        ng-attr-d="M {{connection.sourceCoord.x}}, {{connection.sourceCoord.y}}
+                   C {{connection.sourceTangent.x}}, {{connection.sourceTangent.y}}
+                     {{connection.destTangent.x}}, {{connection.destTangent.y}}
+                     {{connection.destCoord.x}}, {{connection.destCoord.y}}"
+        >
+      </path>
+
+      <circle
+          class="dragging-connection dragging-connection-endpoint"
+          r="5" 
+          ng-attr-cx="{{connection.sourceCoord.x}}" 
+          ng-attr-cy="{{connection.sourceCoord.y}}" 
+          >
+      </circle>
+
+      <circle
+          class="dragging-connection dragging-connection-endpoint"
+          r="5" 
+          ng-attr-cx="{{connection.sourceCoord.x}}" 
+          ng-attr-cy="{{connection.sourceCoord.y}}" 
+          >
+      </circle>
+    </g>
+  </g>
 
   <g
     ng-if="draggingConnection"
@@ -133,6 +152,18 @@
         >
     </circle>
   </g>
+
+  <!-- Represents the connection being dragged out. 
+  <line
+    class="dragging-connection"
+    ng-if="draggingConnection"
+    ng-attr-x1="{{draggingConnectorPos.x}}"
+    ng-attr-y1="{{draggingConnectorPos.y}}"
+    ng-attr-x2="{{dragPoint.x}}"
+    ng-attr-y2="{{dragPoint.y}}"
+    >
+  </line>
+  -->
 
   <!-- Debug
   <text
@@ -173,4 +204,3 @@
   </circle>
   
 </svg>
-
