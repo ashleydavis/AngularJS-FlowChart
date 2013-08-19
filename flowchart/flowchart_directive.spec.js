@@ -35,6 +35,19 @@ describe('flowchart', function () {
 		return mockScope;
 	}
 
+	//
+	// Create a mock dragging directive.
+	//
+	var createMockDragging = function () {
+		var mockDragging = {
+			startDrag: function (evt, config) {
+				config.clicked();
+			},
+		};
+
+		return mockDragging;
+	};
+
 	it('findParentConnector returns null when at root 1', function () {
 
 		var mockScope = {};
@@ -139,7 +152,7 @@ describe('flowchart', function () {
 		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(mockConnector);
 	});	
 
-	it('test dragging is started on node mouse down', function () {
+	it('test node dragging is started on node mouse down', function () {
 
 		var mockNode = {
 			selected: false,
@@ -168,12 +181,7 @@ describe('flowchart', function () {
 		};
 
 		var mockScope = createMockScope([mockNode]);
-
-		var mockDragging = {
-			startDrag: function (evt, config) {
-				config.clicked();
-			},
-		};
+		var mockDragging = createMockDragging();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -195,12 +203,7 @@ describe('flowchart', function () {
 		};
 
 		var mockScope = createMockScope([mockNode1, mockNode2]);
-
-		var mockDragging = {
-			startDrag: function (evt, config) {
-				config.clicked();
-			},
-		};
+		var mockDragging = createMockDragging();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -221,12 +224,7 @@ describe('flowchart', function () {
 		};
 
 		var mockScope = createMockScope([mockSelectedNode, mockClickedNode]);
-
-		var mockDragging = {
-			startDrag: function (evt, config) {
-				config.clicked();
-			},
-		};
+		var mockDragging = createMockDragging();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -245,12 +243,7 @@ describe('flowchart', function () {
 		};
 
 		var mockScope = createMockScope([mockSelectedNode]);
-
-		var mockDragging = {
-			startDrag: function (evt, config) {
-				config.clicked();
-			},
-		};
+		var mockDragging = createMockDragging();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
