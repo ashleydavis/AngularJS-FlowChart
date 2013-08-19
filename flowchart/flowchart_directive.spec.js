@@ -28,7 +28,8 @@ describe('flowchart', function () {
 
 		var mockScope = {
 			chart: {
-				nodes: mockNodes
+				nodes: mockNodes,
+				connections: [],
 			},			
 		};
 
@@ -38,9 +39,9 @@ describe('flowchart', function () {
 	//
 	// Create a mock dragging directive.
 	//
-	var createMockDragging = function () {
+	var createMockDragging = function (startDrag) {
 		var mockDragging = {
-			startDrag: function (evt, config) {
+			startDrag: startDrag || function (evt, config) {
 				config.clicked();
 			},
 		};
@@ -253,4 +254,83 @@ describe('flowchart', function () {
 
 		expect(mockSelectedNode.selected).toBe(false);
 	});	
+
+	it('test mouse down commences connector dragging', function () {
+
+		var mockNode = {};
+		var mockConnector = {};
+
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			config.dragStarted(0, 0);
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.connectorMouseDown(mockEvt, mockNode, mockConnector, 0, false);
+
+		expect(mockScope.draggingConnection).toBe(true);		
+	});
+
+	it('test can end dragging', function () {
+
+		var mockNode = {};
+		var mockConnector = {};
+
+		var draggingConfig = null;
+
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.connectorMouseDown(mockEvt, mockNode, mockConnector, 0, false);
+
+ 		draggingConfig.dragStarted(0, 0);
+ 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragEnded();
+
+		expect(mockScope.draggingConnection).toBe(false);		
+ 	});
+
+	it('test can make a connection by dragging', function () {
+
+		var mockNode = {};
+		var mockDraggingConnector = {};
+		var mockDragOverConnector = {};
+
+		var draggingConfig = null;
+
+		var mockScope = createMockScope([ mockNode ]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.connectorMouseDown(mockEvt, mockNode, mockDraggingConnector, 0, false);
+
+		expect(mockScope.chart.connections).toEqual([]);
+
+ 		draggingConfig.dragStarted(0, 0);
+ 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+
+ 		// Fake out the mouse over connector.
+ 		testObject.mouseOverConnector = mockDragOverConnector;
+
+ 		draggingConfig.dragEnded();
+
+		expect(mockScope.chart.connections.length).toBe(1);
+		var connection = mockScope.chart.connections[0];
+		expect(connection.source).toBe(mockDraggingConnector);
+		expect(connection.dest).toBe(mockDragOverConnector);
+ 	});
 });
