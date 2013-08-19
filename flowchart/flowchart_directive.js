@@ -195,7 +195,7 @@ function FlowChartController ($scope, dragging) {
 		// Retreive the connector the mouse is currently over.
 		//
 		var curMouseOverConnector = controller.hitTestForConnector(evt.clientX, evt.clientY);
-		if (curMouseOverConnector != mouseOverConnector) {
+		if (curMouseOverConnector != controller.mouseOverConnector) {
 
 			if (controller.mouseOverConnector) {
 
@@ -298,9 +298,17 @@ function FlowChartController ($scope, dragging) {
 					// Create a connection.
 					//
 					var connections = $scope.chart.connections;
+					if (!connections) {
+						connections = $scope.chart.connections = [];
+					}
 					connections.push({
 						source: connector,
 						dest: controller.mouseOverConnector,
+
+						sourceCoord: $scope.dragPoint1,
+						sourceTangent: $scope.dragTangent1,
+						destCoord: $scope.dragPoint2,
+						destTangent: $scope.dragTangent2,
 					});
 				}
 
