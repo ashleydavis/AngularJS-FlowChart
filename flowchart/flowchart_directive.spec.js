@@ -31,6 +31,12 @@ describe('flowchart', function () {
 				nodes: mockNodes,
 				connections: [],
 			},			
+
+			$watch: function (name, fn) {
+				mockScope.watches[name] = fn;
+			},
+
+			watches: {},
 		};
 
 		return mockScope;
@@ -51,7 +57,7 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns null when at root 1', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -60,7 +66,7 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns null when at root 2', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -69,7 +75,7 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns element when it has connector class', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -80,7 +86,7 @@ describe('flowchart', function () {
 
 	it('findParentConnector returns parent when it has connector class', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -92,7 +98,7 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns null when no element hit', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -109,7 +115,7 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns null when the hit element has no parent connector', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -131,7 +137,7 @@ describe('flowchart', function () {
 
 	it('hitTestForConnector returns the connector when found', function () {
 
-		var mockScope = {};
+		var mockScope = createMockScope([]);
 
 		var testObject = new FlowChartController(mockScope);
 
@@ -332,5 +338,45 @@ describe('flowchart', function () {
 		var connection = mockScope.chart.connections[0];
 		expect(connection.source).toBe(mockDraggingConnector);
 		expect(connection.dest).toBe(mockDragOverConnector);
+ 	});
+
+ 	it('test view-model is updated when data-model changes', function () {
+
+ 		var mockNode = {};
+
+		var mockScope = createMockScope([ mockNode ]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);	
+
+		spyOn(testObject, 'updateViewModel');
+
+		// Trigger the data-model watch.
+		var mockChart = {};
+		mockScope.watches['chart'](mockChart);
+
+		expect(testObject.updateViewModel).toHaveBeenCalled();
+ 	});
+
+ 	it('test chart data-model is wrapped in view-model', function () {
+
+ 		var mockNode = {};
+
+		var mockScope = createMockScope([ mockNode ]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);	
+
+		testObject.updateViewModel();
+
+		expect(mockScope.chartViewModel).toBeDefined();
+		expect(mockScope.chartViewModel).toNotBe(mockScope.chart);
+		expect(mockScope.chartViewModel.nodes).toBeDefined();
+		expect(mockScope.chartViewModel.nodes.length).toBe(1);
+
  	});
 });
