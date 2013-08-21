@@ -50,6 +50,9 @@ function FlowChartController ($scope, dragging) {
 	//
 	this.document = document;
 
+	//
+	// Wrap jQuery so it can easily be  mocked for testing.
+	//
 	this.jQuery = function (element) {
 		return $(element);
 	}
@@ -70,6 +73,54 @@ function FlowChartController ($scope, dragging) {
 	//todo: should be configurable.
 	//
 	this.connectorClass = 'connector';
+
+	// 
+	// Wrap the nodes data-model in a view-model.
+	//
+	var wrapNodes = function (nodesDataModel) {
+		var nodesViewModel = [];
+
+		for (var i = 0; i < nodesDataModel.length; ++i) {
+			nodesViewModel.push({
+
+			});
+		}
+
+		return nodesViewModel;
+	};
+
+	//
+	// Wrap the data-model in a view-model.
+	//
+	var wrapChartDataModel = function (chartDataModel) {
+		return {
+			// Reference to the underlying data.
+			data: chartDataModel,
+
+			// Create a view-model for nodes.
+			nodes: wrapNodes(chartDataModel.nodes),
+
+		};
+	};
+
+	//
+	// Update the view-model from the data-model.
+	//
+	this.updateViewModel = function () {
+		//
+		// Create a view-model from the data-model.
+		//
+		$scope.chartViewModel = wrapChartDataModel($scope.chart);
+	};
+
+	//
+	// When the chart has been changed, generate a view-model.
+	//
+	$scope.$watch('chart', function (newChart) {
+		if (newChart) {
+			controller.updateViewModel();
+		}
+	});
 
 	//
 	// Find the element that is the parent connector of the particular element.
