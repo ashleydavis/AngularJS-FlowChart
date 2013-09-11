@@ -375,8 +375,12 @@ describe('flowchart', function () {
 
 		expect(mockScope.chartViewModel).toBeDefined();
 		expect(mockScope.chartViewModel).toNotBe(mockScope.chart);
+		expect(mockScope.chartViewModel.data).toBe(mockScope.chart);
 		expect(mockScope.chartViewModel.nodes).toBeDefined();
 		expect(mockScope.chartViewModel.nodes.length).toBe(1);
-
+		expect(mockScope.chartViewModel.nodes[0]).toNotBe(mockNode);
+		expect(mockScope.chartViewModel.nodes[0].data).toBe(mockNode);
  	});
+
+
 });
