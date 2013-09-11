@@ -362,7 +362,23 @@ describe('flowchart', function () {
 
  	it('test chart data-model is wrapped in view-model', function () {
 
- 		var mockNode = {};
+ 		var mockInputConnector = {
+
+ 		};
+
+ 		var mockOutputConnector = {
+
+ 		};
+
+ 		var mockNode = {
+ 			inputConnectors: [
+ 				mockInputConnector
+ 			],
+
+ 			outputConnectors: [
+ 				mockOutputConnector
+ 			],
+ 		};
 
 		var mockScope = createMockScope([ mockNode ]);
 		var mockDragging = createMockDragging(function (evt, config) {
@@ -380,6 +396,10 @@ describe('flowchart', function () {
 		expect(mockScope.chartViewModel.nodes.length).toBe(1);
 		expect(mockScope.chartViewModel.nodes[0]).toNotBe(mockNode);
 		expect(mockScope.chartViewModel.nodes[0].data).toBe(mockNode);
+		expect(mockScope.chartViewModel.nodes[0].inputConnectors.length).toBe(1);
+		expect(mockScope.chartViewModel.nodes[0].inputConnectors[0].data).toBe(mockInputConnector);
+		expect(mockScope.chartViewModel.nodes[0].outputConnectors.length).toBe(1);
+		expect(mockScope.chartViewModel.nodes[0].outputConnectors[0].data).toBe(mockOutputConnector);
  	});
 
 
