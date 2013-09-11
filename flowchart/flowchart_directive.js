@@ -92,7 +92,7 @@ function FlowChartController ($scope, dragging) {
 	//
 	// Wrap the data-model in a view-model.
 	//
-	var wrapChartDataModel = function (chartDataModel) {
+	var createChartViewModel = function (chartDataModel) {
 		return {
 			// Reference to the underlying data.
 			data: chartDataModel,
@@ -110,7 +110,7 @@ function FlowChartController ($scope, dragging) {
 		//
 		// Create a view-model from the data-model.
 		//
-		$scope.chartViewModel = wrapChartDataModel($scope.chart);
+		$scope.chartViewModel = createChartViewModel($scope.chart);
 	};
 
 	//
