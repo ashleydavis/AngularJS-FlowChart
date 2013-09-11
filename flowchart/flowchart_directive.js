@@ -12,7 +12,7 @@ angular.module('flowChart', ['dragging'] )
   	templateUrl: "flowchart/flowchart_template.html",
   	replace: true,
   	scope: {
-  		chart: "=",
+  		chartDataModel: "=chart",
   	},
 
   	//
@@ -99,7 +99,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createInputConnectorViewModel(connectorDataModels[0]));
+			viewModels.push(createInputConnectorViewModel(connectorDataModels[i]));
 		}
 
 		return viewModels;
@@ -112,7 +112,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createOutputConnectorViewModel(connectorDataModels[0]));
+			viewModels.push(createOutputConnectorViewModel(connectorDataModels[i]));
 		}
 
 		return viewModels;
@@ -123,6 +123,8 @@ function FlowChartController ($scope, dragging) {
 	//
 	var createNodeViewModel = function (nodeDataModel) {
 		return {
+			x: nodeDataModel.x,
+			y: nodeDataModel.y,
 			data: nodeDataModel,
 			inputConnectors: createInputConnectorsViewModel(nodeDataModel.inputConnectors),
 			outputConnectors: createOutputConnectorsViewModel(nodeDataModel.outputConnectors)
@@ -136,7 +138,7 @@ function FlowChartController ($scope, dragging) {
 		var nodesViewModel = [];
 
 		for (var i = 0; i < nodesDataModel.length; ++i) {
-			nodesViewModel.push(createNodeViewModel(nodesDataModel[0]));
+			nodesViewModel.push(createNodeViewModel(nodesDataModel[i]));
 		}
 
 		return nodesViewModel;
@@ -163,13 +165,13 @@ function FlowChartController ($scope, dragging) {
 		//
 		// Create a view-model from the data-model.
 		//
-		$scope.chartViewModel = createChartViewModel($scope.chart);
+		$scope.chart = createChartViewModel($scope.chartDataModel);
 	};
 
 	//
 	// When the chart has been changed, generate a view-model.
 	//
-	$scope.$watch('chart', function (newChart) {
+	$scope.$watch('chartDataModel', function (newChart) {
 		if (newChart) {
 			controller.updateViewModel();
 		}
