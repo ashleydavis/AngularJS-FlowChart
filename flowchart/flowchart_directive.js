@@ -77,7 +77,7 @@ function FlowChartController ($scope, dragging) {
 	// 
 	// Wrap the nodes data-model in a view-model.
 	//
-	var wrapNodes = function (nodesDataModel) {
+	var createNodesViewModel = function (nodesDataModel) {
 		var nodesViewModel = [];
 
 		for (var i = 0; i < nodesDataModel.length; ++i) {
@@ -98,7 +98,7 @@ function FlowChartController ($scope, dragging) {
 			data: chartDataModel,
 
 			// Create a view-model for nodes.
-			nodes: wrapNodes(chartDataModel.nodes),
+			nodes: createNodesViewModel(chartDataModel.nodes),
 
 		};
 	};
