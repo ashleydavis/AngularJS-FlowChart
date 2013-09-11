@@ -74,6 +74,15 @@ function FlowChartController ($scope, dragging) {
 	//
 	this.connectorClass = 'connector';
 
+	//
+	// Create a view model for an individual node.
+	//
+	var createNodeViewModel = function (nodeDataModel) {
+		return {
+			data: nodeDataModel,
+		};
+	};
+
 	// 
 	// Wrap the nodes data-model in a view-model.
 	//
@@ -81,9 +90,7 @@ function FlowChartController ($scope, dragging) {
 		var nodesViewModel = [];
 
 		for (var i = 0; i < nodesDataModel.length; ++i) {
-			nodesViewModel.push({
-
-			});
+			nodesViewModel.push(createNodeViewModel(nodesDataModel[0]));
 		}
 
 		return nodesViewModel;
