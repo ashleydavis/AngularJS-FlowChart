@@ -79,7 +79,8 @@ function FlowChartController ($scope, dragging) {
 	//
 	var createInputConnectorViewModel = function (connectorDataModel) {
 		return {
-			data: connectorDataModel
+			data: connectorDataModel,
+			name: connectorDataModel.name
 		};
 	};
 
@@ -88,7 +89,8 @@ function FlowChartController ($scope, dragging) {
 	//
 	var createOutputConnectorViewModel = function (connectorDataModel) {
 		return {
-			data: connectorDataModel
+			data: connectorDataModel,
+			name: connectorDataModel.name
 		};
 	};
 
@@ -145,6 +147,28 @@ function FlowChartController ($scope, dragging) {
 	};
 
 	//
+	// Create a view model for an individual connection.
+	//
+	var createConnectionViewModel = function (connectionDataModel) {
+		return {
+			data: connectionDataModel,
+		};
+	};
+
+	// 
+	// Wrap the connections data-model in a view-model.
+	//
+	var createConnectionsViewModel = function (connectionsDataModel) {
+		var connectionsViewModel = [];
+
+		for (var i = 0; i < connectionsDataModel.length; ++i) {
+			connectionsViewModel.push(createConnectionViewModel(connectionsDataModel[i]));
+		}
+
+		return connectionsViewModel;
+	};
+
+	//
 	// Wrap the data-model in a view-model.
 	//
 	var createChartViewModel = function (chartDataModel) {
@@ -154,6 +178,9 @@ function FlowChartController ($scope, dragging) {
 
 			// Create a view-model for nodes.
 			nodes: createNodesViewModel(chartDataModel.nodes),
+
+			// Create a view-model for connections.
+			connections: createConnectionsViewModel(chartDataModel.connections),
 
 		};
 	};

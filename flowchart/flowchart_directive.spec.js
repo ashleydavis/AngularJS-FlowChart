@@ -22,22 +22,32 @@ describe('flowchart', function () {
 	}
 
 	//
+	// Create a mock node data model.
+	//
+	var createMockNode = function () {
+		return {
+			inputConnectors: [],
+			outputConnectors: [],
+		};
+	};
+
+	//
 	// Create a mock chart data model.
 	//
-	var createMockChartDataModel = function (mockNodes) {
+	var createMockChartDataModel = function (mockNodes, mockConnections) {
 		return {
-			nodes: mockNodes,
-			connections: [],
+			nodes: mockNodes || [],
+			connections: mockConnections || [],
 		};
 	};
 
 	//
 	// Create a mock scope and add any arguments as mock nodes.
 	//
-	var createMockScope = function (mockNodes) {
+	var createMockScope = function (mockNodes, mockConnections) {
 
 		var mockScope = {
-			chartDataModel: createMockChartDataModel(mockNodes),
+			chartDataModel: createMockChartDataModel(mockNodes, mockConnections),
 
 			$watch: function (name, fn) {
 				mockScope.watches[name] = fn;
@@ -188,16 +198,19 @@ describe('flowchart', function () {
 
 	it('test node is selected when clicked', function () {
 
-		var mockScope = createMockScope([createMockNode()]);
+		var mockNode = createMockNode();
+		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
+		testObject.updateViewModel();
+
 		mockScope.nodeMouseDown(mockEvt, 0);
 
-		expect(mockNode.selected).toBe(true);
+		expect(mockScope.chart.nodes[0].selected).toBe(true);
 	});
 
 	it('test can deslect all nodes', function () {
@@ -214,8 +227,8 @@ describe('flowchart', function () {
 
 		testObject.deselectAllNodes();
 
-		expect(mockNode1.selected).toBe(false);
-		expect(mockNode2.selected).toBe(false);
+		expect(mockScope.chart.nodes[0].selected).toBe(false);
+		expect(mockScope.chart.nodes[1].selected).toBe(false);
 	});
 
 	it('test other nodes are deselected when a node is clicked', function () {
@@ -234,8 +247,8 @@ describe('flowchart', function () {
 
 		mockScope.nodeMouseDown(mockEvt, 1);
 
-		expect(mockSelectedNode.selected).toBe(false);
-		expect(mockClickedNode.selected).toBe(true);
+		expect(mockScope.chart.nodes[0].selected).toBe(false);
+		expect(mockScope.chart.nodes[1].selected).toBe(true);
 	});
 
 	it('test nodes are deselected when background is clicked', function () {
@@ -253,7 +266,7 @@ describe('flowchart', function () {
 
 		mockScope.mouseDown(mockEvt);
 
-		expect(mockSelectedNode.selected).toBe(false);
+		expect(mockScope.chart.nodes[0].selected).toBe(false);
 	});	
 
 	it('test mouse down commences connector dragging', function () {
@@ -291,6 +304,8 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
+		testObject.updateViewModel();
+
 		mockScope.connectorMouseDown(mockEvt, mockNode, mockConnector, 0, false);
 
  		draggingConfig.dragStarted(0, 0);
@@ -317,7 +332,9 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		mockScope.connectorMouseDown(mockEvt, mockNode, mockDraggingConnector, 0, false);
+		testObject.updateViewModel();
+
+		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockDraggingConnector, 0, false);
 
 		expect(mockScope.chart.connections).toEqual([]);
 
@@ -330,6 +347,7 @@ describe('flowchart', function () {
  		draggingConfig.dragEnded();
 
 		expect(mockScope.chart.connections.length).toBe(1);
+
 		var connection = mockScope.chart.connections[0];
 		expect(connection.source).toBe(mockDraggingConnector);
 		expect(connection.dest).toBe(mockDragOverConnector);
@@ -358,14 +376,14 @@ describe('flowchart', function () {
  	it('test chart data-model is wrapped in view-model', function () {
 
  		var mockInputConnector = {
-
+ 			name: "Input1",
  		};
 
  		var mockOutputConnector = {
-
+			name: "Output1",
  		};
 
- 		var mockNode = {createMockNode()
+ 		var mockNode = {
  			inputConnectors: [
  				mockInputConnector
  			],
@@ -375,7 +393,10 @@ describe('flowchart', function () {
  			],
  		};
 
-		var mockScope = createMockScope([ mockNode ]);
+ 		var mockConnection = { 			
+ 		};
+
+		var mockScope = createMockScope([ mockNode ], [ mockConnection ]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
@@ -384,17 +405,55 @@ describe('flowchart', function () {
 
 		testObject.updateViewModel();
 
+		// Chart
+
 		expect(mockScope.chart).toBeDefined();
-		expect(mockScope.chart).toNotBe(mockScope.chart);
-		expect(mockScope.chart.data).toBe(mockScope.chart);
+		expect(mockScope.chart).toNotBe(mockScope.chartDataModel);
+		expect(mockScope.chart.data).toBe(mockScope.chartDataModel);
 		expect(mockScope.chart.nodes).toBeDefined();
 		expect(mockScope.chart.nodes.length).toBe(1);
-		expect(mockScope.chart.nodes[0]).toNotBe(mockNode);
-		expect(mockScope.chart.nodes[0].data).toBe(mockNode);
-		expect(mockScope.chart.nodes[0].inputConnectors.length).toBe(1);
-		expect(mockScope.chart.nodes[0].inputConnectors[0].data).toBe(mockInputConnector);
-		expect(mockScope.chart.nodes[0].outputConnectors.length).toBe(1);
-		expect(mockScope.chart.nodes[0].outputConnectors[0].data).toBe(mockOutputConnector);
+
+		// Node
+
+		var node = mockScope.chart.nodes[0];
+
+		expect(node).toNotBe(mockNode);
+		expect(node.data).toBe(mockNode);
+
+		expect(node.inputConnectors.length).toBe(1);
+
+		var inputConnector = node.inputConnectors[0];
+		expect(inputConnector.data).toBe(mockInputConnector);
+		expect(inputConnector.name).toBe(mockInputConnector.name);
+
+		expect(node.outputConnectors.length).toBe(1);
+		
+		var outputConnector = node.outputConnectors[0];
+		expect(outputConnector.data).toBe(mockOutputConnector);
+		expect(outputConnector.name).toBe(mockOutputConnector.name);
+
+		// Connectors
+
+		expect(node.inputConnectors.length).toBe(1);
+
+		var inputConnector = node.inputConnectors[0];
+		expect(inputConnector.data).toBe(mockInputConnector);
+		expect(inputConnector.name).toBe(mockInputConnector.name);
+
+		expect(node.outputConnectors.length).toBe(1);
+		
+		var outputConnector = node.outputConnectors[0];
+		expect(outputConnector.data).toBe(mockOutputConnector);
+		expect(outputConnector.name).toBe(mockOutputConnector.name);
+
+		// Connection
+ 	
+		expect(mockScope.chart.connections.length).toBe(1);
+
+		var connection = mockScope.chart.connections[0];
+
+		expect(connection).toNotBe(mockConnection);
+		expect(connection.data).toBe(mockConnection);
  	});
 
 
