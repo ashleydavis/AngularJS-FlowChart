@@ -430,15 +430,29 @@ function FlowChartController ($scope, dragging) {
 			//
 			dragEnded: function () {
 
-				if (controller.mouseOverConnector !== connector) {
+				if (controller.mouseOverConnector && 
+					controller.mouseOverConnector !== connector) {
 					// 
 					// Create a connection.
 					//
+					var connectionsDataModel = $scope.chartDataModel.connections;
+					if (!connectionsDataModel) {
+						connectionsDataModel = $scope.chartDataModel.connections = [];
+					}
+
+					var connectionData = {
+						source: connector.data,
+						dest: controller.mouseOverConnector.data
+					};
+
+					connectionsDataModel.push(connectionData);
+
 					var connections = $scope.chart.connections;
 					if (!connections) {
 						connections = $scope.chart.connections = [];
 					}
 					connections.push({
+						data: connectionData,
 						source: connector,
 						dest: controller.mouseOverConnector,
 
