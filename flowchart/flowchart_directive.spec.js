@@ -36,8 +36,8 @@ describe('flowchart', function () {
 	//
 	var createMockChartDataModel = function (mockNodes, mockConnections) {
 		return {
-			nodes: mockNodes || [],
-			connections: mockConnections || [],
+			nodes: mockNodes,
+			connections: mockConnections,
 		};
 	};
 
@@ -371,6 +371,26 @@ describe('flowchart', function () {
 		mockScope.watches['chartDataModel'](mockChart);
 
 		expect(testObject.updateViewModel).toHaveBeenCalled();
+ 	});
+
+ 	it('test can handle null connections data model', function () {
+
+ 		var mockNode = {
+ 			inputConnectors: [
+ 			],
+
+ 			outputConnectors: [
+ 			],
+ 		};
+
+		var mockScope = createMockScope([ mockNode ]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);	
+
+		testObject.updateViewModel();
  	});
 
  	it('test chart data-model is wrapped in view-model', function () {
