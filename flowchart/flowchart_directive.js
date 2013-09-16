@@ -139,8 +139,10 @@ function FlowChartController ($scope, dragging) {
 	var createNodesViewModel = function (nodesDataModel) {
 		var nodesViewModel = [];
 
-		for (var i = 0; i < nodesDataModel.length; ++i) {
-			nodesViewModel.push(createNodeViewModel(nodesDataModel[i]));
+		if (nodesDataModel) {
+			for (var i = 0; i < nodesDataModel.length; ++i) {
+				nodesViewModel.push(createNodeViewModel(nodesDataModel[i]));
+			}
 		}
 
 		return nodesViewModel;
