@@ -389,6 +389,52 @@ function FlowChartController ($scope, dragging) {
 	};
 
 	//
+	// Create a view data for a new connection.
+	//
+	var createNewConnectionDataModel = function (sourceConnector, destConnector) {
+
+		var connectionsDataModel = $scope.chartDataModel.connections;
+		if (!connectionsDataModel) {
+			connectionsDataModel = $scope.chartDataModel.connections = [];
+		}
+
+		var connection = {
+			source: sourceConnector,
+			dest: destConnector
+		};
+
+		connectionsDataModel.push(connection);
+
+		return connection;
+	}
+
+	//
+	// Create a view model for a new connection.
+	//
+	var createNewConnectionViewModel = function (sourceConnector, destConnector) {
+
+		var connectionDataModel = createNewConnectionDataModel(sourceConnector.data, destConnector.data);
+
+		var connections = $scope.chart.connections;
+		if (!connections) {
+			connections = $scope.chart.connections = [];
+		}
+
+		var connectionViewModel = {
+			data: connectionDataModel,
+			source: sourceConnector,
+			dest: destConnector,
+
+			sourceCoord: $scope.dragPoint1,
+			sourceTangent: $scope.dragTangent1,
+			destCoord: $scope.dragPoint2,
+			destTangent: $scope.dragTangent2,
+		};	
+
+		connections.push(connectionViewModel);
+	};
+
+	//
 	// Handle mousedown on an input connector.
 	//
 	$scope.connectorMouseDown = function (evt, node, connector, connectorIndex, isInputConnector) {
@@ -432,35 +478,8 @@ function FlowChartController ($scope, dragging) {
 
 				if (controller.mouseOverConnector && 
 					controller.mouseOverConnector !== connector) {
-					// 
-					// Create a connection.
-					//
-					var connectionsDataModel = $scope.chartDataModel.connections;
-					if (!connectionsDataModel) {
-						connectionsDataModel = $scope.chartDataModel.connections = [];
-					}
 
-					var connectionData = {
-						source: connector.data,
-						dest: controller.mouseOverConnector.data
-					};
-
-					connectionsDataModel.push(connectionData);
-
-					var connections = $scope.chart.connections;
-					if (!connections) {
-						connections = $scope.chart.connections = [];
-					}
-					connections.push({
-						data: connectionData,
-						source: connector,
-						dest: controller.mouseOverConnector,
-
-						sourceCoord: $scope.dragPoint1,
-						sourceTangent: $scope.dragTangent1,
-						destCoord: $scope.dragPoint2,
-						destTangent: $scope.dragTangent2,
-					});
+					createNewConnectionViewModel(connector, controller.mouseOverConnector);
 				}
 
 				$scope.draggingConnection = false;
