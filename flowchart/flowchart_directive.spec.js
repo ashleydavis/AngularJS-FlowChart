@@ -351,6 +351,8 @@ describe('flowchart', function () {
 		var connection = mockScope.chart.connections[0];
 		expect(connection.source).toBe(mockDraggingConnector);
 		expect(connection.dest).toBe(mockDragOverConnector);
+		expect(connection.data).toBeDefined();
+		expect(connection.data).toBe(mockScope.chartDataModel.connections[0]);
  	});
 
  	it('test view-model is updated when data-model changes', function () {
