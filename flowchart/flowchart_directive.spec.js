@@ -373,6 +373,26 @@ describe('flowchart', function () {
 		expect(testObject.updateViewModel).toHaveBeenCalled();
  	});
 
+ 	it('test can handle null nodes data model', function () {
+
+ 		var mockNode = {
+ 			inputConnectors: [
+ 			],
+
+ 			outputConnectors: [
+ 			],
+ 		};
+
+		var mockScope = createMockScope();
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new FlowChartController(mockScope, mockDragging);	
+
+		testObject.updateViewModel();
+ 	});
+
  	it('test can handle null connections data model', function () {
 
  		var mockNode = {
