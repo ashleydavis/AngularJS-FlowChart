@@ -266,6 +266,16 @@ function FlowChartController ($scope, dragging) {
 
 		connections.push(connectionViewModel);
 	};
+
+	//
+	// Update the location of the node and its connectors.
+	//
+	var updateNodeLocation = function(node, deltaX, deltaY) {
+
+		node.x += deltaX;
+		node.y += deltaY;
+	}
+
 	//
 	// Update the view-model from the data-model.
 	//
@@ -420,8 +430,7 @@ function FlowChartController ($scope, dragging) {
 
 			dragging: function (deltaX, deltaY, x, y) {
 
-				node.x += deltaX;
-				node.y += deltaY;
+				updateNodeLocation(node, deltaX, deltaY);
 			},
 
 			dragStarted: function () {

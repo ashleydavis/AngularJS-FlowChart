@@ -24,10 +24,12 @@ describe('flowchart', function () {
 	//
 	// Create a mock node data model.
 	//
-	var createMockNode = function () {
+	var createMockNode = function (inputConnectors, outputConnectors) {
 		return {
-			inputConnectors: [],
-			outputConnectors: [],
+			x: 0,
+			y: 0,
+			inputConnectors: inputConnectors || [],
+			outputConnectors: outputConnectors || [],
 		};
 	};
 
@@ -60,17 +62,32 @@ describe('flowchart', function () {
 	}
 
 	//
-	// Create a mock dragging directive.
+	// Create a mock dragging service.
 	//
 	var createMockDragging = function (startDrag) {
+
 		var mockDragging = {
-			startDrag: startDrag || function (evt, config) {
-				config.clicked();
+			startDrag: function (evt, config) {
+				mockDragging.evt = evt;
+				mockDragging.config = config;
+
+				if (startDrag) {
+					startDrag(evt, config);
+				}
 			},
 		};
 
 		return mockDragging;
 	};
+
+	//
+	// Create a mock dragging service that just does a click.
+	//
+	var createMockClicker = function () {
+		return createMockDragging(function (evt, config) {
+			config.clicked();
+		});
+	}
 
 	it('findParentConnector returns null when at root 1', function () {
 
@@ -196,11 +213,35 @@ describe('flowchart', function () {
 
 	});
 
+	it('test node dragging updates node location', function () {
+
+		var mockScope = createMockScope([createMockNode()]);
+		var mockDragging = createMockDragging();
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		testObject.updateViewModel();
+
+		mockScope.nodeMouseDown(mockEvt, 0);
+
+		var xIncrement = 5;
+		var yIncrement = 15;
+
+		mockDragging.config.dragging(xIncrement, yIncrement, 10, 10);
+
+		var node = mockScope.chart.nodes[0];
+
+		expect(node.x).toBe(xIncrement);
+		expect(node.y).toBe(yIncrement);
+	});
+
 	it('test node is selected when clicked', function () {
 
 		var mockNode = createMockNode();
 		var mockScope = createMockScope([mockNode]);
-		var mockDragging = createMockDragging();
+		var mockDragging = createMockClicker();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -216,7 +257,7 @@ describe('flowchart', function () {
 	it('test can deslect all nodes', function () {
 
 		var mockScope = createMockScope([createMockNode(), createMockNode()]);
-		var mockDragging = createMockDragging();
+		var mockDragging = createMockClicker();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -234,7 +275,7 @@ describe('flowchart', function () {
 	it('test other nodes are deselected when a node is clicked', function () {
 
 		var mockScope = createMockScope([createMockNode(), createMockNode()]);
-		var mockDragging = createMockDragging();
+		var mockDragging = createMockClicker();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
@@ -254,7 +295,7 @@ describe('flowchart', function () {
 	it('test nodes are deselected when background is clicked', function () {
 
 		var mockScope = createMockScope([createMockNode()]);
-		var mockDragging = createMockDragging();
+		var mockDragging = createMockClicker();
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
