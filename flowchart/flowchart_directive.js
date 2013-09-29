@@ -400,6 +400,9 @@ function FlowChartController ($scope, dragging) {
 
 	};
 
+	//
+	// Handle mousedown on a node.
+	//
 	$scope.nodeMouseDown = function (evt, nodeIndex) {
 
 		controller.deselectAllNodes();
