@@ -75,14 +75,42 @@ function FlowChartController ($scope, dragging) {
 	this.connectorClass = 'connector';
 
 	//
+	// Compute the position of a connector relative to its node.
+	//
+	var computeLocalInputConnectorX = function (connectorIndex) {
+		return 80;
+	};
+
+	var computeLocalOutputConnectorX = function (connectorIndex) {
+		return 280;
+	};
+
+	var computeLocalConnectorY = function (connectorIndex) {
+		return 100 + (connectorIndex * 36.5);
+	};
+
+	//
+	// Compute the position of a connector in the graph.
+	//
+	var computeConnectorPos = function (node, connectorIndex, inputConnector) {
+		return {
+			x: node.x + 
+				(inputConnector ? 
+					computeLocalInputConnectorX(connectorIndex) :
+					computeLocalOutputConnectorX(connectorIndex)),
+			y: node.y + computeLocalConnectorY(connectorIndex),
+		};
+	};
+
+	//
 	// Create a view model for an input connector.
 	//
 	var createInputConnectorViewModel = function (connectorDataModel, connectorIndex) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: $scope.computeLocalInputConnectorX(connectorIndex),
-			y: $scope.computeLocalConnectorY(connectorIndex)
+			x: computeLocalInputConnectorX(connectorIndex),
+			y: computeLocalConnectorY(connectorIndex)
 		};
 	};
 
@@ -93,8 +121,8 @@ function FlowChartController ($scope, dragging) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: $scope.computeLocalOutputConnectorX(connectorIndex),
-			y: $scope.computeLocalConnectorY(connectorIndex)
+			x: computeLocalOutputConnectorX(connectorIndex),
+			y: computeLocalConnectorY(connectorIndex)
 		};
 	};
 
@@ -312,34 +340,6 @@ function FlowChartController ($scope, dragging) {
 	};
 
 	//
-	// Compute the position of a connector relative to its node.
-	//
-	$scope.computeLocalInputConnectorX = function (connectorIndex) {
-		return 80;
-	};
-
-	$scope.computeLocalOutputConnectorX = function (connectorIndex) {
-		return 280;
-	};
-
-	$scope.computeLocalConnectorY = function (connectorIndex) {
-		return 100 + (connectorIndex * 36.5);
-	};
-
-	//
-	// Compute the position of a connector in the graph.
-	//
-	this.computeConnectorPos = function (node, connectorIndex, inputConnector) {
-		return {
-			x: node.x + 
-				(inputConnector ? 
-					$scope.computeLocalInputConnectorX(connectorIndex) :
-					$scope.computeLocalOutputConnectorX(connectorIndex)),
-			y: node.y + $scope.computeLocalConnectorY(connectorIndex),
-		};
-	};
-
-	//
 	// Compute the tangent for the bezier curve.
 	//
 	this.computeDraggingTangent = function () {
@@ -454,7 +454,7 @@ function FlowChartController ($scope, dragging) {
 			dragStarted: function (x, y) {
 
 				$scope.draggingConnection = true;
-				$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
 					x: x,
 					y: y
@@ -466,7 +466,7 @@ function FlowChartController ($scope, dragging) {
 			// Called on mousemove while dragging out a connection.
 			//
 			dragging: function (deltaX, deltaY, x, y, evt) {
-				$scope.dragPoint1 = controller.computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
 					x: x,
 					y: y
