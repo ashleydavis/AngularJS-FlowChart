@@ -109,8 +109,8 @@ function FlowChartController ($scope, dragging) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: computeLocalInputConnectorX(connectorIndex),
-			y: computeLocalConnectorY(connectorIndex)
+			x: function () { return computeLocalInputConnectorX(connectorIndex) },
+			y: function () { return computeLocalConnectorY(connectorIndex) }
 		};
 	};
 
@@ -121,8 +121,8 @@ function FlowChartController ($scope, dragging) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: computeLocalOutputConnectorX(connectorIndex),
-			y: computeLocalConnectorY(connectorIndex)
+			x: function () { return computeLocalOutputConnectorX(connectorIndex) },
+			y: function () { return computeLocalConnectorY(connectorIndex) }
 		};
 	};
 
