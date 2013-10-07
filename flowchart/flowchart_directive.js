@@ -77,11 +77,11 @@ function FlowChartController ($scope, dragging) {
 	//
 	// Compute the position of a connector relative to its node.
 	//
-	var computeLocalInputConnectorX = function (connectorIndex) {
+	var computeLocalInputConnectorX = function () {
 		return 80;
 	};
 
-	var computeLocalOutputConnectorX = function (connectorIndex) {
+	var computeLocalOutputConnectorX = function () {
 		return 280;
 	};
 
@@ -109,7 +109,7 @@ function FlowChartController ($scope, dragging) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: function () { return computeLocalInputConnectorX(connectorIndex) },
+			x: function () { return computeLocalInputConnectorX() },
 			y: function () { return computeLocalConnectorY(connectorIndex) }
 		};
 	};
@@ -121,7 +121,7 @@ function FlowChartController ($scope, dragging) {
 		return {
 			data: connectorDataModel,
 			name: connectorDataModel.name,
-			x: function () { return computeLocalOutputConnectorX(connectorIndex) },
+			x: function () { return computeLocalOutputConnectorX() },
 			y: function () { return computeLocalConnectorY(connectorIndex) }
 		};
 	};
