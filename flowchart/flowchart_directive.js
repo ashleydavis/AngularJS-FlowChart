@@ -74,56 +74,19 @@ function FlowChartController ($scope, dragging) {
 	//
 	this.connectorClass = 'connector';
 
-	//
-	// Compute the position of a connector relative to its node.
-	//
-	var computeLocalInputConnectorX = function () {
-		return 80;
-	};
-
-	var computeLocalOutputConnectorX = function () {
-		return 280;
-	};
-
-	var computeLocalConnectorY = function (connectorIndex) {
-		return 100 + (connectorIndex * 36.5);
-	};
-
-	//
-	// Compute the position of a connector in the graph.
-	//
-	var computeConnectorPos = function (node, connectorIndex, inputConnector) {
-		return {
-			x: node.x + 
-				(inputConnector ? 
-					computeLocalInputConnectorX(connectorIndex) :
-					computeLocalOutputConnectorX(connectorIndex)),
-			y: node.y + computeLocalConnectorY(connectorIndex),
-		};
-	};
 
 	//
 	// Create a view model for an input connector.
 	//
 	var createInputConnectorViewModel = function (connectorDataModel, x, connectorIndex) {
-		return {
-			data: connectorDataModel,
-			name: connectorDataModel.name,
-			x: function () { return x; },
-			y: function () { return computeLocalConnectorY(connectorIndex) }
-		};
+		return new flowchart.ConnectorViewModel(connectorDataModel, x, connectorIndex);
 	};
 
 	//
 	// Create a view model for an output connector.
 	//
 	var createOutputConnectorViewModel = function (connectorDataModel, x, connectorIndex) {
-		return {
-			data: connectorDataModel,
-			name: connectorDataModel.name,
-			x: function () { return x; },
-			y: function () { return computeLocalConnectorY(connectorIndex) }
-		};
+		return new flowchart.ConnectorViewModel(connectorDataModel, x, connectorIndex);
 	};
 
 	//
@@ -133,7 +96,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createInputConnectorViewModel(connectorDataModels[i], computeLocalInputConnectorX(), i));
+			viewModels.push(createInputConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i));
 		}
 
 		return viewModels;
@@ -146,7 +109,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createOutputConnectorViewModel(connectorDataModels[i], computeLocalOutputConnectorX(), i));
+			viewModels.push(createOutputConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i));
 		}
 
 		return viewModels;
@@ -466,7 +429,7 @@ function FlowChartController ($scope, dragging) {
 			dragStarted: function (x, y) {
 
 				$scope.draggingConnection = true;
-				$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
 					x: x,
 					y: y
@@ -478,7 +441,7 @@ function FlowChartController ($scope, dragging) {
 			// Called on mousemove while dragging out a connection.
 			//
 			dragging: function (deltaX, deltaY, x, y, evt) {
-				$scope.dragPoint1 = computeConnectorPos(node, connectorIndex, isInputConnector);
+				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
 					x: x,
 					y: y
