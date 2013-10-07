@@ -47,8 +47,8 @@
       class="connector input-connector"
       >
       <text
-        ng-attr-x="{{connector.x + 20}}"
-        ng-attr-y="{{connector.y}}"
+        ng-attr-x="{{connector.x() + 20}}"
+        ng-attr-y="{{connector.y()}}"
         alignment-baseline="middle"
         >
         {{connector.name}}
@@ -56,8 +56,8 @@
       <circle       
         ng-attr-class="{{connector.isMouseOver && 'selected-connector-circle' || 'connector-circle'}}"
         ng-attr-r="{{connectorSize}}" 
-        ng-attr-cx="{{connector.x}}"
-        ng-attr-cy="{{connector.y}}"
+        ng-attr-cx="{{connector.x()}}"
+        ng-attr-cy="{{connector.y()}}"
         />
     </g>
 
@@ -67,7 +67,7 @@
       class="connector output-connector"
       >
       <text
-        ng-attr-y="{{connector.y}}"
+        ng-attr-y="{{connector.y()}}"
         x="260"
         text-anchor="end"
         alignment-baseline="middle"
@@ -77,8 +77,8 @@
       <circle             
         ng-attr-class="{{connector.isMouseOver && 'selected-connector-circle' || 'connector-circle'}}"
         ng-attr-r="{{connectorSize}}" 
-        ng-attr-cx="{{connector.x}}"
-        ng-attr-cy="{{connector.y}}"
+        ng-attr-cx="{{connector.x()}}"
+        ng-attr-cy="{{connector.y()}}"
         />
     </g>
 
