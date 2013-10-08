@@ -89,8 +89,8 @@ var flowchart = {
 		this.x = nodeDataModel.x;
 		this.y = nodeDataModel.y;
 		this.data = nodeDataModel;
-		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors);
-		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors);
+		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors || []);
+		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || []);
 	};
 
 
