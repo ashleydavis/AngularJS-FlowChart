@@ -110,6 +110,15 @@ describe('flowchart-viewmodel', function () {
 
 	});
 
+	it('construct ConnectionViewModel', function () {
+
+		var mockDataModel = {
+		};
+
+		new flowchart.ConnectionViewModel(mockDataModel);
+
+	});
+
 	it('construct ChartViewModel with nodes and connections', function () {
 
 		var mockNode = {
@@ -132,4 +141,6 @@ describe('flowchart-viewmodel', function () {
 		new flowchart.ChartViewModel(mockDataModel);
 
 	});
+
+
 });
