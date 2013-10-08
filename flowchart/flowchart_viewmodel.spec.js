@@ -40,4 +40,53 @@ describe('flowchart-viewmodel', function () {
 		new flowchart.ConnectorViewModel(mockDataModel, 10, 2);
 
 	});
+
+	it('construct NodeViewModel with no connectors', function () {
+
+		var mockDataModel = {
+			x: 10,
+			y: 12,
+			name: "Woot",
+		};
+
+		new flowchart.NodeViewModel(mockDataModel);
+	});
+
+	it('construct NodeViewModel with empty connectors', function () {
+
+		var mockDataModel = {
+			x: 10,
+			y: 12,
+			name: "Woot",
+			inputConnectors: [],
+			outputConnectors: [],
+		};
+
+		new flowchart.NodeViewModel(mockDataModel);
+	});
+
+	it('construct NodeViewModel with connectors', function () {
+
+		var mockInputConnector = {
+			name: "Input",
+		};		
+
+		var mockOutputConnector = {
+			name: "Output",
+		};		
+
+		var mockDataModel = {
+			x: 10,
+			y: 12,
+			name: "Woot",
+			inputConnectors: [
+				mockInputConnector
+			],
+			outputConnectors: [
+				mockOutputConnector
+			],
+		};
+
+		new flowchart.NodeViewModel(mockDataModel);
+	});
 });
