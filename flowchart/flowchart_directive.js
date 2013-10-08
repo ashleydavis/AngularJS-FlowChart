@@ -97,13 +97,16 @@ function FlowChartController ($scope, dragging) {
 	//
 	// Create a view model for a new connection.
 	//
-	var createNewConnectionViewModel = function (sourceConnector, destConnector) {
+	var createNewConnectionViewModel = function (chart, sourceConnector, destConnector, sourcePoint, destPoint) {
 
-		var connectionDataModel = createNewConnectionDataModel($scope.chart, sourceConnector, destConnector);
+		//
+		// Create a new data model.
+		//
+		var connectionDataModel = createNewConnectionDataModel(chart, sourceConnector, destConnector);
 
-		var connections = $scope.chart.connections;
+		var connections = chart.connections;
 		if (!connections) {
-			connections = $scope.chart.connections = [];
+			connections = chart.connections = [];
 		}
 
 		var connectionViewModel = {
@@ -111,10 +114,10 @@ function FlowChartController ($scope, dragging) {
 			source: sourceConnector,
 			dest: destConnector,
 
-			sourceCoord: $scope.dragPoint1,
-			sourceTangent: $scope.dragTangent1,
-			destCoord: $scope.dragPoint2,
-			destTangent: $scope.dragTangent2,
+			sourceCoord: sourcePoint.point,
+			sourceTangent: sourcePoint.tangent,
+			destCoord: destPoint.point,
+			destTangent: destPoint.tangent,
 		};	
 
 		connections.push(connectionViewModel);
@@ -347,7 +350,16 @@ function FlowChartController ($scope, dragging) {
 				if (controller.mouseOverConnector && 
 					controller.mouseOverConnector !== connector) {
 
-					createNewConnectionViewModel(connector, controller.mouseOverConnector);
+					createNewConnectionViewModel($scope.chart, connector, controller.mouseOverConnector, 
+						{
+							point: $scope.dragPoint1,
+							tangent: $scope.dragTangent1
+						}, 
+						{
+							point: $scope.dragPoint2,
+							tangent: $scope.dragTangent2
+						}
+					);
 				}
 
 				$scope.draggingConnection = false;
