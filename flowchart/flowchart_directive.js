@@ -102,7 +102,7 @@ function FlowChartController ($scope, dragging) {
 		//
 		// Create a new data model.
 		//
-		var connectionDataModel = createNewConnectionDataModel(chart, sourceConnector, destConnector);
+		var connectionDataModel = createNewConnectionDataModel(chart, sourceConnector.data, destConnector.data);
 
 		var connections = chart.connections;
 		if (!connections) {
