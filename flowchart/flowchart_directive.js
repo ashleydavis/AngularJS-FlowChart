@@ -75,13 +75,6 @@ function FlowChartController ($scope, dragging) {
 	this.connectorClass = 'connector';
 
 	//
-	// Wrap the data-model in a view-model.
-	//
-	var createChartViewModel = function (chartDataModel) {
-		return new flowchart.ChartViewModel(chartDataModel);
-	};
-
-	//
 	// Create a view data for a new connection.
 	//
 	var createNewConnectionDataModel = function (sourceConnector, destConnector) {
@@ -143,7 +136,7 @@ function FlowChartController ($scope, dragging) {
 		//
 		// Create a view-model from the data-model.
 		//
-		$scope.chart = createChartViewModel($scope.chartDataModel);
+		$scope.chart = new flowchart.ChartViewModel($scope.chartDataModel);
 	};
 
 	//
