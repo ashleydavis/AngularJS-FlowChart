@@ -109,12 +109,10 @@ var flowchart = {
 	};
 
 	//
-	// Create a view model for an individual connection.
+	// View model for a connection.
 	//
-	var createConnectionViewModel = function (connectionDataModel) {
-		return {
-			data: connectionDataModel,
-		};
+	flowchart.ConnectionViewModel = function (connectionDataModel) {
+		this.data = connectionDataModel;
 	};
 
 	// 
@@ -125,7 +123,7 @@ var flowchart = {
 
 		if (connectionsDataModel) {
 			for (var i = 0; i < connectionsDataModel.length; ++i) {
-				connectionsViewModel.push(createConnectionViewModel(connectionsDataModel[i]));
+				connectionsViewModel.push(new flowchart.ConnectionViewModel(connectionsDataModel[i]));
 			}
 		}
 
