@@ -93,5 +93,59 @@ var flowchart = {
 		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || []);
 	};
 
+	// 
+	// Wrap the nodes data-model in a view-model.
+	//
+	var createNodesViewModel = function (nodesDataModel) {
+		var nodesViewModel = [];
+
+		if (nodesDataModel) {
+			for (var i = 0; i < nodesDataModel.length; ++i) {
+				nodesViewModel.push(new flowchart.NodeViewModel(nodesDataModel[i]));
+			}
+		}
+
+		return nodesViewModel;
+	};
+
+	//
+	// Create a view model for an individual connection.
+	//
+	var createConnectionViewModel = function (connectionDataModel) {
+		return {
+			data: connectionDataModel,
+		};
+	};
+
+	// 
+	// Wrap the connections data-model in a view-model.
+	//
+	var createConnectionsViewModel = function (connectionsDataModel) {
+		var connectionsViewModel = [];
+
+		if (connectionsDataModel) {
+			for (var i = 0; i < connectionsDataModel.length; ++i) {
+				connectionsViewModel.push(createConnectionViewModel(connectionsDataModel[i]));
+			}
+		}
+
+		return connectionsViewModel;
+	};
+
+	//
+	// View model for the chart.
+	//
+	flowchart.ChartViewModel = function (chartDataModel) {
+
+		// Reference to the underlying data.
+		this.data = chartDataModel;
+
+		// Create a view-model for nodes.
+		this.nodes = createNodesViewModel(chartDataModel.nodes);
+
+		// Create a view-model for connections.
+		this.connections = createConnectionsViewModel(chartDataModel.connections);
+	};
+
 
 })();

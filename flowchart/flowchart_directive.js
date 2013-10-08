@@ -74,60 +74,11 @@ function FlowChartController ($scope, dragging) {
 	//
 	this.connectorClass = 'connector';
 
-	// 
-	// Wrap the nodes data-model in a view-model.
-	//
-	var createNodesViewModel = function (nodesDataModel) {
-		var nodesViewModel = [];
-
-		if (nodesDataModel) {
-			for (var i = 0; i < nodesDataModel.length; ++i) {
-				nodesViewModel.push(new flowchart.NodeViewModel(nodesDataModel[i]));
-			}
-		}
-
-		return nodesViewModel;
-	};
-
-	//
-	// Create a view model for an individual connection.
-	//
-	var createConnectionViewModel = function (connectionDataModel) {
-		return {
-			data: connectionDataModel,
-		};
-	};
-
-	// 
-	// Wrap the connections data-model in a view-model.
-	//
-	var createConnectionsViewModel = function (connectionsDataModel) {
-		var connectionsViewModel = [];
-
-		if (connectionsDataModel) {
-			for (var i = 0; i < connectionsDataModel.length; ++i) {
-				connectionsViewModel.push(createConnectionViewModel(connectionsDataModel[i]));
-			}
-		}
-
-		return connectionsViewModel;
-	};
-
 	//
 	// Wrap the data-model in a view-model.
 	//
 	var createChartViewModel = function (chartDataModel) {
-		return {
-			// Reference to the underlying data.
-			data: chartDataModel,
-
-			// Create a view-model for nodes.
-			nodes: createNodesViewModel(chartDataModel.nodes),
-
-			// Create a view-model for connections.
-			connections: createConnectionsViewModel(chartDataModel.connections),
-
-		};
+		return new flowchart.ChartViewModel(chartDataModel);
 	};
 
 	//
