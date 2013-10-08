@@ -114,10 +114,10 @@ function FlowChartController ($scope, dragging) {
 			source: sourceConnector,
 			dest: destConnector,
 
-			sourceCoord: sourcePoint.point,
-			sourceTangent: sourcePoint.tangent,
-			destCoord: destPoint.point,
-			destTangent: destPoint.tangent,
+			sourceCoord: function () { return sourcePoint.point },
+			sourceTangent: function () { return sourcePoint.tangent },
+			destCoord: function () { return destPoint.point },
+			destTangent: function () { return destPoint.tangent },
 		};	
 
 		connections.push(connectionViewModel);
