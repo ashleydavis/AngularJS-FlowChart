@@ -89,4 +89,47 @@ describe('flowchart-viewmodel', function () {
 
 		new flowchart.NodeViewModel(mockDataModel);
 	});
+
+	it('construct ChartViewModel with no nodes or connections', function () {
+
+		var mockDataModel = {
+		};
+
+		new flowchart.ChartViewModel(mockDataModel);
+
+	});
+
+	it('construct ChartViewModel with empty nodes and connections', function () {
+
+		var mockDataModel = {
+			nodes: [],
+			connections: [],
+		};
+
+		new flowchart.ChartViewModel(mockDataModel);
+
+	});
+
+	it('construct ChartViewModel with nodes and connections', function () {
+
+		var mockNode = {
+
+		};
+
+		var mockConnection = {
+
+		};
+
+		var mockDataModel = {
+			nodes: [
+				mockNode
+			],
+			connections: [
+				mockConnection
+			],
+		};
+
+		new flowchart.ChartViewModel(mockDataModel);
+
+	});
 });
