@@ -75,13 +75,13 @@ function FlowChartController ($scope, dragging) {
 	this.connectorClass = 'connector';
 
 	//
-	// Create a view data for a new connection.
+	// Create a data for a new connection.
 	//
-	var createNewConnectionDataModel = function (sourceConnector, destConnector) {
+	var createNewConnectionDataModel = function (chart, sourceConnector, destConnector) {
 
-		var connectionsDataModel = $scope.chartDataModel.connections;
+		var connectionsDataModel = chart.data.connections;
 		if (!connectionsDataModel) {
-			connectionsDataModel = $scope.chartDataModel.connections = [];
+			connectionsDataModel = chart.data.connections = [];
 		}
 
 		var connection = {
@@ -99,7 +99,7 @@ function FlowChartController ($scope, dragging) {
 	//
 	var createNewConnectionViewModel = function (sourceConnector, destConnector) {
 
-		var connectionDataModel = createNewConnectionDataModel(sourceConnector.data, destConnector.data);
+		var connectionDataModel = createNewConnectionDataModel($scope.chart, sourceConnector, destConnector);
 
 		var connections = $scope.chart.connections;
 		if (!connections) {
