@@ -114,10 +114,25 @@ function FlowChartController ($scope, dragging) {
 			source: sourceConnector,
 			dest: destConnector,
 
-			sourceCoord: function () { return sourcePoint.point },
-			sourceTangent: function () { return sourcePoint.tangent },
-			destCoord: function () { return destPoint.point },
-			destTangent: function () { return destPoint.tangent },
+			sourceCoord: function () { 
+				return {
+					x: sourceConnector.parentNode.x + sourceConnector.x(),
+					y: sourceConnector.parentNode.y + sourceConnector.y()
+				};
+			},
+			sourceTangent: function () { 
+				return sourcePoint.tangent 
+			},
+			destCoord: function () { 
+				return {
+					x: destConnector.parentNode.x + destConnector.x(),
+					y: destConnector.parentNode.y + destConnector.y()
+				};
+				return destPoint.point 
+			},
+			destTangent: function () { 
+				return destPoint.tangent 
+			},
 		};	
 
 		connections.push(connectionViewModel);
