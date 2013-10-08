@@ -41,6 +41,20 @@ describe('flowchart-viewmodel', function () {
 
 	});
 
+	it('ConnectorViewModel has reference to parent node', function () {
+
+		var mockDataModel = {
+			name: "Fooey",
+		};
+
+		var mockParentNodeViewModel = {
+		};
+
+		var testObject = new flowchart.ConnectorViewModel(mockDataModel, 10, 0, mockParentNodeViewModel);
+
+		expect(testObject.parentNode).toBe(mockParentNodeViewModel);
+	});
+
 	it('construct NodeViewModel with no connectors', function () {
 
 		var mockDataModel = {

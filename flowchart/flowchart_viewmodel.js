@@ -40,7 +40,7 @@ var flowchart = {
 	//
 	// View model for a connector.
 	//
-	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex) {
+	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex, parentNode) {
 
 		this.data = connectorDataModel;
 		this.name = connectorDataModel.name;
@@ -53,16 +53,17 @@ var flowchart = {
 			return flowchart.computeLocalConnectorY(connectorIndex);
 		};
 
+		this.parentNode = parentNode;
 	};
 
 	//
 	// Create view model for a list of data models.
 	//
-	var createInputConnectorsViewModel = function (connectorDataModels) {
+	var createInputConnectorsViewModel = function (connectorDataModels, parentNode) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i));
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i, parentNode));
 		}
 
 		return viewModels;
@@ -71,11 +72,11 @@ var flowchart = {
 	//
 	// Create view model for a list of data models.
 	//
-	var createOutputConnectorsViewModel = function (connectorDataModels) {
+	var createOutputConnectorsViewModel = function (connectorDataModels, parentNode) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i));
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i, parentNode));
 		}
 
 		return viewModels;
@@ -89,8 +90,8 @@ var flowchart = {
 		this.x = nodeDataModel.x;
 		this.y = nodeDataModel.y;
 		this.data = nodeDataModel;
-		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors || []);
-		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || []);
+		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors || [], this);
+		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || [], this);
 	};
 
 	// 
