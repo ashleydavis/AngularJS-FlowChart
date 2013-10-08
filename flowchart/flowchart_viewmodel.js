@@ -55,5 +55,43 @@ var flowchart = {
 
 	};
 
+	//
+	// Create view model for a list of data models.
+	//
+	var createInputConnectorsViewModel = function (connectorDataModels) {
+		var viewModels = [];
+
+		for (var i = 0; i < connectorDataModels.length; ++i) {
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i));
+		}
+
+		return viewModels;
+	};
+
+	//
+	// Create view model for a list of data models.
+	//
+	var createOutputConnectorsViewModel = function (connectorDataModels) {
+		var viewModels = [];
+
+		for (var i = 0; i < connectorDataModels.length; ++i) {
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i));
+		}
+
+		return viewModels;
+	};
+
+	//
+	// View model for a node.
+	//
+	flowchart.NodeViewModel = function (nodeDataModel) {
+
+		this.x = nodeDataModel.x;
+		this.y = nodeDataModel.y;
+		this.data = nodeDataModel;
+		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors);
+		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors);
+	};
+
 
 })();

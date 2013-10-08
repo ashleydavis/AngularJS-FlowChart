@@ -104,13 +104,7 @@ function FlowChartController ($scope, dragging) {
 	// Create a view model for an individual node.
 	//
 	var createNodeViewModel = function (nodeDataModel) {
-		return {
-			x: nodeDataModel.x,
-			y: nodeDataModel.y,
-			data: nodeDataModel,
-			inputConnectors: createInputConnectorsViewModel(nodeDataModel.inputConnectors),
-			outputConnectors: createOutputConnectorsViewModel(nodeDataModel.outputConnectors)
-		};
+		return new flowchart.NodeViewModel(nodeDataModel);
 	};
 
 	// 
