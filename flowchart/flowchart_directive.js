@@ -74,21 +74,6 @@ function FlowChartController ($scope, dragging) {
 	//
 	this.connectorClass = 'connector';
 
-
-	//
-	// Create a view model for an input connector.
-	//
-	var createInputConnectorViewModel = function (connectorDataModel, x, connectorIndex) {
-		return new flowchart.ConnectorViewModel(connectorDataModel, x, connectorIndex);
-	};
-
-	//
-	// Create a view model for an output connector.
-	//
-	var createOutputConnectorViewModel = function (connectorDataModel, x, connectorIndex) {
-		return new flowchart.ConnectorViewModel(connectorDataModel, x, connectorIndex);
-	};
-
 	//
 	// Create view model for a list of data models.
 	//
@@ -96,7 +81,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createInputConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i));
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i));
 		}
 
 		return viewModels;
@@ -109,7 +94,7 @@ function FlowChartController ($scope, dragging) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(createOutputConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i));
+			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i));
 		}
 
 		return viewModels;
