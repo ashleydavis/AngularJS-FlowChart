@@ -220,6 +220,15 @@ var flowchart = {
 			}
 		};
 
+		//
+		// Update the location of the node and its connectors.
+		//
+		this.updateNodeLocation = function(node, deltaX, deltaY) {
+
+			node.x += deltaX;
+			node.y += deltaY;
+		}
+
 	};
 
 
