@@ -112,8 +112,52 @@ var flowchart = {
 	//
 	// View model for a connection.
 	//
-	flowchart.ConnectionViewModel = function (connectionDataModel) {
+	flowchart.ConnectionViewModel = function (connectionDataModel, sourceConnector, destConnector) {
 		this.data = connectionDataModel;
+		this.source = sourceConnector;
+		this.dest = destConnector;
+
+		this.sourceCoord = function () { 
+			return {
+				x: sourceConnector.parentNode.x + sourceConnector.x(),
+				y: sourceConnector.parentNode.y + sourceConnector.y()
+			};
+		};
+
+		this.sourceTangent = function () { 
+			var tangents = flowchart.computeConnectionTangents({
+					x: sourceConnector.parentNode.x + sourceConnector.x(),
+					y: sourceConnector.parentNode.y + sourceConnector.y()
+				},
+				{
+					x: destConnector.parentNode.x + destConnector.x(),
+					y: destConnector.parentNode.y + destConnector.y()
+				}
+			);
+
+			return tangents.tangent1;
+		};
+
+		this.destCoord = function () { 
+			return {
+				x: destConnector.parentNode.x + destConnector.x(),
+				y: destConnector.parentNode.y + destConnector.y()
+			};
+		};
+
+		this.destTangent = function () { 
+			var tangents = flowchart.computeConnectionTangents({
+					x: sourceConnector.parentNode.x + sourceConnector.x(),
+					y: sourceConnector.parentNode.y + sourceConnector.y()
+				},
+				{
+					x: destConnector.parentNode.x + destConnector.x(),
+					y: destConnector.parentNode.y + destConnector.y()
+				}
+			);
+
+			return tangents.tangent2;
+		};
 	};
 
 	// 
@@ -198,51 +242,7 @@ var flowchart = {
 				connections = this.connections = [];
 			}
 
-			var connectionViewModel = {
-				data: connectionDataModel,
-				source: sourceConnector,
-				dest: destConnector,
-
-				sourceCoord: function () { 
-					return {
-						x: sourceConnector.parentNode.x + sourceConnector.x(),
-						y: sourceConnector.parentNode.y + sourceConnector.y()
-					};
-				},
-				sourceTangent: function () { 
-					var tangents = flowchart.computeConnectionTangents({
-							x: sourceConnector.parentNode.x + sourceConnector.x(),
-							y: sourceConnector.parentNode.y + sourceConnector.y()
-						},
-						{
-							x: destConnector.parentNode.x + destConnector.x(),
-							y: destConnector.parentNode.y + destConnector.y()
-						}
-					);
-
-					return tangents.tangent1;
-				},
-				destCoord: function () { 
-					return {
-						x: destConnector.parentNode.x + destConnector.x(),
-						y: destConnector.parentNode.y + destConnector.y()
-					};
-				},
-				destTangent: function () { 
-					var tangents = flowchart.computeConnectionTangents({
-							x: sourceConnector.parentNode.x + sourceConnector.x(),
-							y: sourceConnector.parentNode.y + sourceConnector.y()
-						},
-						{
-							x: destConnector.parentNode.x + destConnector.x(),
-							y: destConnector.parentNode.y + destConnector.y()
-						}
-					);
-
-					return tangents.tangent2;
-				},
-			};	
-
+			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 			connections.push(connectionViewModel);
 		};		
 
