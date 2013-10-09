@@ -153,13 +153,15 @@ function FlowChartController ($scope, dragging) {
 	this.computeConnectionTangents = function (pt1, pt2) {
 
 		var tangentOffset = (pt2.x - pt1.x) / 2;
-		$scope.dragTangent1 = {
-			x: pt1.x + tangentOffset,
-			y: pt1.y
-		};
-		$scope.dragTangent2 = {
-			x: pt2.x - tangentOffset,
-			y: pt2.y
+		return {
+			tangent1: {
+				x: pt1.x + tangentOffset,
+				y: pt1.y
+			},
+			tangent2: {
+				x: pt2.x - tangentOffset,
+				y: pt2.y
+			}
 		};
 	};
 
@@ -260,7 +262,9 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				var tangents = controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				$scope.dragTangent1 = tangents.tangent1;
+				$scope.dragTangent2 = tangents.tangent2;
 			},
 
 			//
@@ -272,7 +276,9 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				var tangents = controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				$scope.dragTangent1 = tangents.tangent1;
+				$scope.dragTangent2 = tangents.tangent2;
 			},
 
 			//
