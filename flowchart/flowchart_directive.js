@@ -147,24 +147,6 @@ function FlowChartController ($scope, dragging) {
 		return connectorScope.connector;
 	};
 
-	//
-	// Compute the tangent for the bezier curve.
-	//
-	this.computeConnectionTangents = function (pt1, pt2) {
-
-		var tangentOffset = (pt2.x - pt1.x) / 2;
-		return {
-			tangent1: {
-				x: pt1.x + tangentOffset,
-				y: pt1.y
-			},
-			tangent2: {
-				x: pt2.x - tangentOffset,
-				y: pt2.y
-			}
-		};
-	};
-
 	$scope.mouseDown = function (evt) {
 
 		$scope.chart.deselectAllNodes();
@@ -262,7 +244,7 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				var tangents = controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				var tangents = flowchart.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
 				$scope.dragTangent1 = tangents.tangent1;
 				$scope.dragTangent2 = tangents.tangent2;
 			},
@@ -276,7 +258,7 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				var tangents = controller.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
+				var tangents = flowchart.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
 				$scope.dragTangent1 = tangents.tangent1;
 				$scope.dragTangent2 = tangents.tangent2;
 			},
