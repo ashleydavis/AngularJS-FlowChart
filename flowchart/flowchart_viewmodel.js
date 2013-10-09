@@ -191,7 +191,7 @@ var flowchart = {
 			//
 			// Create a new data model.
 			//
-			var connectionDataModel = this.createNewConnectionDataModel( sourceConnector.data, destConnector.data);
+			var connectionDataModel = this.createNewConnectionDataModel(sourceConnector.data, destConnector.data);
 
 			var connections = this.connections;
 			if (!connections) {
@@ -210,7 +210,17 @@ var flowchart = {
 					};
 				},
 				sourceTangent: function () { 
-					return sourceTangent;
+					var tangents = flowchart.computeConnectionTangents({
+							x: sourceConnector.parentNode.x + sourceConnector.x(),
+							y: sourceConnector.parentNode.y + sourceConnector.y()
+						},
+						{
+							x: destConnector.parentNode.x + destConnector.x(),
+							y: destConnector.parentNode.y + destConnector.y()
+						}
+					);
+
+					return tangents.tangent1;
 				},
 				destCoord: function () { 
 					return {
@@ -219,7 +229,17 @@ var flowchart = {
 					};
 				},
 				destTangent: function () { 
-					return destTangent;
+					var tangents = flowchart.computeConnectionTangents({
+							x: sourceConnector.parentNode.x + sourceConnector.x(),
+							y: sourceConnector.parentNode.y + sourceConnector.y()
+						},
+						{
+							x: destConnector.parentNode.x + destConnector.x(),
+							y: destConnector.parentNode.y + destConnector.y()
+						}
+					);
+
+					return tangents.tangent2;
 				},
 			};	
 
