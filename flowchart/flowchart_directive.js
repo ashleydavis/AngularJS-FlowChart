@@ -172,20 +172,9 @@ function FlowChartController ($scope, dragging) {
 		};
 	};
 
-	//
-	// Deselect all nodes in the chart.
-	//
-	this.deselectAllNodes = function () {
-
-		var nodes = $scope.chart.nodes;
-		for (var i = 0; i < nodes.length; ++i) {
-			nodes[i].selected = false;
-		}
-	};
-
 	$scope.mouseDown = function (evt) {
 
-		controller.deselectAllNodes();
+		$scope.chart.deselectAllNodes();
 
 	};
 
@@ -222,9 +211,11 @@ function FlowChartController ($scope, dragging) {
 	//
 	$scope.nodeMouseDown = function (evt, nodeIndex) {
 
-		controller.deselectAllNodes();
+		var chart = $scope.chart;
 
-		var nodes = $scope.chart.nodes;
+		chart.deselectAllNodes();
+
+		var nodes = chart.nodes;
 		var node = nodes[nodeIndex];
 
 		// Move node to the end of the list so it is rendered after all the other.

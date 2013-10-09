@@ -156,5 +156,31 @@ describe('flowchart-viewmodel', function () {
 
 	});
 
+	it('test can deslect all nodes', function () {
+
+		var mockNode = {
+
+		};
+
+		var mockConnection = {
+
+		};
+
+		var mockDataModel = {
+			nodes: [
+				mockNode, mockNode
+			]
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		testObject.nodes[0].selected = true;
+		testObject.nodes[1].selected = true;
+
+		testObject.deselectAllNodes();
+
+		expect(testObject.nodes[0].selected).toBe(false);
+		expect(testObject.nodes[1].selected).toBe(false);
+	});
 
 });

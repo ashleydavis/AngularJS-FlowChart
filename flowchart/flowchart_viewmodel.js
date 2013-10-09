@@ -208,6 +208,18 @@ var flowchart = {
 
 			connections.push(connectionViewModel);
 		};		
+
+		//
+		// Deselect all nodes in the chart.
+		//
+		this.deselectAllNodes = function () {
+
+			var nodes = this.nodes;
+			for (var i = 0; i < nodes.length; ++i) {
+				nodes[i].selected = false;
+			}
+		};
+
 	};
 
 
