@@ -144,6 +144,70 @@ var flowchart = {
 
 		// Create a view-model for connections.
 		this.connections = createConnectionsViewModel(chartDataModel.connections);
+
+		//
+		// Create a data for a new connection.
+		//
+		this.createNewConnectionDataModel = function (sourceConnector, destConnector) {
+
+			var connectionsDataModel = this.data.connections;
+			if (!connectionsDataModel) {
+				connectionsDataModel = this.data.connections = [];
+			}
+
+			var connection = {
+				source: sourceConnector,
+				dest: destConnector
+			};
+
+			connectionsDataModel.push(connection);
+
+			return connection;
+		}
+
+		//
+		// Create a view model for a new connection.
+		//
+		this.createNewConnectionViewModel = function (sourceConnector, destConnector, sourcePoint, destPoint) {
+
+			//
+			// Create a new data model.
+			//
+			var connectionDataModel = this.createNewConnectionDataModel( sourceConnector.data, destConnector.data);
+
+			var connections = this.connections;
+			if (!connections) {
+				connections = this.connections = [];
+			}
+
+			var connectionViewModel = {
+				data: connectionDataModel,
+				source: sourceConnector,
+				dest: destConnector,
+
+				sourceCoord: function () { 
+					return {
+						x: sourceConnector.parentNode.x + sourceConnector.x(),
+						y: sourceConnector.parentNode.y + sourceConnector.y()
+					};
+				},
+				sourceTangent: function () { 
+					return sourcePoint.tangent 
+				},
+				destCoord: function () { 
+					return {
+						x: destConnector.parentNode.x + destConnector.x(),
+						y: destConnector.parentNode.y + destConnector.y()
+					};
+					return destPoint.point 
+				},
+				destTangent: function () { 
+					return destPoint.tangent 
+				},
+			};	
+
+			connections.push(connectionViewModel);
+		};		
 	};
 
 
