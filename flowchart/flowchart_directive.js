@@ -75,70 +75,6 @@ function FlowChartController ($scope, dragging) {
 	this.connectorClass = 'connector';
 
 	//
-	// Create a data for a new connection.
-	//
-	var createNewConnectionDataModel = function (chart, sourceConnector, destConnector) {
-
-		var connectionsDataModel = chart.data.connections;
-		if (!connectionsDataModel) {
-			connectionsDataModel = chart.data.connections = [];
-		}
-
-		var connection = {
-			source: sourceConnector,
-			dest: destConnector
-		};
-
-		connectionsDataModel.push(connection);
-
-		return connection;
-	}
-
-	//
-	// Create a view model for a new connection.
-	//
-	var createNewConnectionViewModel = function (chart, sourceConnector, destConnector, sourcePoint, destPoint) {
-
-		//
-		// Create a new data model.
-		//
-		var connectionDataModel = createNewConnectionDataModel(chart, sourceConnector.data, destConnector.data);
-
-		var connections = chart.connections;
-		if (!connections) {
-			connections = chart.connections = [];
-		}
-
-		var connectionViewModel = {
-			data: connectionDataModel,
-			source: sourceConnector,
-			dest: destConnector,
-
-			sourceCoord: function () { 
-				return {
-					x: sourceConnector.parentNode.x + sourceConnector.x(),
-					y: sourceConnector.parentNode.y + sourceConnector.y()
-				};
-			},
-			sourceTangent: function () { 
-				return sourcePoint.tangent 
-			},
-			destCoord: function () { 
-				return {
-					x: destConnector.parentNode.x + destConnector.x(),
-					y: destConnector.parentNode.y + destConnector.y()
-				};
-				return destPoint.point 
-			},
-			destTangent: function () { 
-				return destPoint.tangent 
-			},
-		};	
-
-		connections.push(connectionViewModel);
-	};
-
-	//
 	// Update the location of the node and its connectors.
 	//
 	var updateNodeLocation = function(node, deltaX, deltaY) {
@@ -365,7 +301,7 @@ function FlowChartController ($scope, dragging) {
 				if (controller.mouseOverConnector && 
 					controller.mouseOverConnector !== connector) {
 
-					createNewConnectionViewModel($scope.chart, connector, controller.mouseOverConnector, 
+					$scope.chart.createNewConnectionViewModel(connector, controller.mouseOverConnector, 
 						{
 							point: $scope.dragPoint1,
 							tangent: $scope.dragTangent1
