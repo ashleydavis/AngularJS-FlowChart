@@ -272,14 +272,8 @@ function FlowChartController ($scope, dragging) {
 					controller.mouseOverConnector !== connector) {
 
 					$scope.chart.createNewConnectionViewModel(connector, controller.mouseOverConnector, 
-						{
-							point: $scope.dragPoint1,
-							tangent: $scope.dragTangent1
-						}, 
-						{
-							point: $scope.dragPoint2,
-							tangent: $scope.dragTangent2
-						}
+						$scope.dragTangent1,
+						$scope.dragTangent2
 					);
 				}
 
