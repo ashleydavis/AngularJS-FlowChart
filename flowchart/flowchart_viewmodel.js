@@ -186,7 +186,7 @@ var flowchart = {
 		//
 		// Create a view model for a new connection.
 		//
-		this.createNewConnectionViewModel = function (sourceConnector, destConnector, sourcePoint, destPoint) {
+		this.createNewConnectionViewModel = function (sourceConnector, destConnector, sourceTangent, destTangent) {
 
 			//
 			// Create a new data model.
@@ -210,17 +210,16 @@ var flowchart = {
 					};
 				},
 				sourceTangent: function () { 
-					return sourcePoint.tangent 
+					return sourceTangent;
 				},
 				destCoord: function () { 
 					return {
 						x: destConnector.parentNode.x + destConnector.x(),
 						y: destConnector.parentNode.y + destConnector.y()
 					};
-					return destPoint.point 
 				},
 				destTangent: function () { 
-					return destPoint.tangent 
+					return destTangent;
 				},
 			};	
 
