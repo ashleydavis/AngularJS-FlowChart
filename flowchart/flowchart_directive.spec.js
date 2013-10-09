@@ -254,24 +254,6 @@ describe('flowchart', function () {
 		expect(mockScope.chart.nodes[0].selected).toBe(true);
 	});
 
-	it('test can deslect all nodes', function () {
-
-		var mockScope = createMockScope([createMockNode(), createMockNode()]);
-		var mockDragging = createMockClicker();
-
-		var testObject = new FlowChartController(mockScope, mockDragging);
-
-		testObject.updateViewModel();
-
-		mockScope.chart.nodes[0].selected = true;
-		mockScope.chart.nodes[1].selected = true;
-
-		testObject.deselectAllNodes();
-
-		expect(mockScope.chart.nodes[0].selected).toBe(false);
-		expect(mockScope.chart.nodes[1].selected).toBe(false);
-	});
-
 	it('test other nodes are deselected when a node is clicked', function () {
 
 		var mockScope = createMockScope([createMockNode(), createMockNode()]);
