@@ -132,6 +132,24 @@ var flowchart = {
 	};
 
 	//
+	// Compute the tangent for the bezier curve.
+	//
+	flowchart.computeConnectionTangents = function (pt1, pt2) {
+
+		var tangentOffset = (pt2.x - pt1.x) / 2;
+		return {
+			tangent1: {
+				x: pt1.x + tangentOffset,
+				y: pt1.y
+			},
+			tangent2: {
+				x: pt2.x - tangentOffset,
+				y: pt2.y
+			}
+		};
+	};
+
+	//
 	// View model for the chart.
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
@@ -228,6 +246,7 @@ var flowchart = {
 			node.x += deltaX;
 			node.y += deltaY;
 		}
+
 
 	};
 
