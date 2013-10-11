@@ -117,14 +117,15 @@ var flowchart = {
 		this.source = sourceConnector;
 		this.dest = destConnector;
 
-		this.sourceCoord = function () { 
-			return {
-				x: sourceConnector.parentNode.x + sourceConnector.x(),
-				y: sourceConnector.parentNode.y + sourceConnector.y()
-			};
+		this.sourceCoordX = function () { 
+			return sourceConnector.parentNode.x + sourceConnector.x();
 		};
 
-		this.sourceTangent = function () { 
+		this.sourceCoordY = function () { 
+			return sourceConnector.parentNode.y + sourceConnector.y();
+		};
+
+		this.sourceTangentX = function () { 
 			var tangents = flowchart.computeConnectionTangents({
 					x: sourceConnector.parentNode.x + sourceConnector.x(),
 					y: sourceConnector.parentNode.y + sourceConnector.y()
@@ -135,17 +136,10 @@ var flowchart = {
 				}
 			);
 
-			return tangents.tangent1;
+			return tangents.tangent1.x;
 		};
 
-		this.destCoord = function () { 
-			return {
-				x: destConnector.parentNode.x + destConnector.x(),
-				y: destConnector.parentNode.y + destConnector.y()
-			};
-		};
-
-		this.destTangent = function () { 
+		this.sourceTangentY = function () { 
 			var tangents = flowchart.computeConnectionTangents({
 					x: sourceConnector.parentNode.x + sourceConnector.x(),
 					y: sourceConnector.parentNode.y + sourceConnector.y()
@@ -156,7 +150,43 @@ var flowchart = {
 				}
 			);
 
-			return tangents.tangent2;
+			return tangents.tangent1.y;
+		};
+
+		this.destCoordX = function () { 
+			return destConnector.parentNode.x + destConnector.x();
+		};
+
+		this.destCoordY = function () { 
+			return destConnector.parentNode.y + destConnector.y();
+		};
+
+		this.destTangentX = function () { 
+			var tangents = flowchart.computeConnectionTangents({
+					x: sourceConnector.parentNode.x + sourceConnector.x(),
+					y: sourceConnector.parentNode.y + sourceConnector.y()
+				},
+				{
+					x: destConnector.parentNode.x + destConnector.x(),
+					y: destConnector.parentNode.y + destConnector.y()
+				}
+			);
+
+			return tangents.tangent2.x;
+		};
+
+		this.destTangentY = function () { 
+			var tangents = flowchart.computeConnectionTangents({
+					x: sourceConnector.parentNode.x + sourceConnector.x(),
+					y: sourceConnector.parentNode.y + sourceConnector.y()
+				},
+				{
+					x: destConnector.parentNode.x + destConnector.x(),
+					y: destConnector.parentNode.y + destConnector.y()
+				}
+			);
+
+			return tangents.tangent2.y;
 		};
 	};
 

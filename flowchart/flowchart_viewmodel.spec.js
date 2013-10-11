@@ -181,12 +181,14 @@ describe('flowchart-viewmodel', function () {
 
 		var testObject = new flowchart.ConnectionViewModel(mockDataModel, mockSourceConnector, mockDestConnector);
 
-		expect(testObject.sourceCoord().x).toBe(10);
-		expect(testObject.sourceCoord().y).toBe(25);
-		testObject.sourceTangent();
-		expect(testObject.destCoord().x).toBe(75);
-		expect(testObject.destCoord().y).toBe(65);
-		testObject.destTangent();
+		expect(testObject.sourceCoordX()).toBe(10);
+		expect(testObject.sourceCoordY()).toBe(25);
+		testObject.sourceTangentX();
+		testObject.sourceTangentY();
+		expect(testObject.destCoordX()).toBe(75);
+		expect(testObject.destCoordY()).toBe(65);
+		testObject.destTangentX();
+		testObject.destTangentY();
 	});
 
 	it('construct ChartViewModel with nodes and connections', function () {
