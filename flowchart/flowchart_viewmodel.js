@@ -127,8 +127,8 @@ var flowchart = {
 
 		this.sourceCoord = function () {
 			return {
-				x: this.sourceCoordX,
-				y: this.sourceCoordY
+				x: this.sourceCoordX(),
+				y: this.sourceCoordY()
 			};
 		}
 
@@ -150,8 +150,8 @@ var flowchart = {
 
 		this.destCoord = function () {
 			return {
-				x: this.destCoordX,
-				y: this.destCoordY
+				x: this.destCoordX(),
+				y: this.destCoordY()
 			};
 		}
 
