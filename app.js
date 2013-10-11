@@ -17,6 +17,7 @@ angular.module('app', ['flowChart', ])
 		nodes: [
 			{
 				title: "Example Node 1",
+				id: 0,
 				x: 0,
 				y: 0,
 				inputConnectors: [
@@ -45,6 +46,7 @@ angular.module('app', ['flowChart', ])
 
 			{
 				title: "Example Node 2",
+				id: 1,
 				x: 450,
 				y: 200,
 				inputConnectors: [
@@ -70,8 +72,24 @@ angular.module('app', ['flowChart', ])
 					},
 				],
 			},
+
 		],
 
+		connections: [
+			{
+				source: {
+					nodeID: 0,
+					connectorIndex: 1,
+				},
+
+				dest: {
+					nodeID: 1,
+					connectorIndex: 2,
+				},
+			},
+
+
+		]
 	};
 
 	$scope.chart = chart;

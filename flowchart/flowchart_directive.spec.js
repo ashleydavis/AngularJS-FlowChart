@@ -458,10 +458,7 @@ describe('flowchart', function () {
  			],
  		};
 
- 		var mockConnection = { 			
- 		};
-
-		var mockScope = createMockScope([ mockNode ], [ mockConnection ]);
+		var mockScope = createMockScope([ mockNode ], []);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
@@ -513,12 +510,7 @@ describe('flowchart', function () {
 
 		// Connection
  	
-		expect(mockScope.chart.connections.length).toBe(1);
-
-		var connection = mockScope.chart.connections[0];
-
-		expect(connection).toNotBe(mockConnection);
-		expect(connection.data).toBe(mockConnection);
+		expect(mockScope.chart.connections.length).toBe(0);
  	});
 
 

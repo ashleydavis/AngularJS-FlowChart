@@ -164,21 +164,6 @@ var flowchart = {
 		};
 	};
 
-	// 
-	// Wrap the connections data-model in a view-model.
-	//
-	var createConnectionsViewModel = function (connectionsDataModel) {
-		var connectionsViewModel = [];
-
-		if (connectionsDataModel) {
-			for (var i = 0; i < connectionsDataModel.length; ++i) {
-				connectionsViewModel.push(new flowchart.ConnectionViewModel(connectionsDataModel[i]));
-			}
-		}
-
-		return connectionsViewModel;
-	};
-
 	//
 	// Helper function.
 	//
@@ -244,6 +229,75 @@ var flowchart = {
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
 
+		//
+		// Find a specific node within the chart.
+		//
+		this.findNode = function (nodeID) {
+
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+				if (node.data.id == nodeID) {
+					return node;
+				}
+			}
+
+			throw new Error("Failed to find node " + nodeID);
+		};
+
+		//
+		// Find a specific input connector within the chart.
+		//
+		this.findInputConnector = function (nodeID, connectorIndex) {
+
+			var node = this.findNode(nodeID);
+
+			if (!node.inputConnectors || node.inputConnectors.length <= connectorIndex) {
+				throw new Error("Node " + nodeID + " has invalid input connectors.");
+			}
+
+			return node.inputConnectors[connectorIndex];
+		};
+
+		//
+		// Find a specific output connector within the chart.
+		//
+		this.findOutputConnector = function (nodeID, connectorIndex) {
+
+			var node = this.findNode(nodeID);
+
+			if (!node.outputConnectors || node.outputConnectors.length <= connectorIndex) {
+				throw new Error("Node " + nodeID + " has invalid output connectors.");
+			}
+
+			return node.outputConnectors[connectorIndex];
+		};
+
+		//
+		// Create a view model for connection from the data model.
+		//
+		this._createConnectionViewModel = function(connectionDataModel) {
+
+			var sourceConnector = this.findOutputConnector(connectionDataModel.source.nodeID, connectionDataModel.source.connectorIndex);
+			var destConnector = this.findInputConnector(connectionDataModel.dest.nodeID, connectionDataModel.dest.connectorIndex);			
+			return new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
+		}
+
+		// 
+		// Wrap the connections data-model in a view-model.
+		//
+		this._createConnectionsViewModel = function (connectionsDataModel) {
+
+			var connectionsViewModel = [];
+
+			if (connectionsDataModel) {
+				for (var i = 0; i < connectionsDataModel.length; ++i) {
+					connectionsViewModel.push(this._createConnectionViewModel(connectionsDataModel[i]));
+				}
+			}
+
+			return connectionsViewModel;
+		};
+
 		// Reference to the underlying data.
 		this.data = chartDataModel;
 
@@ -251,7 +305,7 @@ var flowchart = {
 		this.nodes = createNodesViewModel(chartDataModel.nodes);
 
 		// Create a view-model for connections.
-		this.connections = createConnectionsViewModel(chartDataModel.connections);
+		this.connections = this._createConnectionsViewModel(chartDataModel.connections);
 
 		//
 		// Create a data for a new connection.
