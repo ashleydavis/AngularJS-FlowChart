@@ -244,9 +244,8 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				var tangents = flowchart.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
-				$scope.dragTangent1 = tangents.tangent1;
-				$scope.dragTangent2 = tangents.tangent2;
+				$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
+				$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
 			},
 
 			//
@@ -258,9 +257,8 @@ function FlowChartController ($scope, dragging) {
 					x: x,
 					y: y
 				};
-				var tangents = flowchart.computeConnectionTangents($scope.dragPoint1, $scope.dragPoint2);
-				$scope.dragTangent1 = tangents.tangent1;
-				$scope.dragTangent2 = tangents.tangent2;
+				$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
+				$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
 			},
 
 			//
