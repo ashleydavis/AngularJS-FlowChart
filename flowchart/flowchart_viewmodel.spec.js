@@ -194,13 +194,9 @@ describe('flowchart-viewmodel', function () {
 		testObject.destTangentY();
 	});
 
-	it('construct ChartViewModel with nodes and connections', function () {
+	it('construct ChartViewModel with a node', function () {
 
 		var mockNode = {
-
-		};
-
-		var mockConnection = {
 
 		};
 
@@ -209,12 +205,68 @@ describe('flowchart-viewmodel', function () {
 				mockNode
 			],
 			connections: [
+			],
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+		expect(testObject.nodes.length).toBe(1);
+		expect(testObject.nodes[0].data).toBe(mockNode);
+
+	});
+
+	it('data model with existing connection creates a connection view model', function () {
+
+		var mockOutputConnector = {};
+
+		var mockSourceNode = {
+			
+			id: 5,
+
+			outputConnectors: [
+				mockOutputConnector
+			]
+		};
+
+		var mockInputConnector = {};
+
+		var mockDestNode = {
+
+			id: 12,
+
+			inputConnectors: [
+				{},
+				mockInputConnector
+			]
+		};
+
+		var mockConnection = {
+			source: {
+				nodeID: 5,
+				connectorIndex: 0
+			},
+
+			dest: {
+				nodeID: 12,
+				connectorIndex: 1
+			},
+		};
+
+		var mockDataModel = {
+			nodes: [
+				mockSourceNode,
+				mockDestNode
+			],
+			connections: [
 				mockConnection
 			],
 		};
 
-		new flowchart.ChartViewModel(mockDataModel);
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
+		expect(testObject.connections.length).toBe(1);
+		expect(testObject.connections[0].data).toBe(mockConnection);
+		expect(testObject.connections[0].source.data).toBe(mockOutputConnector);
+		expect(testObject.connections[0].dest.data).toBe(mockInputConnector);
 	});
 
 	it('test can deslect all nodes', function () {
@@ -245,3 +297,4 @@ describe('flowchart-viewmodel', function () {
 	});
 
 });
+
