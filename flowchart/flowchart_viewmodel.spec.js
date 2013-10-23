@@ -296,5 +296,47 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[1].selected).toBe(false);
 	});
 
-});
+	it('test chart mouse down deselects all nodes', function () {
 
+		var mockNode1 = {};
+		var mockNode2 = {};
+		var mockDataModel = {
+			nodes: [
+				mockNode1, mockNode2
+			]
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		// Fake out the nodes as selected.
+		testObject.nodes[0].selected = true;
+		testObject.nodes[1].selected = true;
+
+		testObject.handleNodeMouseDown(0); // Doesn't matter which node is actually clicked.
+
+		expect(testObject.nodes[0].selected).toBe(false);
+		expect(testObject.nodes[1].selected).toBe(false);
+	});
+
+	it('test chart mouse down brings node to front', function () {
+
+		var mockNode1 = {};
+		var mockNode2 = {};
+		var mockDataModel = {
+			nodes: [
+				mockNode1, mockNode2
+			]
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		expect(testObject.nodes[0].data).toBe(mockNode1);
+		expect(testObject.nodes[1].data).toBe(mockNode2);
+
+		testObject.handleNodeMouseDown(0); // Mouse down on the 2nd node.
+
+		expect(testObject.nodes[0].data).toBe(mockNode2); // Mock node 2 should be bought to front.
+		expect(testObject.nodes[1].data).toBe(mockNode1);
+	});
+
+});
