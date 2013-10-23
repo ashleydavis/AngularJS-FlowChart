@@ -187,17 +187,9 @@ function FlowChartController ($scope, dragging) {
 	$scope.nodeMouseDown = function (evt, nodeIndex) {
 
 		var chart = $scope.chart;
+		var node = chart.nodes[nodeIndex];
 
-		chart.deselectAllNodes();
-
-		var nodes = chart.nodes;
-		var node = nodes[nodeIndex];
-
-		// Move node to the end of the list so it is rendered after all the other.
-		// This is the way Z-order is done in SVG.
-
-		nodes.splice(nodeIndex, 1);
-		nodes.push(node);			
+		chart.handleNodeMouseDown(nodeIndex);
 
 		dragging.startDrag(evt, {
 

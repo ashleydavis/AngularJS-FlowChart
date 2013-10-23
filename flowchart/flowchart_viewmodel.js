@@ -360,11 +360,27 @@ var flowchart = {
 		//
 		// Update the location of the node and its connectors.
 		//
-		this.updateNodeLocation = function(node, deltaX, deltaY) {
+		this.updateNodeLocation = function (node, deltaX, deltaY) {
 
 			node.x += deltaX;
 			node.y += deltaY;
-		}
+		};
+
+		//
+		// Handle mouse down on a particular node.
+		//
+		this.handleNodeMouseDown = function (nodeIndex) {
+
+			this.deselectAllNodes();
+
+			var node = this.nodes[nodeIndex];
+
+			// Move node to the end of the list so it is rendered after all the other.
+			// This is the way Z-order is done in SVG.
+
+			this.nodes.splice(nodeIndex, 1);
+			this.nodes.push(node);			
+		};
 
 
 	};
