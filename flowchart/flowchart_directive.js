@@ -207,7 +207,7 @@ function FlowChartController ($scope, dragging) {
 			},
 
 			clicked: function () {
-				node.selected = true;
+				chart.handleNodeSelected(node);
 			},
 
 		});

@@ -382,6 +382,14 @@ var flowchart = {
 			this.nodes.push(node);			
 		};
 
+		//
+		// Handle node selection and mark the node as selected.
+		//
+		this.handleNodeSelected = function (node) {
+
+			node.selected = true;
+		};
+
 
 	};
 

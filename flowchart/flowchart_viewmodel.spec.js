@@ -339,4 +339,16 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[1].data).toBe(mockNode1);
 	});
 
+	it('test node selection is handled correctly', function () {
+
+		var mockDataModel = {};
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var mockNodeViewModel = {};
+
+		testObject.handleNodeSelected(mockNodeViewModel);
+
+		expect(mockNodeViewModel.selected).toBe(true);
+	});
+
 });
