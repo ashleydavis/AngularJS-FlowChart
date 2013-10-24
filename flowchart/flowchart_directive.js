@@ -94,7 +94,7 @@ function FlowChartController ($scope, dragging) {
 	});
 
 	//
-	// Find the element that is the parent connector of the particular element.
+	// Find the HTML element that is the parent connector of the particular element.
 	//
 	this.findParentConnector = function (element) {
 
@@ -123,9 +123,8 @@ function FlowChartController ($scope, dragging) {
 
 	//
 	// Hit test and retreive node and connector that was hit at the specified coordinates.
-	// type specifies whether you want input, output or both.
 	//
-	this.hitTestForConnector = function (clientX, clientY, type) {
+	this.hitTestForConnector = function (clientX, clientY) {
 
 		//
 		// Retreive the element the mouse is currently over.
@@ -147,6 +146,9 @@ function FlowChartController ($scope, dragging) {
 		return connectorScope.connector;
 	};
 
+	//
+	// Called on mouse down in the chart.
+	//
 	$scope.mouseDown = function (evt) {
 
 		$scope.chart.deselectAllNodes();
