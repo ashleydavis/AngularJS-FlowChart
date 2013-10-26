@@ -18,7 +18,7 @@ angular.module('app', ['flowChart', ])
 			{
 				title: "Example Node 1",
 				id: 0,
-				x: 0,
+				x: 250,
 				y: 0,
 				inputConnectors: [
 					{
@@ -47,7 +47,7 @@ angular.module('app', ['flowChart', ])
 			{
 				title: "Example Node 2",
 				id: 1,
-				x: 450,
+				x: 600,
 				y: 200,
 				inputConnectors: [
 					{
