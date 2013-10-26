@@ -8,6 +8,15 @@
 		-->
 		<script src="http://localhost:35729/livereload.js?snipver=1"></script>
 
+		<!-- http://stackoverflow.com/questions/3165083/how-to-make-textarea-to-fill-div-block -->
+		<style>
+			textarea {
+			     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+			     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+			     box-sizing: border-box;         /* Opera/IE 8+ */
+			}
+		</style>
+
 	</head>	
 	<body 
 		ng-app="app" 
@@ -15,24 +24,23 @@
 		mouse-capture
 		>
 
-	   	<div
-	   		class="json"
-	   		>
-			<textarea 
-				ng-model="chart"
-				json-input
-				cols="50"
-				rows="50"
-				>
-			</textarea>
-	   	</div>
-
-		<div>			
-		    <flow-chart
-		      chart="chart"
-		      >
-		    </flow-chart>
-	   	</div>
+		<div style="width: 100%; overflow: hidden;">
+		    <div style="width: 600px; float: left;"> 
+				<textarea 
+					style="width: 100%; height: 100%;"
+					ng-model="chart"
+					json-input
+					>
+				</textarea>
+			</div>
+		    <div style="margin-left: 600px;">
+			    <flow-chart
+		    		style="margin: 5px; width: 100%; height: 100%;"
+			      	chart="chart"
+			      	>
+			    </flow-chart>
+		    </div>
+		</div>
 
 		<link rel="stylesheet" type="text/css" href="app.css">
 
