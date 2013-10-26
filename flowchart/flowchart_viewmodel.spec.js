@@ -20,8 +20,8 @@ describe('flowchart-viewmodel', function () {
 	it('compute computeConnectorPos', function () {
 
 		var mockNode = {
-			x: 10,
-			y: 15,
+			x: function () { return 10 },
+			y: function () { return 15 },
 		};
 
 		flowchart.computeConnectorPos(mockNode, 0, true);
@@ -146,8 +146,8 @@ describe('flowchart-viewmodel', function () {
 		};
 
 		var mockSourceParentNode = {
-			x: 5,
-			y: 10,
+			x: function () { return 5 },
+			y: function () { return 10 },
 		};
 
 		var mockSourceConnector = {
@@ -163,8 +163,8 @@ describe('flowchart-viewmodel', function () {
 		};
 
 		var mockDestParentNode = {
-			x: 50,
-			y: 30,
+			x: function () { return 50 },
+			y: function () { return 30 },
 		};
 
 		var mockDestConnector = {
