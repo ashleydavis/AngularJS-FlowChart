@@ -233,8 +233,8 @@ describe('flowchart', function () {
 
 		var node = mockScope.chart.nodes[0];
 
-		expect(node.x).toBe(xIncrement);
-		expect(node.y).toBe(yIncrement);
+		expect(node.data.x).toBe(xIncrement);
+		expect(node.data.y).toBe(yIncrement);
 	});
 
 	it('test node is selected when clicked', function () {
@@ -304,9 +304,11 @@ describe('flowchart', function () {
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
+		testObject.updateViewModel();
+
 		var mockEvt = {};
 
-		mockScope.connectorMouseDown(mockEvt, mockNode, mockConnector, 0, false);
+		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockScope.chart.nodes[0].inputConnectors[0], 0, false);
 
 		expect(mockScope.draggingConnection).toBe(true);		
 	});
@@ -325,11 +327,13 @@ describe('flowchart', function () {
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
+		testObject.updateViewModel();
+
 		var mockEvt = {};
 
 		testObject.updateViewModel();
 
-		mockScope.connectorMouseDown(mockEvt, mockNode, mockConnector, 0, false);
+		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockScope.chart.nodes[0].inputConnectors[0], 0, false);
 
  		draggingConfig.dragStarted(0, 0);
  		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
