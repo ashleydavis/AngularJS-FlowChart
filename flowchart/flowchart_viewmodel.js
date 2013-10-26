@@ -87,6 +87,10 @@ var flowchart = {
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
 
+		this.name = function () {
+			return nodeDataModel.name;
+		};
+
 		this.x = function () {
 			return nodeDataModel.x;
 		};

@@ -104,6 +104,18 @@ describe('flowchart-viewmodel', function () {
 		new flowchart.NodeViewModel(mockDataModel);
 	});
 
+	it('test name of NodeViewModel', function () {
+
+		var mockDataModel = {
+			name: "Woot",
+		};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		expect(testObject.name()).toBe(mockDataModel.name);
+
+	});
+
 	it('construct ChartViewModel with no nodes or connections', function () {
 
 		var mockDataModel = {
