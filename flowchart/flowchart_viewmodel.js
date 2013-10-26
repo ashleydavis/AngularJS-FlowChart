@@ -29,11 +29,11 @@ var flowchart = {
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
 		return {
-			x: node.x + 
+			x: node.x() + 
 				(inputConnector ? 
 					flowchart.computeLocalInputConnectorX(connectorIndex) :
 					flowchart.computeLocalOutputConnectorX(connectorIndex)),
-			y: node.y + flowchart.computeLocalConnectorY(connectorIndex),
+			y: node.y() + flowchart.computeLocalConnectorY(connectorIndex),
 		};
 	};
 
@@ -87,8 +87,14 @@ var flowchart = {
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
 
-		this.x = nodeDataModel.x;
-		this.y = nodeDataModel.y;
+		this.x = function () {
+			return nodeDataModel.x;
+		};
+
+		this.y = function () {
+			return nodeDataModel.y;
+		};
+
 		this.data = nodeDataModel;
 		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors || [], this);
 		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || [], this);
@@ -118,11 +124,11 @@ var flowchart = {
 		this.dest = destConnector;
 
 		this.sourceCoordX = function () { 
-			return sourceConnector.parentNode.x + sourceConnector.x();
+			return sourceConnector.parentNode.x() + sourceConnector.x();
 		};
 
 		this.sourceCoordY = function () { 
-			return sourceConnector.parentNode.y + sourceConnector.y();
+			return sourceConnector.parentNode.y() + sourceConnector.y();
 		};
 
 		this.sourceCoord = function () {
@@ -141,11 +147,11 @@ var flowchart = {
 		};
 
 		this.destCoordX = function () { 
-			return destConnector.parentNode.x + destConnector.x();
+			return destConnector.parentNode.x() + destConnector.x();
 		};
 
 		this.destCoordY = function () { 
-			return destConnector.parentNode.y + destConnector.y();
+			return destConnector.parentNode.y() + destConnector.y();
 		};
 
 		this.destCoord = function () {
@@ -362,8 +368,8 @@ var flowchart = {
 		//
 		this.updateNodeLocation = function (node, deltaX, deltaY) {
 
-			node.x += deltaX;
-			node.y += deltaY;
+			node.data.x += deltaX;
+			node.data.y += deltaY;
 		};
 
 		//
