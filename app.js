@@ -93,6 +93,43 @@ angular.module('app', ['flowChart', ])
 	};
 
 	$scope.chart = chart;
+})
+
+//
+// http://stackoverflow.com/questions/17893708/angularjs-textarea-bind-to-json-object-shows-object-object
+// 
+.directive('jsonInput', function () {
+  'use strict';
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function (scope, elem, attr, ctrl) {
+        ctrl.$parsers.unshift(function(input) {
+          try {
+            var obj = JSON.parse(input);
+            ctrl.$setValidity('jsonInput', true);
+            return obj;
+          } catch (e) {
+            ctrl.$setValidity('jsonInput', false);
+            return null;
+          }
+        });
+        ctrl.$formatters.unshift(function(data) {
+          if (data == null) {
+            ctrl.$setValidity('jsonInput', false);
+            return "";
+          }
+          try {
+            var str = JSON.stringify(data, null, 4); // Ash: Added indenting to SO code.
+            ctrl.$setValidity('jsonInput', true);
+            return str;
+          } catch (e) {
+          ctrl.$setValidity('codeme', false);
+              return "";
+          }
+        });
+    }
+  };
 
 })
 

@@ -8,26 +8,6 @@
 		-->
 		<script src="http://localhost:35729/livereload.js?snipver=1"></script>
 
-		<style>
-			.container {
-				width: 100%;
-				height: 100%;
-			}
-			.flowchart, json {
-				margin: 10px;
-				width: 100%;
-				height: 100%;
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-
-			.json {
-				margin: 15px;
-			}
-
-		</style>
-
 	</head>	
 	<body 
 		ng-app="app" 
@@ -35,26 +15,24 @@
 		mouse-capture
 		>
 
-		<div
-			class="container"
-			>
-			<div
-				class="flowchart"
-				>			
-			    <flow-chart
-			      chart="chart"
-			      >
-			    </flow-chart>
-		   	</div>
+	   	<div
+	   		class="json"
+	   		>
+			<textarea 
+				ng-model="chart"
+				json-input
+				cols="50"
+				rows="50"
+				>
+			</textarea>
+	   	</div>
 
-		   	<div
-		   		class="json"
-		   		>
-<pre>
-{{chart | json}}
-</pre>
-		   	</div>
-	   	<div>
+		<div>			
+		    <flow-chart
+		      chart="chart"
+		      >
+		    </flow-chart>
+	   	</div>
 
 		<link rel="stylesheet" type="text/css" href="app.css">
 
