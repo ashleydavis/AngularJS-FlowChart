@@ -16,7 +16,7 @@ angular.module('app', ['flowChart', ])
 
 		nodes: [
 			{
-				title: "Example Node 1",
+				name: "Example Node 1",
 				id: 0,
 				x: 0,
 				y: 0,
@@ -45,7 +45,7 @@ angular.module('app', ['flowChart', ])
 			},
 
 			{
-				title: "Example Node 2",
+				name: "Example Node 2",
 				id: 1,
 				x: 400,
 				y: 200,

@@ -41,6 +41,14 @@
       >
     </rect>
 
+    <text
+      ng-attr-x="0"
+      ng-attr-y="0"
+      alignment-baseline="middle"
+      >
+      {{node.name()}}
+    </text>
+
     <g
       ng-repeat="connector in node.inputConnectors"
       ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
