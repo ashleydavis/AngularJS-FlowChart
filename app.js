@@ -10,6 +10,24 @@ angular.module('app', ['flowChart', ])
 .controller('AppCtrl', function AppCtrl ($scope) {
 
 	//
+	// Code for the delete key.
+	//
+	var deleteKeyCode = 46;
+
+	//
+	// Event handler for key-up on the flowchart.
+	//
+	$scope.keyUp = function (evt) {
+
+		if (evt.keyCode === deleteKeyCode) {
+			//
+			// Delete key.
+			//
+			//todo:
+		}
+	};
+
+	//
 	// Setup the data-model for the chart.
 	//
 	var chart = {
