@@ -61,7 +61,7 @@
         text-anchor="left"
         alignment-baseline="middle"
         >
-        {{connector.name}}
+        {{connector.name()}}
       </text>
       <circle       
         ng-attr-class="{{connector.isMouseOver && 'selected-connector-circle' || 'connector-circle'}}"
@@ -82,7 +82,7 @@
         text-anchor="end"
         alignment-baseline="middle"
         >
-        {{connector.name}}
+        {{connector.name()}}
       </text>
       <circle             
         ng-attr-class="{{connector.isMouseOver && 'selected-connector-circle' || 'connector-circle'}}"
