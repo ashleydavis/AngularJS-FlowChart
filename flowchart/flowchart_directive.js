@@ -274,5 +274,7 @@ function FlowChartController ($scope, dragging) {
 			},
 
 		});
+
 	};
+
 }
