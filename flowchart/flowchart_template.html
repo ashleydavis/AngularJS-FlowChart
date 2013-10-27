@@ -45,6 +45,7 @@
       x="100"
       y="25"
       text-anchor="middle"
+      alignment-baseline="middle"
       >
       {{node.name()}}
     </text>
@@ -57,6 +58,7 @@
       <text
         ng-attr-x="{{connector.x() + 20}}"
         ng-attr-y="{{connector.y()}}"
+        text-anchor="left"
         alignment-baseline="middle"
         >
         {{connector.name}}
@@ -75,8 +77,8 @@
       class="connector output-connector"
       >
       <text
+        ng-attr-x="{{connector.x() - 20}}"
         ng-attr-y="{{connector.y()}}"
-        x="260"
         text-anchor="end"
         alignment-baseline="middle"
         >
