@@ -43,7 +43,10 @@ var flowchart = {
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex, parentNode) {
 
 		this.data = connectorDataModel;
-		this.name = connectorDataModel.name;
+		
+		this.name = function () {
+			return connectorDataModel.name;
+		}
 
 		this.x = function () {
 			return x;	

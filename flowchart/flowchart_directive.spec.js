@@ -490,13 +490,13 @@ describe('flowchart', function () {
 
 		var inputConnector = node.inputConnectors[0];
 		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name).toBe(mockInputConnector.name);
+		expect(inputConnector.name()).toBe(mockInputConnector.name);
 
 		expect(node.outputConnectors.length).toBe(1);
 		
 		var outputConnector = node.outputConnectors[0];
 		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name).toBe(mockOutputConnector.name);
+		expect(outputConnector.name()).toBe(mockOutputConnector.name);
 
 		// Connectors
 
@@ -504,13 +504,13 @@ describe('flowchart', function () {
 
 		var inputConnector = node.inputConnectors[0];
 		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name).toBe(mockInputConnector.name);
+		expect(inputConnector.name()).toBe(mockInputConnector.name);
 
 		expect(node.outputConnectors.length).toBe(1);
 		
 		var outputConnector = node.outputConnectors[0];
 		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name).toBe(mockOutputConnector.name);
+		expect(outputConnector.name()).toBe(mockOutputConnector.name);
 
 		// Connection
  	
