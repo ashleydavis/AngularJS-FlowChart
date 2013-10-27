@@ -13,15 +13,15 @@ var flowchart = {
 	// Compute the position of a connector relative to its node.
 	//
 	flowchart.computeLocalInputConnectorX = function () {
-		return 80;
+		return 0;
 	};
 
 	flowchart.computeLocalOutputConnectorX = function () {
-		return 280;
+		return 200;
 	};
 
 	flowchart.computeLocalConnectorY = function (connectorIndex) {
-		return 100 + (connectorIndex * 36.5);
+		return 40 + (connectorIndex * 35);
 	};
 
 	//
