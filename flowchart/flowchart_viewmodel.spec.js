@@ -444,4 +444,5 @@ describe('flowchart-viewmodel', function () {
  	
 		expect(testObject.connections.length).toBe(0);
  	});
+
 });

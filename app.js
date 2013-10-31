@@ -23,7 +23,7 @@ angular.module('app', ['flowChart', ])
 			//
 			// Delete key.
 			//
-			//todo:
+			$scope.chartViewModel.deleteSelectedNodes();
 		}
 	};
 

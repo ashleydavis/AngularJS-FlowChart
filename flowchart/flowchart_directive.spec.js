@@ -99,7 +99,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		expect(testObject.findParentConnector(null)).toBe(null);
 	});
@@ -108,7 +108,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		expect(testObject.findParentConnector([])).toBe(null);
 	});
@@ -117,7 +117,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		var mockElement = createMockElement(testObject.connectorClass);
 
@@ -128,7 +128,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		var mockParent = createMockElement(testObject.connectorClass);
 		var mockElement = createMockElement('', mockParent);
@@ -140,7 +140,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		// Mock out the document.
 		testObject.document = {
@@ -157,7 +157,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		var mockElement = createMockElement(null, null);
 
@@ -179,7 +179,7 @@ describe('flowchart', function () {
 
 		var mockScope = createMockScope([]);
 
-		var testObject = new FlowChartController(mockScope);
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
 		var mockConnector = {};
 		var mockConnectorScope = { connector: mockConnector };
@@ -207,7 +207,7 @@ describe('flowchart', function () {
 			startDrag: jasmine.createSpy(),
 		};
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -223,7 +223,7 @@ describe('flowchart', function () {
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockClicker();
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 		var mockNodeIndex = 0;
@@ -238,7 +238,7 @@ describe('flowchart', function () {
 		var mockScope = createMockScope([createMockNode()]);
 		var mockDragging = createMockDragging();
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -259,7 +259,7 @@ describe('flowchart', function () {
 		var mockScope = createMockScope([createMockNode()]);
 		var mockDragging = createMockClicker();
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -280,7 +280,7 @@ describe('flowchart', function () {
 			config.dragStarted(0, 0);
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -301,7 +301,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -327,7 +327,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -357,7 +357,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
 		var mockEvt = {};
 
@@ -389,7 +389,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		new FlowChartController(mockScope, mockDragging);	
+		new flowchart_directive.FlowChartController(mockScope, mockDragging);	
  	});
 
  	it('test can handle null connections data model', function () {
@@ -407,7 +407,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		new FlowChartController(mockScope, mockDragging);	
+		new flowchart_directive.FlowChartController(mockScope, mockDragging);	
  	});
 
 

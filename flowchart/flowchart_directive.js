@@ -21,7 +21,7 @@ angular.module('flowChart', ['dragging'] )
   	// it is painful to unit test a directive without instantiating the DOM 
   	// (which is possible, just not ideal).
   	//
-  	controller: 'FlowChartController',
+  	controller: FlowChartController,
 
   	//
   	// Angular link function, called to attach the directive's element to the its scope (its data-model).
@@ -80,6 +80,14 @@ angular.module('flowChart', ['dragging'] )
 	}
 
 })
+;
+
+//
+// A namespace for the flowchart controller.
+// This needs to be publically accessible for unit testing.
+//
+var flowchart_directive = {
+};
 
 //
 // Controller for the flowchart directive.
@@ -87,7 +95,7 @@ angular.module('flowChart', ['dragging'] )
 // it is painful to unit test a directive without instantiating the DOM 
 // (which is possible, just not ideal).
 //
-.controller('FlowChartController', function ($scope, dragging) {
+flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 	var controller = this;
 
@@ -304,5 +312,4 @@ angular.module('flowChart', ['dragging'] )
 
 	};
 
-})
-;
+}
