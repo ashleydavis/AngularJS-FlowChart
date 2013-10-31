@@ -26,20 +26,26 @@ describe('flowchart', function () {
 	//
 	var createMockNode = function (inputConnectors, outputConnectors) {
 		return {
-			x: 0,
-			y: 0,
+			x: function () { return 0 },
+			y: function () { return 0 },
 			inputConnectors: inputConnectors || [],
 			outputConnectors: outputConnectors || [],
 		};
 	};
 
 	//
-	// Create a mock chart data model.
+	// Create a mock chart.
 	//
-	var createMockChartDataModel = function (mockNodes, mockConnections) {
+	var createMockChart = function (mockNodes, mockConnections) {
 		return {
 			nodes: mockNodes,
 			connections: mockConnections,
+
+			handleNodeMouseDown: jasmine.createSpy(),
+			updateNodeLocation: jasmine.createSpy(),
+			handleNodeSelected: jasmine.createSpy(),
+			deselectAllNodes: jasmine.createSpy(),
+			createNewConnectionViewModel: jasmine.createSpy(),
 		};
 	};
 
@@ -49,7 +55,7 @@ describe('flowchart', function () {
 	var createMockScope = function (mockNodes, mockConnections) {
 
 		var mockScope = {
-			chartDataModel: createMockChartDataModel(mockNodes, mockConnections),
+			chart: createMockChart(mockNodes, mockConnections),
 
 			$watch: function (name, fn) {
 				mockScope.watches[name] = fn;
@@ -205,12 +211,26 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		testObject.updateViewModel();
-
 		mockScope.nodeMouseDown(mockEvt, 0);
 
 		expect(mockDragging.startDrag).toHaveBeenCalled();
 
+	});
+
+	it('test node click handling is forwarded to view model', function () {
+
+		var mockNode = createMockNode();
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockClicker();
+
+		var testObject = new FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+		var mockNodeIndex = 0;
+
+		mockScope.nodeMouseDown(mockEvt, mockNodeIndex);
+
+		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNodeIndex);
 	});
 
 	it('test node dragging updates node location', function () {
@@ -222,8 +242,6 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		testObject.updateViewModel();
-
 		mockScope.nodeMouseDown(mockEvt, 0);
 
 		var xIncrement = 5;
@@ -233,45 +251,7 @@ describe('flowchart', function () {
 
 		var node = mockScope.chart.nodes[0];
 
-		expect(node.data.x).toBe(xIncrement);
-		expect(node.data.y).toBe(yIncrement);
-	});
-
-	it('test node is selected when clicked', function () {
-
-		var mockNode = createMockNode();
-		var mockScope = createMockScope([mockNode]);
-		var mockDragging = createMockClicker();
-
-		var testObject = new FlowChartController(mockScope, mockDragging);
-
-		var mockEvt = {};
-
-		testObject.updateViewModel();
-
-		mockScope.nodeMouseDown(mockEvt, 0);
-
-		expect(mockScope.chart.nodes[0].selected).toBe(true);
-	});
-
-	it('test other nodes are deselected when a node is clicked', function () {
-
-		var mockScope = createMockScope([createMockNode(), createMockNode()]);
-		var mockDragging = createMockClicker();
-
-		var testObject = new FlowChartController(mockScope, mockDragging);
-
-		var mockEvt = {};
-
-		testObject.updateViewModel();
-
-		mockScope.chart.nodes[0].selected = true;
-		mockScope.chart.nodes[1].selected = false;
-
-		mockScope.nodeMouseDown(mockEvt, 1);
-
-		expect(mockScope.chart.nodes[0].selected).toBe(false);
-		expect(mockScope.chart.nodes[1].selected).toBe(true);
+		expect(mockScope.chart.updateNodeLocation).toHaveBeenCalledWith(node, xIncrement, yIncrement);
 	});
 
 	it('test nodes are deselected when background is clicked', function () {
@@ -283,13 +263,11 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		testObject.updateViewModel();
-
 		mockScope.chart.nodes[0].selected = true;
 
 		mockScope.mouseDown(mockEvt);
 
-		expect(mockScope.chart.nodes[0].selected).toBe(false);
+		expect(mockScope.chart.deselectAllNodes).toHaveBeenCalled();
 	});	
 
 	it('test mouse down commences connector dragging', function () {
@@ -303,8 +281,6 @@ describe('flowchart', function () {
 		});
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
-
-		testObject.updateViewModel();
 
 		var mockEvt = {};
 
@@ -327,11 +303,7 @@ describe('flowchart', function () {
 
 		var testObject = new FlowChartController(mockScope, mockDragging);
 
-		testObject.updateViewModel();
-
 		var mockEvt = {};
-
-		testObject.updateViewModel();
 
 		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockScope.chart.nodes[0].inputConnectors[0], 0, false);
 
@@ -359,11 +331,7 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		testObject.updateViewModel();
-
 		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockDraggingConnector, 0, false);
-
-		expect(mockScope.chart.connections).toEqual([]);
 
  		draggingConfig.dragStarted(0, 0);
  		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
@@ -373,33 +341,37 @@ describe('flowchart', function () {
 
  		draggingConfig.dragEnded();
 
-		expect(mockScope.chart.connections.length).toBe(1);
-
-		var connection = mockScope.chart.connections[0];
-		expect(connection.source).toBe(mockDraggingConnector);
-		expect(connection.dest).toBe(mockDragOverConnector);
-		expect(connection.data).toBeDefined();
-		expect(connection.data).toBe(mockScope.chartDataModel.connections[0]);
+ 		expect(mockScope.chart.createNewConnectionViewModel).toHaveBeenCalledWith(mockDraggingConnector, mockDragOverConnector);
  	});
 
- 	it('test view-model is updated when data-model changes', function () {
+	it('test connection creation by dragging is cancelled when dragged over invalid connector', function () {
 
- 		var mockNode = createMockNode();
+		var mockNode = createMockNode();
+		var mockDraggingConnector = {};
+		var mockDragOverConnector = {};
+
+		var draggingConfig = null;
 
 		var mockScope = createMockScope([ mockNode ]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);	
+		var testObject = new FlowChartController(mockScope, mockDragging);
 
-		spyOn(testObject, 'updateViewModel');
+		var mockEvt = {};
 
-		// Trigger the data-model watch.
-		var mockChart = {};
-		mockScope.watches['chartDataModel'](mockChart);
+		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockDraggingConnector, 0, false);
 
-		expect(testObject.updateViewModel).toHaveBeenCalled();
+ 		draggingConfig.dragStarted(0, 0);
+ 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+
+ 		// Fake out the invalid connector.
+ 		testObject.mouseOverConnector = null;
+
+ 		draggingConfig.dragEnded();
+
+ 		expect(mockScope.chart.createNewConnectionViewModel).not.toHaveBeenCalled();
  	});
 
  	it('test can handle null nodes data model', function () {
@@ -417,9 +389,7 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);	
-
-		testObject.updateViewModel();
+		new FlowChartController(mockScope, mockDragging);	
  	});
 
  	it('test can handle null connections data model', function () {
@@ -437,85 +407,9 @@ describe('flowchart', function () {
 			 draggingConfig = config;
 		});
 
-		var testObject = new FlowChartController(mockScope, mockDragging);	
-
-		testObject.updateViewModel();
+		new FlowChartController(mockScope, mockDragging);	
  	});
 
- 	it('test chart data-model is wrapped in view-model', function () {
-
- 		var mockInputConnector = {
- 			name: "Input1",
- 		};
-
- 		var mockOutputConnector = {
-			name: "Output1",
- 		};
-
- 		var mockNode = {
- 			inputConnectors: [
- 				mockInputConnector
- 			],
-
- 			outputConnectors: [
- 				mockOutputConnector
- 			],
- 		};
-
-		var mockScope = createMockScope([ mockNode ], []);
-		var mockDragging = createMockDragging(function (evt, config) {
-			 draggingConfig = config;
-		});
-
-		var testObject = new FlowChartController(mockScope, mockDragging);	
-
-		testObject.updateViewModel();
-
-		// Chart
-
-		expect(mockScope.chart).toBeDefined();
-		expect(mockScope.chart).toNotBe(mockScope.chartDataModel);
-		expect(mockScope.chart.data).toBe(mockScope.chartDataModel);
-		expect(mockScope.chart.nodes).toBeDefined();
-		expect(mockScope.chart.nodes.length).toBe(1);
-
-		// Node
-
-		var node = mockScope.chart.nodes[0];
-
-		expect(node).toNotBe(mockNode);
-		expect(node.data).toBe(mockNode);
-
-		expect(node.inputConnectors.length).toBe(1);
-
-		var inputConnector = node.inputConnectors[0];
-		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name()).toBe(mockInputConnector.name);
-
-		expect(node.outputConnectors.length).toBe(1);
-		
-		var outputConnector = node.outputConnectors[0];
-		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name()).toBe(mockOutputConnector.name);
-
-		// Connectors
-
-		expect(node.inputConnectors.length).toBe(1);
-
-		var inputConnector = node.inputConnectors[0];
-		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name()).toBe(mockInputConnector.name);
-
-		expect(node.outputConnectors.length).toBe(1);
-		
-		var outputConnector = node.outputConnectors[0];
-		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name()).toBe(mockOutputConnector.name);
-
-		// Connection
- 	
-		expect(mockScope.chart.connections.length).toBe(0);
- 	});
 
 
 });
