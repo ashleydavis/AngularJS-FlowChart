@@ -21,7 +21,7 @@ angular.module('flowChart', ['dragging'] )
   	// it is painful to unit test a directive without instantiating the DOM 
   	// (which is possible, just not ideal).
   	//
-  	controller: FlowChartController,
+  	controller: flowchart_directive.FlowChartController,
 
   	//
   	// Angular link function, called to attach the directive's element to the its scope (its data-model).
