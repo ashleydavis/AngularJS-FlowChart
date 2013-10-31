@@ -445,4 +445,78 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections.length).toBe(0);
  	});
 
+	it('test can delete 1st selected node', function () {
+
+ 		var mockNode1 = {};
+ 		var mockNode2 = {};
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode1,
+ 				mockNode2,
+ 			],
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.nodes.length).toBe(2);
+
+		testObject.handleNodeSelected(testObject.nodes[0]);
+
+		testObject.deleteSelectedNodes();
+
+		expect(testObject.nodes.length).toBe(1);
+		expect(testObject.nodes[0].data).toBe(mockNode2);
+	});
+
+	it('test can delete 2nd selected nodes', function () {
+
+ 		var mockNode1 = {};
+ 		var mockNode2 = {};
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode1,
+ 				mockNode2,
+ 			],
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.nodes.length).toBe(2);
+
+		testObject.handleNodeSelected(testObject.nodes[1]);
+
+		testObject.deleteSelectedNodes();
+
+		expect(testObject.nodes.length).toBe(1);
+		expect(testObject.nodes[0].data).toBe(mockNode1);
+	});
+
+	it('test can delete multiple selected nodes', function () {
+
+ 		var mockNode1 = {};
+ 		var mockNode2 = {};
+ 		var mockNode3 = {};
+ 		var mockNode4 = {};
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode1,
+ 				mockNode2,
+ 				mockNode3,
+ 				mockNode4,
+ 			],
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.nodes.length).toBe(4);
+
+		testObject.handleNodeSelected(testObject.nodes[1]);
+		testObject.handleNodeSelected(testObject.nodes[2]);
+
+		testObject.deleteSelectedNodes();
+
+		expect(testObject.nodes.length).toBe(2);
+		expect(testObject.nodes[0].data).toBe(mockNode1);
+		expect(testObject.nodes[1].data).toBe(mockNode4);
+	});
 });

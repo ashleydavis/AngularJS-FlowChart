@@ -407,6 +407,28 @@ var flowchart = {
 			node.selected = true;
 		};
 
+		//
+		// Delete all nodes that are selected.
+		//
+		this.deleteSelectedNodes = function () {
+
+			var newNodeViewModels = [];
+			var newNodeDataModels = [];
+
+			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
+
+				var node = this.nodes[nodeIndex];
+				if (!node.selected) {
+					// Only retain non-selected nodes.
+					newNodeViewModels.push(node);
+					newNodeDataModels.push(node.data);
+				}
+			}
+
+			this.nodes = newNodeViewModels;
+			this.data.nodes = newNodeDataModels;
+		};
+
 	};
 
 })();
