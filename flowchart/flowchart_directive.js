@@ -4,7 +4,7 @@
 angular.module('flowChart', ['dragging'] )
 
 //
-// Flowchart directive.
+// Directive that generates the rendered chart from the data model.
 //
 .directive('flowChart', function() {
   return {
@@ -12,7 +12,7 @@ angular.module('flowChart', ['dragging'] )
   	templateUrl: "flowchart/flowchart_template.html",
   	replace: true,
   	scope: {
-  		chartDataModel: "=chart",
+  		chart: "=chart",
   	},
 
   	//
@@ -32,6 +32,53 @@ angular.module('flowChart', ['dragging'] )
 
  	},
   };
+})
+
+//
+// Directive that allows the chart to be edited as json in a textarea.
+//
+.directive('chartJsonEdit', function () {
+	return {
+		restrict: 'A',
+		scope: {
+			viewModel: "="
+		},
+		link: function (scope, elem, attr) {
+
+			//
+			// Serialize the data model as json and update the textarea.
+			//
+			var updateJson = function () {
+				if (scope.viewModel) {
+					var json = JSON.stringify(scope.viewModel.data, null, 4);
+					$(elem).val(json);
+				}
+			};
+
+			//
+			// First up, set the initial value of the textarea.
+			//
+			updateJson();
+
+			//
+			// Watch for changes in the data model and update the textarea whenever necessary.
+			//
+			scope.$watch("viewModel.data", updateJson, true);
+
+			//
+			// Handle the change event from the textarea and update the data model
+			// from the modified json.
+			//
+			$(elem).bind("input propertychange", function () {
+				var json = $(elem).val();
+				var dataModel = JSON.parse(json);
+				scope.viewModel = new flowchart.ChartViewModel(dataModel);
+
+				scope.$digest();
+			});
+		}
+	}
+
 })
 ;
 
@@ -73,25 +120,6 @@ function FlowChartController ($scope, dragging) {
 	//todo: should be configurable.
 	//
 	this.connectorClass = 'connector';
-
-	//
-	// Update the view-model from the data-model.
-	//
-	this.updateViewModel = function () {
-		//
-		// Create a view-model from the data-model.
-		//
-		$scope.chart = new flowchart.ChartViewModel($scope.chartDataModel);
-	};
-
-	//
-	// When the chart has been changed, generate a view-model.
-	//
-	$scope.$watch('chartDataModel', function (newChart) {
-		if (newChart) {
-			controller.updateViewModel();
-		}
-	});
 
 	//
 	// Find the HTML element that is the parent connector of the particular element.

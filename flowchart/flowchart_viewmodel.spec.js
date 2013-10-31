@@ -371,4 +371,77 @@ describe('flowchart-viewmodel', function () {
 		expect(mockNodeViewModel.selected).toBe(true);
 	});
 
+ 	it('test chart data-model is wrapped in view-model', function () {
+
+ 		var mockInputConnector = {
+ 			name: "Input1",
+ 		};
+
+ 		var mockOutputConnector = {
+			name: "Output1",
+ 		};
+
+ 		var mockNode = {
+ 			inputConnectors: [
+ 				mockInputConnector
+ 			],
+
+ 			outputConnectors: [
+ 				mockOutputConnector
+ 			],
+ 		};
+
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode
+ 			],
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		// Chart
+
+		expect(testObject).toBeDefined();
+		expect(testObject).toNotBe(mockDataModel);
+		expect(testObject.data).toBe(mockDataModel);
+		expect(testObject.nodes).toBeDefined();
+		expect(testObject.nodes.length).toBe(1);
+
+		// Node
+
+		var node = testObject.nodes[0];
+
+		expect(node).toNotBe(mockNode);
+		expect(node.data).toBe(mockNode);
+
+		expect(node.inputConnectors.length).toBe(1);
+
+		var inputConnector = node.inputConnectors[0];
+		expect(inputConnector.data).toBe(mockInputConnector);
+		expect(inputConnector.name()).toBe(mockInputConnector.name);
+
+		expect(node.outputConnectors.length).toBe(1);
+		
+		var outputConnector = node.outputConnectors[0];
+		expect(outputConnector.data).toBe(mockOutputConnector);
+		expect(outputConnector.name()).toBe(mockOutputConnector.name);
+
+		// Connectors
+
+		expect(node.inputConnectors.length).toBe(1);
+
+		var inputConnector = node.inputConnectors[0];
+		expect(inputConnector.data).toBe(mockInputConnector);
+		expect(inputConnector.name()).toBe(mockInputConnector.name);
+
+		expect(node.outputConnectors.length).toBe(1);
+		
+		var outputConnector = node.outputConnectors[0];
+		expect(outputConnector.data).toBe(mockOutputConnector);
+		expect(outputConnector.name()).toBe(mockOutputConnector.name);
+
+		// Connection
+ 	
+		expect(testObject.connections.length).toBe(0);
+ 	});
 });

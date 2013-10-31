@@ -43,9 +43,9 @@ var flowchart = {
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex, parentNode) {
 
 		this.data = connectorDataModel;
-		
+
 		this.name = function () {
-			return connectorDataModel.name;
+			return this.data.name;
 		}
 
 		this.x = function () {
@@ -90,21 +90,22 @@ var flowchart = {
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
 
+		this.data = nodeDataModel;
+
 		this.name = function () {
-			return nodeDataModel.name || "";
+			return this.data.name || "";
 		};
 
 		this.x = function () { 
-			return nodeDataModel.x;
+			return this.data.x;
 		};
 
 		this.y = function () {
-			return nodeDataModel.y;
+			return this.data.y;
 		};
 
-		this.data = nodeDataModel;
-		this.inputConnectors = createInputConnectorsViewModel(nodeDataModel.inputConnectors || [], this);
-		this.outputConnectors = createOutputConnectorsViewModel(nodeDataModel.outputConnectors || [], this);
+		this.inputConnectors = createInputConnectorsViewModel(this.data.inputConnectors || [], this);
+		this.outputConnectors = createOutputConnectorsViewModel(this.data.outputConnectors || [], this);
 	};
 
 	// 
@@ -126,16 +127,17 @@ var flowchart = {
 	// View model for a connection.
 	//
 	flowchart.ConnectionViewModel = function (connectionDataModel, sourceConnector, destConnector) {
+
 		this.data = connectionDataModel;
 		this.source = sourceConnector;
 		this.dest = destConnector;
 
 		this.sourceCoordX = function () { 
-			return sourceConnector.parentNode.x() + sourceConnector.x();
+			return this.source.parentNode.x() + this.source.x();
 		};
 
 		this.sourceCoordY = function () { 
-			return sourceConnector.parentNode.y() + sourceConnector.y();
+			return this.source.parentNode.y() + this.source.y();
 		};
 
 		this.sourceCoord = function () {
@@ -154,11 +156,11 @@ var flowchart = {
 		};
 
 		this.destCoordX = function () { 
-			return destConnector.parentNode.x() + destConnector.x();
+			return this.dest.parentNode.x() + this.dest.x();
 		};
 
 		this.destCoordY = function () { 
-			return destConnector.parentNode.y() + destConnector.y();
+			return this.dest.parentNode.y() + this.dest.y();
 		};
 
 		this.destCoord = function () {
@@ -315,10 +317,12 @@ var flowchart = {
 		this.data = chartDataModel;
 
 		// Create a view-model for nodes.
-		this.nodes = createNodesViewModel(chartDataModel.nodes);
+		this.nodes = createNodesViewModel(this.data.nodes);
 
 		// Create a view-model for connections.
-		this.connections = this._createConnectionsViewModel(chartDataModel.connections);
+		this.connections = this._createConnectionsViewModel(this.data.connections);
+
+		this.foo = "bah";
 
 		//
 		// Create a data for a new connection.
@@ -403,8 +407,6 @@ var flowchart = {
 			node.selected = true;
 		};
 
-
 	};
-
 
 })();

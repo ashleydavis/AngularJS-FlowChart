@@ -20,15 +20,15 @@
 		    <div style="width: 600px; float: left;"> 
 				<textarea 
 					style="width: 100%; height: 100%;"
-					ng-model="chart"
-					json-input
+					chart-json-edit
+					view-model="chartViewModel"
 					>
 				</textarea>
 			</div>
 		    <div style="margin-left: 600px;">
 			    <flow-chart
 		    		style="margin: 5px; width: 100%; height: 100%;"
-			      	chart="chart"
+			      	chart="chartViewModel"
 			      	>
 			    </flow-chart>
 		    </div>
