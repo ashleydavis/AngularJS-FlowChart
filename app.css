@@ -53,7 +53,7 @@ Style for connections.
 
 .connection-line {
 	stroke: blue;
-	stroke-width: 2;
+	stroke-width: 4;
 	fill: transparent;
 }	
 
