@@ -58,7 +58,7 @@ Style for connections.
 }	
 
 .connection-endpoint {
-	fill: black;
+	fill: blue;
 }
 
 /*
@@ -71,12 +71,12 @@ Style for the connection being dragged out.
 
 .dragging-connection-line {
 	stroke: blue;
-	stroke-width: 2;
+	stroke-width: 3;
 	fill: transparent;
 }	
 
 .dragging-connection-endpoint {
-	fill: black;
+	fill: blue;
 }
 
 /*
