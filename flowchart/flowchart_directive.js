@@ -124,7 +124,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 	//
 	// The class for connectors.
-	//todo: should be configurable.
 	//
 	this.connectorClass = 'connector';
 
@@ -187,7 +186,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	$scope.mouseDown = function (evt) {
 
 		$scope.chart.deselectAllNodes();
-
 	};
 
 	//
@@ -215,7 +213,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 			controller.mouseOverConnector = curMouseOverConnector;
 		}
-
 	};
 
 	//
@@ -248,7 +245,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			},
 
 		});
-
 	};
 
 	//
@@ -309,7 +305,5 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			},
 
 		});
-
 	};
-
 }
