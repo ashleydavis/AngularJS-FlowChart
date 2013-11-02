@@ -298,7 +298,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 				if (controller.mouseOverConnector && 
 					controller.mouseOverConnector !== connector) {
 
-					$scope.chart.createNewConnectionViewModel(connector, controller.mouseOverConnector);
+					$scope.chart.createConnection(connector, controller.mouseOverConnector);
 				}
 
 				$scope.draggingConnection = false;
