@@ -90,18 +90,59 @@ var flowchart = {
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
 
+
 		this.data = nodeDataModel;
 
+		// Set to true when the node is selected.
+		this._selected = false;
+
+		//
+		// Name of the node.
+		//
 		this.name = function () {
 			return this.data.name || "";
 		};
 
+		//
+		// X coordinate of the node.
+		//
 		this.x = function () { 
 			return this.data.x;
 		};
 
+		//
+		// Y coordinate of the node.
+		//
 		this.y = function () {
 			return this.data.y;
+		};
+
+		//
+		// Select the node.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the node.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the node.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the node is selected.
+		//
+		this.selected = function () {
+			return this._selected;
 		};
 
 		this.inputConnectors = createInputConnectorsViewModel(this.data.inputConnectors || [], this);
@@ -370,7 +411,8 @@ var flowchart = {
 
 			var nodes = this.nodes;
 			for (var i = 0; i < nodes.length; ++i) {
-				nodes[i].selected = false;
+				var node = nodes[i];
+				node.deselect();
 			}
 		};
 
@@ -391,21 +433,13 @@ var flowchart = {
 			this.deselectAllNodes();
 
 			var node = this.nodes[nodeIndex];
-			this.handleNodeSelected(node);
+			node.select();
 
 			// Move node to the end of the list so it is rendered after all the other.
 			// This is the way Z-order is done in SVG.
 
 			this.nodes.splice(nodeIndex, 1);
 			this.nodes.push(node);			
-		};
-
-		//
-		// Handle node selection and mark the node as selected.
-		//
-		this.handleNodeSelected = function (node) {
-
-			node.selected = true;
 		};
 
 		//
@@ -427,12 +461,14 @@ var flowchart = {
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
 
 				var node = this.nodes[nodeIndex];
-				if (!node.selected) {
+				if (!node.selected()) {
 					// Only retain non-selected nodes.
 					newNodeViewModels.push(node);
 					newNodeDataModels.push(node.data);
 				}
 				else {
+					// Keep track of nodes that were deleted, so their connections can also
+					// be deleted.
 					deletedNodeIds.push(node.data.id);
 				}
 			}

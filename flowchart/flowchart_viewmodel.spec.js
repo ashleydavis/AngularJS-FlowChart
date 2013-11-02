@@ -124,6 +124,54 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.name()).toBe("");
 	});
 
+	it('test node is deselected by default', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		expect(testObject.selected()).toBe(false);
+	});
+
+	it('test node can be selected', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		testObject.select();
+
+		expect(testObject.selected()).toBe(true);
+	});
+
+	it('test node can be deselected', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		testObject.select();
+
+		testObject.deselect();
+
+		expect(testObject.selected()).toBe(false);
+	});
+
+	it('test node can be selection can be toggled', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		testObject.toggleSelected();
+
+		expect(testObject.selected()).toBe(true);
+
+		testObject.toggleSelected();
+
+		expect(testObject.selected()).toBe(false);
+	});
+
 	it('construct ChartViewModel with no nodes or connections', function () {
 
 		var mockDataModel = {
@@ -289,7 +337,7 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections[0].dest.data).toBe(mockInputConnector);
 	});
 
-	it('test can deslect all nodes', function () {
+	it('test can deselect all nodes', function () {
 
 		var mockNode = {
 
@@ -307,13 +355,13 @@ describe('flowchart-viewmodel', function () {
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
-		testObject.nodes[0].selected = true;
-		testObject.nodes[1].selected = true;
+		testObject.nodes[0].select();
+		testObject.nodes[1].select();
 
 		testObject.deselectAllNodes();
 
-		expect(testObject.nodes[0].selected).toBe(false);
-		expect(testObject.nodes[1].selected).toBe(false);
+		expect(testObject.nodes[0].selected()).toBe(false);
+		expect(testObject.nodes[1].selected()).toBe(false);
 	});
 
 	it('test chart mouse down deselects nodes other than the one clicked', function () {
@@ -334,15 +382,15 @@ describe('flowchart-viewmodel', function () {
 		var node3 = testObject.nodes[2];
 
 		// Fake out the nodes as selected.
-		node1.selected = true;
-		node2.selected = true;
-		node3.selected = true;
+		node1.select();
+		node2.select();
+		node3.select();
 
 		testObject.handleNodeMouseDown(1); // Doesn't matter which node is actually clicked.
 
-		expect(node1.selected).toBe(false);
-		expect(node2.selected).toBe(true);
-		expect(node3.selected).toBe(false);
+		expect(node1.selected()).toBe(false);
+		expect(node2.selected()).toBe(true);
+		expect(node3.selected()).toBe(false);
 	});
 
 	it('test node mouse down selects the clicked node', function () {
@@ -364,9 +412,9 @@ describe('flowchart-viewmodel', function () {
 
 		testObject.handleNodeMouseDown(2); // Doesn't matter which node is actually clicked.
 
-		expect(node1.selected).toBe(false);
-		expect(node2.selected).toBe(false);
-		expect(node3.selected).toBe(true);
+		expect(node1.selected()).toBe(false);
+		expect(node2.selected()).toBe(false);
+		expect(node3.selected()).toBe(true);
 	});
 
 	it('test chart mouse down brings node to front', function () {
@@ -388,18 +436,6 @@ describe('flowchart-viewmodel', function () {
 
 		expect(testObject.nodes[0].data).toBe(mockNode2); // Mock node 2 should be bought to front.
 		expect(testObject.nodes[1].data).toBe(mockNode1);
-	});
-
-	it('test node selection is handled correctly', function () {
-
-		var mockDataModel = {};
-		var testObject = new flowchart.ChartViewModel(mockDataModel);
-
-		var mockNodeViewModel = {};
-
-		testObject.handleNodeSelected(mockNodeViewModel);
-
-		expect(mockNodeViewModel.selected).toBe(true);
 	});
 
  	it('test chart data-model is wrapped in view-model', function () {
@@ -491,7 +527,7 @@ describe('flowchart-viewmodel', function () {
 
 		expect(testObject.nodes.length).toBe(2);
 
-		testObject.handleNodeSelected(testObject.nodes[0]);
+		testObject.nodes[0].select();
 
 		testObject.deleteSelectedNodes();
 
@@ -514,7 +550,7 @@ describe('flowchart-viewmodel', function () {
 
 		expect(testObject.nodes.length).toBe(2);
 
-		testObject.handleNodeSelected(testObject.nodes[1]);
+		testObject.nodes[1].select();
 
 		testObject.deleteSelectedNodes();
 
@@ -541,8 +577,8 @@ describe('flowchart-viewmodel', function () {
 
 		expect(testObject.nodes.length).toBe(4);
 
-		testObject.handleNodeSelected(testObject.nodes[1]);
-		testObject.handleNodeSelected(testObject.nodes[2]);
+		testObject.nodes[1].select();
+		testObject.nodes[2].select();
 
 		testObject.deleteSelectedNodes();
 
@@ -613,7 +649,7 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections.length).toBe(2);
 
 		// Select the middle node.
-		testObject.nodes[1].selected = true;
+		testObject.nodes[1].select();
 
 		testObject.deleteSelectedNodes();
 
@@ -664,7 +700,7 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections.length).toBe(1);
 
 		// Select the middle node.
-		testObject.nodes[1].selected = true;
+		testObject.nodes[1].select();
 
 		testObject.deleteSelectedNodes();
 

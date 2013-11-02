@@ -43,7 +43,6 @@ describe('flowchart', function () {
 
 			handleNodeMouseDown: jasmine.createSpy(),
 			updateNodeLocation: jasmine.createSpy(),
-			handleNodeSelected: jasmine.createSpy(),
 			deselectAllNodes: jasmine.createSpy(),
 			createNewConnectionViewModel: jasmine.createSpy(),
 		};
