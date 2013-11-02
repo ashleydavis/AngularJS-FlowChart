@@ -416,6 +416,14 @@ var flowchart = {
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
 
+			var deletedNodeIds = [];
+
+			//
+			// Sort nodes into:
+			//		nodes to keep and 
+			//		nodes to delete.
+			//
+
 			for (var nodeIndex = 0; nodeIndex < this.nodes.length; ++nodeIndex) {
 
 				var node = this.nodes[nodeIndex];
@@ -424,10 +432,39 @@ var flowchart = {
 					newNodeViewModels.push(node);
 					newNodeDataModels.push(node.data);
 				}
+				else {
+					deletedNodeIds.push(node.data.id);
+				}
 			}
 
+			var newConnectionViewModels = [];
+			var newConnectionDataModels = [];
+
+			//
+			// Remove connections for nodes that have been deleted.
+			//
+			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
+
+				var connection = this.connections[connectionIndex];				
+				if (deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 && 
+					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1)
+				{
+					//
+					// The nodes this connection is attached to, where not deleted,
+					// so keep the connection.
+					//
+					newConnectionViewModels.push(connection);
+					newConnectionDataModels.push(connection.data);
+				}
+			}
+
+			//
+			// Update nodes and connections.
+			//
 			this.nodes = newNodeViewModels;
 			this.data.nodes = newNodeDataModels;
+			this.connections = newConnectionViewModels;
+			this.data.connections = newConnectionDataModels;
 		};
 
 	};

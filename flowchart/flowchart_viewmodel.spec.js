@@ -550,4 +550,125 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[0].data).toBe(mockNode1);
 		expect(testObject.nodes[1].data).toBe(mockNode4);
 	});
+	
+	it('deleteing a node also deletes its connections', function () {
+
+ 		var mockNode1 = {
+ 			id: 1,
+ 			outputConnectors: [
+ 				{ 					
+ 				}
+ 			]
+ 		};
+ 		var mockNode2 = {
+			id: 2,
+ 			inputConnectors: [
+ 				{ 					
+ 				}
+ 			],
+ 			outputConnectors: [
+ 				{ 					
+ 				}
+ 			],
+ 		};
+ 		var mockNode3 = {
+			id: 3,
+ 			inputConnectors: [
+ 				{ 					
+ 				}
+ 			],
+ 		};
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode1,
+ 				mockNode2,
+ 				mockNode3,
+ 			],
+ 			connections: [
+ 				{
+ 					source: {
+ 						nodeID: 1,
+ 						connectorIndex: 0,
+ 					},
+ 					dest: {
+ 						nodeID: 2,
+ 						connectorIndex: 0,
+ 					},
+ 				},
+ 				{
+ 					source: {
+ 						nodeID: 2,
+ 						connectorIndex: 0,
+ 					},
+ 					dest: {
+ 						nodeID: 3,
+ 						connectorIndex: 0,
+ 					},
+ 				},
+ 			]
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.connections.length).toBe(2);
+
+		// Select the middle node.
+		testObject.nodes[1].selected = true;
+
+		testObject.deleteSelectedNodes();
+
+		expect(testObject.connections.length).toBe(0);
+	});
+
+	it('deleteing a node doesnt delete other connections', function () {
+
+ 		var mockNode1 = {
+ 			id: 1,
+ 			outputConnectors: [
+ 				{ 					
+ 				}
+ 			]
+ 		};
+ 		var mockNode2 = {
+			id: 2,
+ 		};
+ 		var mockNode3 = {
+			id: 3,
+ 			inputConnectors: [
+ 				{ 					
+ 				}
+ 			],
+ 		};
+ 		var mockDataModel = {
+ 			nodes: [
+ 				mockNode1,
+ 				mockNode2,
+ 				mockNode3,
+ 			],
+ 			connections: [
+ 				{
+ 					source: {
+ 						nodeID: 1,
+ 						connectorIndex: 0,
+ 					},
+ 					dest: {
+ 						nodeID: 3,
+ 						connectorIndex: 0,
+ 					},
+ 				},
+ 			]
+ 		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.connections.length).toBe(1);
+
+		// Select the middle node.
+		testObject.nodes[1].selected = true;
+
+		testObject.deleteSelectedNodes();
+
+		expect(testObject.connections.length).toBe(1);
+	});
+
 });
