@@ -316,26 +316,57 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[1].selected).toBe(false);
 	});
 
-	it('test chart mouse down deselects all nodes', function () {
+	it('test chart mouse down deselects nodes other than the one clicked', function () {
 
 		var mockNode1 = {};
 		var mockNode2 = {};
+		var mockNode3 = {};
 		var mockDataModel = {
 			nodes: [
-				mockNode1, mockNode2
+				mockNode1, mockNode2, mockNode3
 			]
 		};
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+		var node3 = testObject.nodes[2];
+
 		// Fake out the nodes as selected.
-		testObject.nodes[0].selected = true;
-		testObject.nodes[1].selected = true;
+		node1.selected = true;
+		node2.selected = true;
+		node3.selected = true;
 
-		testObject.handleNodeMouseDown(0); // Doesn't matter which node is actually clicked.
+		testObject.handleNodeMouseDown(1); // Doesn't matter which node is actually clicked.
 
-		expect(testObject.nodes[0].selected).toBe(false);
-		expect(testObject.nodes[1].selected).toBe(false);
+		expect(node1.selected).toBe(false);
+		expect(node2.selected).toBe(true);
+		expect(node3.selected).toBe(false);
+	});
+
+	it('test node mouse down selects the clicked node', function () {
+
+		var mockNode1 = {};
+		var mockNode2 = {};
+		var mockNode3 = {};
+		var mockDataModel = {
+			nodes: [
+				mockNode1, mockNode2, mockNode3
+			]
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+		
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+		var node3 = testObject.nodes[2];
+
+		testObject.handleNodeMouseDown(2); // Doesn't matter which node is actually clicked.
+
+		expect(node1.selected).toBe(false);
+		expect(node2.selected).toBe(false);
+		expect(node3.selected).toBe(true);
 	});
 
 	it('test chart mouse down brings node to front', function () {

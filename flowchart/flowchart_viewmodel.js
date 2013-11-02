@@ -391,6 +391,7 @@ var flowchart = {
 			this.deselectAllNodes();
 
 			var node = this.nodes[nodeIndex];
+			this.handleNodeSelected(node);
 
 			// Move node to the end of the list so it is rendered after all the other.
 			// This is the way Z-order is done in SVG.
