@@ -44,6 +44,24 @@ Styles for nodes and connectors.
 }
 
 /*
+Style for connections.
+*/
+
+.connection {
+	pointer-events: none;
+}
+
+.connection-line {
+	stroke: blue;
+	stroke-width: 2;
+	fill: transparent;
+}	
+
+.connection-endpoint {
+	fill: black;
+}
+
+/*
 Style for the connection being dragged out.
 */
 
