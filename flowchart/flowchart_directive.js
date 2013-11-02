@@ -244,7 +244,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			},
 
 			clicked: function () {
-				chart.handleNodeSelected(node);
+				console.log("Clicked...");
 			},
 
 		});
