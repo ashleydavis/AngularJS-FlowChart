@@ -44,7 +44,7 @@ describe('flowchart', function () {
 			handleNodeMouseDown: jasmine.createSpy(),
 			updateNodeLocation: jasmine.createSpy(),
 			deselectAllNodes: jasmine.createSpy(),
-			createNewConnectionViewModel: jasmine.createSpy(),
+			createConnection: jasmine.createSpy(),
 		};
 	};
 
@@ -340,7 +340,7 @@ describe('flowchart', function () {
 
  		draggingConfig.dragEnded();
 
- 		expect(mockScope.chart.createNewConnectionViewModel).toHaveBeenCalledWith(mockDraggingConnector, mockDragOverConnector);
+ 		expect(mockScope.chart.createConnection).toHaveBeenCalledWith(mockDraggingConnector, mockDragOverConnector);
  	});
 
 	it('test connection creation by dragging is cancelled when dragged over invalid connector', function () {
@@ -370,7 +370,7 @@ describe('flowchart', function () {
 
  		draggingConfig.dragEnded();
 
- 		expect(mockScope.chart.createNewConnectionViewModel).not.toHaveBeenCalled();
+ 		expect(mockScope.chart.createConnection).not.toHaveBeenCalled();
  	});
 
  	it('test can handle null nodes data model', function () {

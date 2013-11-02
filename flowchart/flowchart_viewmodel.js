@@ -388,7 +388,7 @@ var flowchart = {
 		//
 		// Create a view model for a new connection.
 		//
-		this.createNewConnectionViewModel = function (sourceConnector, destConnector) {
+		this.createConnection = function (sourceConnector, destConnector) {
 
 			//
 			// Create a new data model.
