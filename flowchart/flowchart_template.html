@@ -108,7 +108,7 @@
       ng-repeat="connection in chart.connections"
       >
       <path
-        class="dragging-connection dragging-connection-line"
+        class="connection connection-line"
         ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
                    C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
                      {{connection.destTangentX()}}, {{connection.destTangentY()}}
@@ -117,7 +117,7 @@
       </path>
 
       <circle
-          class="dragging-connection dragging-connection-endpoint"
+          class="connection connection-endpoint"
           r="5" 
           ng-attr-cx="{{connection.sourceCoordX()}}" 
           ng-attr-cy="{{connection.sourceCoordY()}}" 
@@ -125,7 +125,7 @@
       </circle>
 
       <circle
-          class="dragging-connection dragging-connection-endpoint"
+          class="connection connection-endpoint"
           r="5" 
           ng-attr-cx="{{connection.sourceCoordX()}}" 
           ng-attr-cy="{{connection.sourceCoordY()}}" 
