@@ -84,7 +84,7 @@
         >
         {{connector.name()}}
       </text>
-      
+
       <circle             
         ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
         ng-attr-r="{{connectorSize}}" 
@@ -164,30 +164,6 @@
         >
     </circle>
   </g>
-
-  <!-- Represents the connection being dragged out. 
-  <line
-    class="dragging-connection"
-    ng-if="draggingConnection"
-    ng-attr-x1="{{draggingConnectorPos.x}}"
-    ng-attr-y1="{{draggingConnectorPos.y}}"
-    ng-attr-x2="{{dragPoint.x}}"
-    ng-attr-y2="{{dragPoint.y}}"
-    >
-  </line>
-  -->
-
-  <!-- Debug
-  <text
-    x="10"
-    y="40"
-    >
-    M {{dragPoint1.x}}, {{dragPoint1.y}}
-               C {{dragTangent1.x}}, {{dragTangent1.y}}
-                 {{dragTangent2.x}}, {{dragTangent2.y}}
-                 {{dragPoint2.x}}, {{dragPoint2.y}}
-  </text>
--->
 
   <!-- fio: -->
   <circle
