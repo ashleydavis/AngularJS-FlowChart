@@ -342,7 +342,7 @@ describe('flowchart', function () {
  		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
 
  		// Fake out the mouse over connector.
- 		testObject.mouseOverConnector = mockDragOverConnector;
+ 		mockScope.mouseOverConnector = mockDragOverConnector;
 
  		draggingConfig.dragEnded();
 
@@ -372,7 +372,7 @@ describe('flowchart', function () {
  		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
 
  		// Fake out the invalid connector.
- 		testObject.mouseOverConnector = null;
+ 		mockScope.mouseOverConnector = null;
 
  		draggingConfig.dragEnded();
 
