@@ -197,21 +197,28 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	};
 
 	//
-	// Determine if the mouse is over a connection and set it in the scope.
+	// Handle the case when a connection has the mouse over it.
 	//
-	this.checkForConnectionMouseOver = function (mouseOverElement, whichClass) {
+	this.handleConnectionMouseOver = function (mouseOverElement, whichClass) {
 		//
 		// Retreive the connection the mouse is currently over.
 		//
 		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
 		$scope.mouseOverConnection = connectionScope != null ? connectionScope.connection : null;
-		return $scope.mouseOverConnection != null;
+		if ($scope.mouseOverConnection) {
+			// Reset 'connector mouse over'.
+			$scope.mouseOverConnector = null;
+			return true;
+		}
+		else {
+			return false;
+		}
 	};
 
 	//
-	// Determine if the mouse is over a connector and set it in the scope.
+	// Handle the case when a connector has the mouse over it.
 	//
-	this.checkForConnectorMouseOver = function (mouseOverElement, whichClass) {
+	this.handleConnectorMouseOver = function (mouseOverElement, whichClass) {
 		//
 		// Retreive the connection the mouse is currently over.
 		//
@@ -231,22 +238,20 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			return;
 		}
 
-		if (!$scope.draggingConnection) {
+		if (!$scope.draggingConnection) { 
 
-			//
-			// Retreive the connection the mouse is currently over.
-			//
-			if (controller.checkForConnectionMouseOver(mouseOverElement, controller.connectionClass))
+			// Only allow 'connection mouse over' when not dragging out a connection.
+
+			if (controller.handleConnectionMouseOver(mouseOverElement, controller.connectionClass))
 			{
-				$scope.mouseOverConnector = null;
+				// Don't attempt to handle 'connector mouse-over'.
 				return;
 			}
 		}
 
-		//
-		// Retreive the connector the mouse is currently over.
-		//
-		controller.checkForConnectorMouseOver(mouseOverElement, controller.connectorClass);
+		// Check for 'connector mouse over'.
+
+		controller.handleConnectorMouseOver(mouseOverElement, controller.connectorClass);
 	};
 
 	//
