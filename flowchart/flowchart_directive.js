@@ -120,12 +120,12 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	// Reference to the connection that the mouse is currently over.
 	//
-	this.mouseOverConnection = null;
+	$scope.mouseOverConnection = null;
 
 	//
 	// Reference to the connector that the mouse is currently over.
 	//
-	this.mouseOverConnector = null;
+	$scope.mouseOverConnector = null;
 
 	//
 	// The class for connections and connectors.
@@ -238,6 +238,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			//
 			if (controller.checkForConnectionMouseOver(mouseOverElement, controller.connectionClass))
 			{
+				$scope.mouseOverConnector = null;
 				return;
 			}
 		}
