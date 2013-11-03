@@ -130,8 +130,8 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	// The class for connections and connectors.
 	//
-	var connectionClass = 'connection';
-	var connectorClass = 'connector';
+	this.connectionClass = 'connection';
+	this.connectorClass = 'connector';
 
 	//
 	// Search up the HTML element tree for an element the requested class.
@@ -212,7 +212,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			//
 			// Retreive the connection the mouse is currently over.
 			//
-			var connectionScope = controller.checkForHit(mouseOverElement, connectionClass);
+			var connectionScope = controller.checkForHit(mouseOverElement, controller.connectionClass);
 			var curMouseOverConnection = connectionScope != null ? connectionScope.connection : null;
 			if (curMouseOverConnection != controller.mouseOverConnection) {
 
@@ -237,7 +237,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 		//
 		// Retreive the connector the mouse is currently over.
 		//
-		var connectorScope = controller.checkForHit(mouseOverElement, connectorClass);
+		var connectorScope = controller.checkForHit(mouseOverElement,  controller.connectorClass);
 		var curMouseOverConnector = connectorScope != null ? connectorScope.connector : null;
 		if (curMouseOverConnector != controller.mouseOverConnector) {
 
