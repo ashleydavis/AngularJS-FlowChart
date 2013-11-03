@@ -118,19 +118,25 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	$scope.connectorSize = 10;
 
 	//
+	// Reference to the connection that the mouse is currently over.
+	//
+	this.mouseOverConnection = null;
+
+	//
 	// Reference to the connector that the mouse is currently over.
 	//
 	this.mouseOverConnector = null;
 
 	//
-	// The class for connectors.
+	// The class for connections and connectors.
 	//
-	this.connectorClass = 'connector';
+	var connectionClass = 'connection';
+	var connectorClass = 'connector';
 
 	//
-	// Find the HTML element that is the parent connector of the particular element.
+	// Search up the HTML element tree for an element the requested class.
 	//
-	this.findParentConnector = function (element) {
+	this.searchUp = function (element, parentClass) {
 
 		//
 		// Reached the root.
@@ -142,7 +148,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 		// 
 		// Check if the element has the class that identifies it as a connector.
 		//
-		if (hasClassSVG(element, this.connectorClass)) {
+		if (hasClassSVG(element, parentClass)) {
 			//
 			// Found the connector element.
 			//
@@ -152,32 +158,34 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 		//
 		// Recursively search parent elements.
 		//
-		return this.findParentConnector(element.parent());
+		return this.searchUp(element.parent(), parentClass);
 	};
 
 	//
 	// Hit test and retreive node and connector that was hit at the specified coordinates.
 	//
-	this.hitTestForConnector = function (clientX, clientY) {
+	this.hitTest = function (clientX, clientY) {
 
 		//
 		// Retreive the element the mouse is currently over.
 		//
-		var mouseOverElement = this.document.elementFromPoint(clientX, clientY);
-		if (!mouseOverElement) {
-			return null;
-		}
+		return this.document.elementFromPoint(clientX, clientY);
+	};
+
+	//
+	// Hit test and retreive node and connector that was hit at the specified coordinates.
+	//
+	this.checkForHit = function (mouseOverElement, whichClass) {
 
 		//
 		// Find the parent element, if any, that is a connector.
 		//
-		var hoverElement = this.findParentConnector(this.jQuery(mouseOverElement));
+		var hoverElement = this.searchUp(this.jQuery(mouseOverElement), whichClass);
 		if (!hoverElement) {
 			return null;
 		}
 
-		var connectorScope = hoverElement.scope();
-		return connectorScope.connector;
+		return hoverElement.scope();
 	};
 
 	//
@@ -193,10 +201,44 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	$scope.mouseMove = function (evt) {
 
+		var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
+		if (mouseOverElement == null) {
+			// Mouse isn't over anything.
+			return;
+		}
+
+		if (!$scope.draggingConnection) {
+
+			//
+			// Retreive the connection the mouse is currently over.
+			//
+			var connectionScope = controller.checkForHit(mouseOverElement, connectionClass);
+			var curMouseOverConnection = connectionScope != null ? connectionScope.connection : null;
+			if (curMouseOverConnection != controller.mouseOverConnection) {
+
+				if (controller.mouseOverConnection) {
+
+					// Clear the previous 'mouse over' connector.
+					controller.mouseOverConnection.isMouseOver = false;
+				}
+
+				// Mark the connector as 'mouse over' so that we can change its appearance from the view.
+				if (curMouseOverConnection) {
+
+					curMouseOverConnection.isMouseOver = true; 
+				}
+
+				controller.mouseOverConnection = curMouseOverConnection;
+
+				return;
+			}
+		}
+
 		//
 		// Retreive the connector the mouse is currently over.
 		//
-		var curMouseOverConnector = controller.hitTestForConnector(evt.clientX, evt.clientY);
+		var connectorScope = controller.checkForHit(mouseOverElement, connectorClass);
+		var curMouseOverConnector = connectorScope != null ? connectorScope.connector : null;
 		if (curMouseOverConnector != controller.mouseOverConnector) {
 
 			if (controller.mouseOverConnector) {
@@ -212,6 +254,8 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			}
 
 			controller.mouseOverConnector = curMouseOverConnector;
+
+			return;
 		}
 	};
 

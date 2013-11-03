@@ -94,49 +94,52 @@ describe('flowchart', function () {
 		});
 	}
 
-	it('findParentConnector returns null when at root 1', function () {
+	it('searchUp returns null when at root 1', function () {
 
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
-		expect(testObject.findParentConnector(null)).toBe(null);
+		expect(testObject.searchUp(null, "some-class")).toBe(null);
 	});
 
-	it('findParentConnector returns null when at root 2', function () {
+	it('searchUp returns null when at root 2', function () {
 
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
-		expect(testObject.findParentConnector([])).toBe(null);
+		expect(testObject.searchUp([], "some-class")).toBe(null);
 	});
 
-	it('findParentConnector returns element when it has connector class', function () {
+	it('searchUp returns element when it has requested class', function () {
 
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
-		var mockElement = createMockElement(testObject.connectorClass);
+		var whichClass = "some-class";
+		var mockElement = createMockElement(whichClass);
 
-		expect(testObject.findParentConnector(mockElement)).toBe(mockElement);
+		expect(testObject.searchUp(mockElement, whichClass)).toBe(mockElement);
 	});
 
-	it('findParentConnector returns parent when it has connector class', function () {
+	it('searchUp returns parent when it has requested class', function () {
 
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
-		var mockParent = createMockElement(testObject.connectorClass);
+		var whichClass = "some-class";
+		var mockParent = createMockElement(whichClass);
 		var mockElement = createMockElement('', mockParent);
 
-		expect(testObject.findParentConnector(mockElement)).toBe(mockParent);
+		expect(testObject.searchUp(mockElement, whichClass)).toBe(mockParent);
 	});
 
-	it('hitTestForConnector returns null when no element hit', function () {
+	it('hitTest returns result of elementFromPoint', function () {
 
+		var mockElement = {};
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
@@ -144,15 +147,14 @@ describe('flowchart', function () {
 		// Mock out the document.
 		testObject.document = {
 			elementFromPoint: function () {
-				return null;
+				return mockElement;
 			},
 		};
 
-		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(null);
+		expect(testObject.hitTest(12, 30)).toBe(mockElement);
 	});
 
-
-	it('hitTestForConnector returns null when the hit element has no parent connector', function () {
+	it('checkForHit returns null when the hit element has no parent with requested class', function () {
 
 		var mockScope = createMockScope([]);
 
@@ -160,42 +162,44 @@ describe('flowchart', function () {
 
 		var mockElement = createMockElement(null, null);
 
-		// Mock out the document and jQuery.
-		testObject.document = {
-			elementFromPoint: function () {
-				return mockElement;
-			},
-		};
-
 		testObject.jQuery = function (input) {
 			return input;
 		};
 
-		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(null);
+		expect(testObject.checkForHit(mockElement, "some-class")).toBe(null);
 	});
 
-	it('hitTestForConnector returns the connector when found', function () {
+	it('checkForHit returns the result of searchUp when found', function () {
 
 		var mockScope = createMockScope([]);
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope);
 
-		var mockConnector = {};
-		var mockConnectorScope = { connector: mockConnector };
-		var mockElement = createMockElement(testObject.connectorClass, null, mockConnectorScope);
+		var mockConnectorScope = {};
 
-		// Mock out the document and jQuery.
-		testObject.document = {
-			elementFromPoint: function () {
-				return mockElement;
-			},
-		};
+		var whichClass = "some-class";
+		var mockElement = createMockElement(whichClass, null, mockConnectorScope);
 
 		testObject.jQuery = function (input) {
 			return input;
 		};
 
-		expect(testObject.hitTestForConnector(0, 0, 'input')).toBe(mockConnector);
+		expect(testObject.checkForHit(mockElement, whichClass)).toBe(mockConnectorScope);
+	});	
+
+	it('checkForHit returns null when searchUp fails', function () {
+
+		var mockScope = createMockScope([]);
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope);
+
+		var mockElement = createMockElement(null, null, null);
+
+		testObject.jQuery = function (input) {
+			return input;
+		};
+
+		expect(testObject.checkForHit(mockElement, "some-class")).toBe(null);
 	});	
 
 	it('test node dragging is started on node mouse down', function () {
