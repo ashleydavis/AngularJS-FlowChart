@@ -202,6 +202,8 @@ describe('flowchart', function () {
 		expect(testObject.checkForHit(mockElement, "some-class")).toBe(null);
 	});	
 
+	it('')
+
 	it('test node dragging is started on node mouse down', function () {
 
 		var mockScope = createMockScope([createMockNode()]);
@@ -411,6 +413,62 @@ describe('flowchart', function () {
 		});
 
 		new flowchart_directive.FlowChartController(mockScope, mockDragging);	
+ 	});
+
+ 	it('test mouseMove handles mouse over connection', function () {
+
+ 		var mockConnection = {};
+ 		var mockConnectionScope = {
+ 			connection: mockConnection
+ 		};
+ 		var mockScope = {};
+ 		var mockDragging = {};
+ 		var mockEvent = {};
+
+ 		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);	
+
+ 		//
+ 		// Fake out the function that check if a connection has been hit.
+ 		//
+ 		testObject.checkForHit = function (element, whichClass) {
+ 			if (whichClass === testObject.connectionClass) {
+ 				return mockConnectionScope;
+ 			}
+
+ 			return null;
+ 		};
+
+ 		mockScope.mouseMove(mockEvent);
+
+ 		expect(testObject.mouseOverConnection).toBe(mockConnection);
+ 	});
+
+ 	it('test mouseMove handles mouse over connector', function () {
+
+ 		var mockConnector = {};
+ 		var mockConnectorScope = {
+ 			connector: mockConnector
+ 		};
+ 		var mockScope = {};
+ 		var mockDragging = {};
+ 		var mockEvent = {};
+
+ 		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);	
+
+ 		//
+ 		// Fake out the function that check if a connector has been hit.
+ 		//
+ 		testObject.checkForHit = function (element, whichClass) {
+ 			if (whichClass === testObject.connectorClass) {
+ 				return mockConnectorScope;
+ 			}
+
+ 			return null;
+ 		};
+
+ 		mockScope.mouseMove(mockEvent);
+
+ 		expect(testObject.mouseOverConnector).toBe(mockConnector);
  	});
 
 
