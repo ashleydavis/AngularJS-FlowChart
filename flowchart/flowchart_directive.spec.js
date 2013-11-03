@@ -440,7 +440,7 @@ describe('flowchart', function () {
 
  		mockScope.mouseMove(mockEvent);
 
- 		expect(testObject.mouseOverConnection).toBe(mockConnection);
+ 		expect(mockScope.mouseOverConnection).toBe(mockConnection);
  	});
 
  	it('test mouseMove handles mouse over connector', function () {
@@ -468,7 +468,7 @@ describe('flowchart', function () {
 
  		mockScope.mouseMove(mockEvent);
 
- 		expect(testObject.mouseOverConnector).toBe(mockConnector);
+ 		expect(mockScope.mouseOverConnector).toBe(mockConnector);
  	});
 
 
