@@ -26,8 +26,8 @@ Styles for nodes and connectors.
 }
 
 .selected-node-rect {
-	stroke: red;
-	stroke-width: 2;
+	stroke: black;
+	stroke-width: 3;
 	fill: url(#nodeBackgroundGradient); 
 }
 
@@ -39,7 +39,7 @@ Styles for nodes and connectors.
 
 .mouseover-connector-circle {
     fill: white;
-    stroke: red;
+    stroke: black;
     stroke-width: 3;
 }
 
@@ -57,8 +57,8 @@ Style for connections.
 }	
 
 .mouseover-connection-line {
-	stroke: red;
-	stroke-width: 5;
+	stroke: blue;
+	stroke-width: 6;
 	fill: transparent;
 }	
 
@@ -67,7 +67,7 @@ Style for connections.
 }
 
 .mouseover-connection-endpoint {
-	fill: red;
+	fill: blue;
 }
 
 /*
