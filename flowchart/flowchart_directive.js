@@ -197,6 +197,30 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	};
 
 	//
+	// Determine if the mouse is over a connection and set it in the scope.
+	//
+	this.checkForConnectionMouseOver = function (mouseOverElement, whichClass) {
+		//
+		// Retreive the connection the mouse is currently over.
+		//
+		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
+		$scope.mouseOverConnection = connectionScope != null ? connectionScope.connection : null;
+		return $scope.mouseOverConnection != null;
+	};
+
+	//
+	// Determine if the mouse is over a connector and set it in the scope.
+	//
+	this.checkForConnectorMouseOver = function (mouseOverElement, whichClass) {
+		//
+		// Retreive the connection the mouse is currently over.
+		//
+		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
+		$scope.mouseOverConnector = connectionScope != null ? connectionScope.connector : null;
+		return $scope.mouseOverConnector != null;
+	};
+
+	//
 	// Called for each mouse move on the svg element.
 	//
 	$scope.mouseMove = function (evt) {
@@ -212,24 +236,8 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			//
 			// Retreive the connection the mouse is currently over.
 			//
-			var connectionScope = controller.checkForHit(mouseOverElement, controller.connectionClass);
-			var curMouseOverConnection = connectionScope != null ? connectionScope.connection : null;
-			if (curMouseOverConnection != controller.mouseOverConnection) {
-
-				if (controller.mouseOverConnection) {
-
-					// Clear the previous 'mouse over' connector.
-					controller.mouseOverConnection.isMouseOver = false;
-				}
-
-				// Mark the connector as 'mouse over' so that we can change its appearance from the view.
-				if (curMouseOverConnection) {
-
-					curMouseOverConnection.isMouseOver = true; 
-				}
-
-				controller.mouseOverConnection = curMouseOverConnection;
-
+			if (controller.checkForConnectionMouseOver(mouseOverElement, controller.connectionClass))
+			{
 				return;
 			}
 		}
@@ -237,26 +245,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 		//
 		// Retreive the connector the mouse is currently over.
 		//
-		var connectorScope = controller.checkForHit(mouseOverElement,  controller.connectorClass);
-		var curMouseOverConnector = connectorScope != null ? connectorScope.connector : null;
-		if (curMouseOverConnector != controller.mouseOverConnector) {
-
-			if (controller.mouseOverConnector) {
-
-				// Clear the previous 'mouse over' connector.
-				controller.mouseOverConnector.isMouseOver = false;
-			}
-
-			// Mark the connector as 'mouse over' so that we can change its appearance from the view.
-			if (curMouseOverConnector) {
-
-				curMouseOverConnector.isMouseOver = true; 
-			}
-
-			controller.mouseOverConnector = curMouseOverConnector;
-
-			return;
-		}
+		controller.checkForConnectorMouseOver(mouseOverElement, controller.connectorClass);
 	};
 
 	//
