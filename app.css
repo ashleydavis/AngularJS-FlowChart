@@ -37,7 +37,7 @@ Styles for nodes and connectors.
     stroke-width: 2;
 }
 
-.selected-connector-circle {
+.mouseover-connector-circle {
     fill: white;
     stroke: red;
     stroke-width: 3;
@@ -48,7 +48,6 @@ Style for connections.
 */
 
 .connection {
-	pointer-events: none;
 }
 
 .connection-line {
@@ -57,8 +56,18 @@ Style for connections.
 	fill: transparent;
 }	
 
+.mouseover-connection-line {
+	stroke: red;
+	stroke-width: 5;
+	fill: transparent;
+}	
+
 .connection-endpoint {
 	fill: blue;
+}
+
+.mouseover-connection-endpoint {
+	fill: red;
 }
 
 /*
