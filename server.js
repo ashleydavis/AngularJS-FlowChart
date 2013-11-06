@@ -23,7 +23,9 @@ http.createServer(function(request, response) {
       return;
     }
  
-    if (fs.statSync(filename).isDirectory()) filename += '/index.html';
+    if (fs.statSync(filename).isDirectory()) {
+      filename += '/index.html';
+    }
  
     fs.readFile(filename, "binary", function(err, file) {
       if(err) {        
@@ -32,8 +34,25 @@ http.createServer(function(request, response) {
         response.end();
         return;
       }
+
+      var contentType = "text/plain";
+      var ext = path.extname(filename);
+
+      switch (ext) {
+        case ".html":
+          contentType = "text/html";
+          break;
+        case ".css":
+          contentType = "text/css";
+          break;
+        case ".js":
+          contentType = "text/javascript";
+          break;
+      }
+
+      console.log("Incoming ext: " + ext + ", content: " + contentType);
  
-      response.writeHead(200);
+      response.writeHead(200, {"Content-Type": contentType});
       response.write(file, "binary");
       response.end();
     });
