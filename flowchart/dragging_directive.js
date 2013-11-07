@@ -21,7 +21,7 @@ angular.module('dragging', ['mouseCapture', ] )
 		//
   		startDrag: function (evt, config) {
 
-  			var draggingElement = $(event.target);
+  			var draggingElement = $(evt.target);
   			var draggingElementOffset = draggingElement.offset();
   			var startOffsetX = evt.clientX - draggingElementOffset.left;
   			var startOffsetY = evt.clientY - draggingElementOffset.top;
