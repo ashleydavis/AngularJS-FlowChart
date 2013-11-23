@@ -173,6 +173,9 @@ var flowchart = {
 		this.source = sourceConnector;
 		this.dest = destConnector;
 
+		// Set to true when the connection is selected.
+		this._selected = false;
+
 		this.sourceCoordX = function () { 
 			return this.source.parentNode.x() + this.source.x();
 		};
@@ -217,6 +220,34 @@ var flowchart = {
 
 		this.destTangentY = function () { 
 			return flowchart.computeConnectionDestTangentY(this.sourceCoord(), this.destCoord());
+		};
+
+		//
+		// Select the connection.
+		//
+		this.select = function () {
+			this._selected = true;
+		};
+
+		//
+		// Deselect the connection.
+		//
+		this.deselect = function () {
+			this._selected = false;
+		};
+
+		//
+		// Toggle the selection state of the connection.
+		//
+		this.toggleSelected = function () {
+			this._selected = !this._selected;
+		};
+
+		//
+		// Returns true if the connection is selected.
+		//
+		this.selected = function () {
+			return this._selected;
 		};
 	};
 
@@ -405,14 +436,20 @@ var flowchart = {
 		};		
 
 		//
-		// Deselect all nodes in the chart.
+		// Deselect all nodes and connections in the chart.
 		//
-		this.deselectAllNodes = function () {
+		this.deselectAll = function () {
 
 			var nodes = this.nodes;
 			for (var i = 0; i < nodes.length; ++i) {
 				var node = nodes[i];
 				node.deselect();
+			}
+
+			var connections = this.connections;
+			for (var i = 0; i < connections.length; ++i) {
+				var connection = connections[i];
+				connection.deselect();
 			}
 		};
 
@@ -430,7 +467,7 @@ var flowchart = {
 		//
 		this.handleNodeMouseDown = function (nodeIndex) {
 
-			this.deselectAllNodes();
+			this.deselectAll();
 
 			var node = this.nodes[nodeIndex];
 			node.select();
@@ -443,9 +480,19 @@ var flowchart = {
 		};
 
 		//
-		// Delete all nodes that are selected.
+		// Handle mouse down on a connection.
 		//
-		this.deleteSelectedNodes = function () {
+		this.handleConnectionMouseDown = function (connection) {
+
+			this.deselectAll();
+
+			connection.select();
+		};
+
+		//
+		// Delete all nodes and connections that are selected.
+		//
+		this.deleteSelected = function () {
 
 			var newNodeViewModels = [];
 			var newNodeDataModels = [];
@@ -477,12 +524,14 @@ var flowchart = {
 			var newConnectionDataModels = [];
 
 			//
-			// Remove connections for nodes that have been deleted.
+			// Remove connections that are selected.
+			// Also rRemove connections for nodes that have been deleted.
 			//
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
 				var connection = this.connections[connectionIndex];				
-				if (deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 && 
+				if (!connection.selected() &&
+					deletedNodeIds.indexOf(connection.data.source.nodeID) === -1 &&
 					deletedNodeIds.indexOf(connection.data.dest.nodeID) === -1)
 				{
 					//

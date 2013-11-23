@@ -42,8 +42,9 @@ describe('flowchart', function () {
 			connections: mockConnections,
 
 			handleNodeMouseDown: jasmine.createSpy(),
+			handleConnectionMouseDown: jasmine.createSpy(),
 			updateNodeLocation: jasmine.createSpy(),
-			deselectAllNodes: jasmine.createSpy(),
+			deselectAll: jasmine.createSpy(),
 			createConnection: jasmine.createSpy(),
 		};
 	};
@@ -259,7 +260,28 @@ describe('flowchart', function () {
 		expect(mockScope.chart.updateNodeLocation).toHaveBeenCalledWith(node, xIncrement, yIncrement);
 	});
 
-	it('test nodes are deselected when background is clicked', function () {
+	it('test connection click handling is forwarded to view model', function () {
+
+		var mockNode = createMockNode();
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockClicker();
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {
+			stopPropagation: jasmine.createSpy(),
+			preventDefault: jasmine.createSpy(),
+		};
+		var mockNodeIndex = 0;
+
+		mockScope.connectionMouseDown(mockEvt, mockNodeIndex);
+
+		expect(mockScope.chart.handleConnectionMouseDown).toHaveBeenCalledWith(mockNodeIndex);
+		expect(mockEvt.stopPropagation).toHaveBeenCalled();
+		expect(mockEvt.preventDefault).toHaveBeenCalled();
+	});
+
+	it('test selection is cleared when background is clicked', function () {
 
 		var mockScope = createMockScope([createMockNode()]);
 		var mockDragging = createMockClicker();
@@ -272,7 +294,7 @@ describe('flowchart', function () {
 
 		mockScope.mouseDown(mockEvt);
 
-		expect(mockScope.chart.deselectAllNodes).toHaveBeenCalled();
+		expect(mockScope.chart.deselectAll).toHaveBeenCalled();
 	});	
 
 	it('test mouse down commences connector dragging', function () {

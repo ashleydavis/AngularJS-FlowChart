@@ -1,5 +1,38 @@
 describe('flowchart-viewmodel', function () {
 
+	// Create a mock data model from a simple definition.
+	var createMockDataModel = function (nodeIds, connections) {
+		var nodeDataModels = [];
+
+		for (var i = 0; i < nodeIds.length; ++i) {
+			nodeDataModels.push({
+				id: nodeIds[i],
+				inputConnectors: [ {}, {}, {} ],
+				outputConnectors: [ {}, {}, {} ],
+			});
+		}
+
+		var connectionDataModels = [];
+
+		for (var i = 0; i < connections.length; ++i) {
+			connectionDataModels.push({
+				source: {
+					nodeID: connections[i][0][0],
+					connectorIndex: connections[i][0][1],
+				},
+				dest: {
+					nodeID: connections[i][1][0],
+					connectorIndex: connections[i][1][1],
+				},
+			});
+		}
+
+ 		return {
+ 			nodes: nodeDataModels,
+ 			connections: connectionDataModels,
+ 		};
+	};
+
 	it('compute input connector x', function () {
 
 		flowchart.computeLocalInputConnectorX();
@@ -262,6 +295,54 @@ describe('flowchart-viewmodel', function () {
 		testObject.destTangentY();
 	});
 
+	it('test connection is deselected by default', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.ConnectionViewModel(mockDataModel);
+
+		expect(testObject.selected()).toBe(false);
+	});
+
+	it('test connection can be selected', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.ConnectionViewModel(mockDataModel);
+
+		testObject.select();
+
+		expect(testObject.selected()).toBe(true);
+	});
+
+	it('test connection can be deselected', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.ConnectionViewModel(mockDataModel);
+
+		testObject.select();
+
+		testObject.deselect();
+
+		expect(testObject.selected()).toBe(false);
+	});
+
+	it('test connection can be selection can be toggled', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.ConnectionViewModel(mockDataModel);
+
+		testObject.toggleSelected();
+
+		expect(testObject.selected()).toBe(true);
+
+		testObject.toggleSelected();
+
+		expect(testObject.selected()).toBe(false);
+	});
+
 	it('construct ChartViewModel with a node', function () {
 
 		var mockNode = {
@@ -339,17 +420,12 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can deselect all nodes', function () {
 
-		var mockNode = {
-
-		};
-
-		var mockConnection = {
-
-		};
+		var mockNode1 = {};
+		var mockNode2 = {};
 
 		var mockDataModel = {
 			nodes: [
-				mockNode, mockNode
+				mockNode1, mockNode2
 			]
 		};
 
@@ -358,10 +434,79 @@ describe('flowchart-viewmodel', function () {
 		testObject.nodes[0].select();
 		testObject.nodes[1].select();
 
-		testObject.deselectAllNodes();
+		testObject.deselectAll();
 
 		expect(testObject.nodes[0].selected()).toBe(false);
 		expect(testObject.nodes[1].selected()).toBe(false);
+	});
+
+	it('test can deselect all connections', function () {
+
+		var mockOutputConnector = {};
+
+		var mockSourceNode = {
+			
+			id: 5,
+
+			outputConnectors: [
+				mockOutputConnector
+			]
+		};
+
+		var mockInputConnector = {};
+
+		var mockDestNode = {
+
+			id: 12,
+
+			inputConnectors: [
+				{},
+				mockInputConnector
+			]
+		};
+
+		var mockConnection1 = {
+			source: {
+				nodeID: 5,
+				connectorIndex: 0
+			},
+
+			dest: {
+				nodeID: 12,
+				connectorIndex: 1
+			},
+		};
+
+		var mockConnection2 = {
+			source: {
+				nodeID: 5,
+				connectorIndex: 0
+			},
+
+			dest: {
+				nodeID: 12,
+				connectorIndex: 1
+			},
+		};
+
+		var mockDataModel = {
+			nodes: [
+				mockSourceNode, mockDestNode
+			],
+			connections: [
+				mockConnection1, mockConnection2
+			],
+		};
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		testObject.connections[0].select();
+		testObject.connections[1].select();
+
+		testObject.deselectAll();
+
+		expect(testObject.connections[0].selected()).toBe(false);
+		expect(testObject.connections[1].selected()).toBe(false);
 	});
 
 	it('test chart mouse down deselects nodes other than the one clicked', function () {
@@ -437,6 +582,81 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[0].data).toBe(mockNode2); // Mock node 2 should be bought to front.
 		expect(testObject.nodes[1].data).toBe(mockNode1);
 	});
+
+	it('test chart mouse down deselects connections other than the one clicked', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 3, 0 ], // Dest
+				],
+				[
+					[ 2, 1 ], // Source
+					[ 3, 2 ], // Dest
+				],
+				[
+					[ 1, 2 ], // Source
+					[ 3, 0 ], // Dest
+				]
+			]
+		);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var connection1 = testObject.connections[0];
+		var connection2 = testObject.connections[1];
+		var connection3 = testObject.connections[2];
+
+		// Fake out the connections as selected.
+		connection1.select();
+		connection2.select();
+		connection3.select();
+
+		testObject.handleConnectionMouseDown(connection2);
+
+		expect(connection1.selected()).toBe(false);
+		expect(connection2.selected()).toBe(true);
+		expect(connection3.selected()).toBe(false);
+	});
+
+	it('test node mouse down selects the clicked connection', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 3, 0 ], // Dest
+				],
+				[
+					[ 2, 1 ], // Source
+					[ 3, 2 ], // Dest
+				],
+				[
+					[ 1, 2 ], // Source
+					[ 3, 0 ], // Dest
+				]
+			]
+		);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+		
+		var connection1 = testObject.connections[0];
+		var connection2 = testObject.connections[1];
+		var connection3 = testObject.connections[2];
+
+		testObject.handleConnectionMouseDown(connection3);
+
+		expect(connection1.selected()).toBe(false);
+		expect(connection2.selected()).toBe(false);
+		expect(connection3.selected()).toBe(true);
+	});	
+
+	//todo: test that mouse down on connection deselects all
+	//todo: test that mouse down on node deselects all
+
 
  	it('test chart data-model is wrapped in view-model', function () {
 
@@ -529,9 +749,10 @@ describe('flowchart-viewmodel', function () {
 
 		testObject.nodes[0].select();
 
-		testObject.deleteSelectedNodes();
+		testObject.deleteSelected();
 
 		expect(testObject.nodes.length).toBe(1);
+		expect(mockDataModel.nodes.length).toBe(1);
 		expect(testObject.nodes[0].data).toBe(mockNode2);
 	});
 
@@ -552,9 +773,10 @@ describe('flowchart-viewmodel', function () {
 
 		testObject.nodes[1].select();
 
-		testObject.deleteSelectedNodes();
+		testObject.deleteSelected();
 
 		expect(testObject.nodes.length).toBe(1);
+		expect(mockDataModel.nodes.length).toBe(1);
 		expect(testObject.nodes[0].data).toBe(mockNode1);
 	});
 
@@ -580,14 +802,15 @@ describe('flowchart-viewmodel', function () {
 		testObject.nodes[1].select();
 		testObject.nodes[2].select();
 
-		testObject.deleteSelectedNodes();
+		testObject.deleteSelected();
 
 		expect(testObject.nodes.length).toBe(2);
+		expect(mockDataModel.nodes.length).toBe(2);
 		expect(testObject.nodes[0].data).toBe(mockNode1);
 		expect(testObject.nodes[1].data).toBe(mockNode4);
 	});
 	
-	it('deleteing a node also deletes its connections', function () {
+	it('deleting a node also deletes its connections', function () {
 
  		var mockNode1 = {
  			id: 1,
@@ -651,49 +874,22 @@ describe('flowchart-viewmodel', function () {
 		// Select the middle node.
 		testObject.nodes[1].select();
 
-		testObject.deleteSelectedNodes();
+		testObject.deleteSelected();
 
 		expect(testObject.connections.length).toBe(0);
 	});
 
-	it('deleteing a node doesnt delete other connections', function () {
+	it('deleting a node doesnt delete other connections', function () {
 
- 		var mockNode1 = {
- 			id: 1,
- 			outputConnectors: [
- 				{ 					
- 				}
- 			]
- 		};
- 		var mockNode2 = {
-			id: 2,
- 		};
- 		var mockNode3 = {
-			id: 3,
- 			inputConnectors: [
- 				{ 					
- 				}
- 			],
- 		};
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode1,
- 				mockNode2,
- 				mockNode3,
- 			],
- 			connections: [
- 				{
- 					source: {
- 						nodeID: 1,
- 						connectorIndex: 0,
- 					},
- 					dest: {
- 						nodeID: 3,
- 						connectorIndex: 0,
- 					},
- 				},
- 			]
- 		};
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 3, 0 ], // Dest
+				]
+			]
+		);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
@@ -702,9 +898,113 @@ describe('flowchart-viewmodel', function () {
 		// Select the middle node.
 		testObject.nodes[1].select();
 
-		testObject.deleteSelectedNodes();
+		testObject.deleteSelected();
 
 		expect(testObject.connections.length).toBe(1);
 	});
 
+	it('test can delete 1st selected connection', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 2, 0 ], // Dest
+				],
+				[
+					[ 2, 1 ], // Source
+					[ 1, 2 ], // Dest
+				]
+			]
+		);
+
+		var mockRemainingConnectionDataModel = mockDataModel.connections[1];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.connections.length).toBe(2);
+
+		testObject.connections[0].select();
+
+		testObject.deleteSelected();
+
+		expect(testObject.connections.length).toBe(1);
+		expect(mockDataModel.connections.length).toBe(1);
+		expect(testObject.connections[0].data).toBe(mockRemainingConnectionDataModel);
+	});
+
+	it('test can delete 2nd selected connection', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 2, 0 ], // Dest
+				],
+				[
+					[ 2, 1 ], // Source
+					[ 1, 2 ], // Dest
+				]
+			]
+		);
+
+		var mockRemainingConnectionDataModel = mockDataModel.connections[0];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.connections.length).toBe(2);
+
+		testObject.connections[1].select();
+
+		testObject.deleteSelected();
+
+		expect(testObject.connections.length).toBe(1);
+		expect(mockDataModel.connections.length).toBe(1);
+		expect(testObject.connections[0].data).toBe(mockRemainingConnectionDataModel);
+	});
+
+
+	it('test can delete multiple selected connections', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 2, 0 ], // Dest
+				],
+				[
+					[ 2, 1 ], // Source
+					[ 1, 2 ], // Dest
+				],
+				[
+					[ 1, 1 ], // Source
+					[ 3, 0 ], // Dest
+				],
+				[
+					[ 3, 2 ], // Source
+					[ 2, 1 ], // Dest
+				]
+			]
+		);
+
+		var mockRemainingConnectionDataModel1 = mockDataModel.connections[0];
+		var mockRemainingConnectionDataModel2 = mockDataModel.connections[3];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		expect(testObject.connections.length).toBe(4);
+
+		testObject.connections[1].select();
+		testObject.connections[2].select();
+
+		testObject.deleteSelected();
+
+		expect(testObject.connections.length).toBe(2);
+		expect(mockDataModel.connections.length).toBe(2);
+		expect(testObject.connections[0].data).toBe(mockRemainingConnectionDataModel1);
+		expect(testObject.connections[1].data).toBe(mockRemainingConnectionDataModel2);
+	});
 });

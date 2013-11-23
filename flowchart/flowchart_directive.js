@@ -193,7 +193,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	$scope.mouseDown = function (evt) {
 
-		$scope.chart.deselectAllNodes();
+		$scope.chart.deselectAll();
 	};
 
 	//
@@ -284,6 +284,18 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			},
 
 		});
+	};
+
+	//
+	// Handle mousedown on a connection.
+	//
+	$scope.connectionMouseDown = function (evt, connection) {
+		var chart = $scope.chart;
+		chart.handleConnectionMouseDown(connection);
+
+		// Don't let the chart handle the mouse down.
+		evt.stopPropagation();
+		evt.preventDefault();
 	};
 
 	//
