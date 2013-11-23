@@ -1,7 +1,10 @@
 describe('flowchart-viewmodel', function () {
 
+	//
 	// Create a mock data model from a simple definition.
+	//
 	var createMockDataModel = function (nodeIds, connections) {
+
 		var nodeDataModels = [];
 
 		for (var i = 0; i < nodeIds.length; ++i) {
@@ -14,17 +17,19 @@ describe('flowchart-viewmodel', function () {
 
 		var connectionDataModels = [];
 
-		for (var i = 0; i < connections.length; ++i) {
-			connectionDataModels.push({
-				source: {
-					nodeID: connections[i][0][0],
-					connectorIndex: connections[i][0][1],
-				},
-				dest: {
-					nodeID: connections[i][1][0],
-					connectorIndex: connections[i][1][1],
-				},
-			});
+		if (connections) {
+			for (var i = 0; i < connections.length; ++i) {
+				connectionDataModels.push({
+					source: {
+						nodeID: connections[i][0][0],
+						connectorIndex: connections[i][0][1],
+					},
+					dest: {
+						nodeID: connections[i][1][0],
+						connectorIndex: connections[i][1][1],
+					},
+				});
+			}
 		}
 
  		return {
@@ -79,9 +84,7 @@ describe('flowchart-viewmodel', function () {
 		var mockDataModel = {
 			name: "Fooey",
 		};
-
-		var mockParentNodeViewModel = {
-		};
+		var mockParentNodeViewModel = {};
 
 		var testObject = new flowchart.ConnectorViewModel(mockDataModel, 10, 0, mockParentNodeViewModel);
 
@@ -207,8 +210,7 @@ describe('flowchart-viewmodel', function () {
 
 	it('construct ChartViewModel with no nodes or connections', function () {
 
-		var mockDataModel = {
-		};
+		var mockDataModel = {};
 
 		new flowchart.ChartViewModel(mockDataModel);
 
@@ -227,16 +229,9 @@ describe('flowchart-viewmodel', function () {
 
 	it('construct ConnectionViewModel', function () {
 
-		var mockDataModel = {
-		};
-
-		var mockSourceConnector = {
-
-		};
-
-		var mockDestConnector = {
-
-		};
+		var mockDataModel = {};
+		var mockSourceConnector = {};
+		var mockDestConnector = {};
 
 		new flowchart.ConnectionViewModel(mockDataModel, mockSourceConnector, mockDestConnector);
 	});
@@ -345,77 +340,29 @@ describe('flowchart-viewmodel', function () {
 
 	it('construct ChartViewModel with a node', function () {
 
-		var mockNode = {
-
-		};
-
-		var mockDataModel = {
-			nodes: [
-				mockNode
-			],
-			connections: [
-			],
-		};
+		var mockDataModel = createMockDataModel([1]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 		expect(testObject.nodes.length).toBe(1);
-		expect(testObject.nodes[0].data).toBe(mockNode);
+		expect(testObject.nodes[0].data).toBe(mockDataModel.nodes[0]);
 
 	});
 
 	it('data model with existing connection creates a connection view model', function () {
 
-		var mockOutputConnector = {};
-
-		var mockSourceNode = {
-			
-			id: 5,
-
-			outputConnectors: [
-				mockOutputConnector
+		var mockDataModel = createMockDataModel(
+			[ 5, 12 ],
+			[
+				[[ 5, 0 ], [ 12, 1 ]],
 			]
-		};
-
-		var mockInputConnector = {};
-
-		var mockDestNode = {
-
-			id: 12,
-
-			inputConnectors: [
-				{},
-				mockInputConnector
-			]
-		};
-
-		var mockConnection = {
-			source: {
-				nodeID: 5,
-				connectorIndex: 0
-			},
-
-			dest: {
-				nodeID: 12,
-				connectorIndex: 1
-			},
-		};
-
-		var mockDataModel = {
-			nodes: [
-				mockSourceNode,
-				mockDestNode
-			],
-			connections: [
-				mockConnection
-			],
-		};
+		);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
 		expect(testObject.connections.length).toBe(1);
-		expect(testObject.connections[0].data).toBe(mockConnection);
-		expect(testObject.connections[0].source.data).toBe(mockOutputConnector);
-		expect(testObject.connections[0].dest.data).toBe(mockInputConnector);
+		expect(testObject.connections[0].data).toBe(mockDataModel.connections[0]);
+		expect(testObject.connections[0].source.data).toBe(mockDataModel.nodes[0].outputConnectors[0]);
+		expect(testObject.connections[0].dest.data).toBe(mockDataModel.nodes[1].inputConnectors[1]);
 	});
 
 	it('test can deselect all nodes', function () {
@@ -442,61 +389,13 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can deselect all connections', function () {
 
-		var mockOutputConnector = {};
-
-		var mockSourceNode = {
-			
-			id: 5,
-
-			outputConnectors: [
-				mockOutputConnector
+		var mockDataModel = createMockDataModel(
+			[ 5, 12 ],
+			[
+				[[ 5, 0 ], [ 12, 1 ]],
+				[[ 5, 0 ], [ 12, 1 ]],
 			]
-		};
-
-		var mockInputConnector = {};
-
-		var mockDestNode = {
-
-			id: 12,
-
-			inputConnectors: [
-				{},
-				mockInputConnector
-			]
-		};
-
-		var mockConnection1 = {
-			source: {
-				nodeID: 5,
-				connectorIndex: 0
-			},
-
-			dest: {
-				nodeID: 12,
-				connectorIndex: 1
-			},
-		};
-
-		var mockConnection2 = {
-			source: {
-				nodeID: 5,
-				connectorIndex: 0
-			},
-
-			dest: {
-				nodeID: 12,
-				connectorIndex: 1
-			},
-		};
-
-		var mockDataModel = {
-			nodes: [
-				mockSourceNode, mockDestNode
-			],
-			connections: [
-				mockConnection1, mockConnection2
-			],
-		};
+		);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
@@ -654,10 +553,6 @@ describe('flowchart-viewmodel', function () {
 		expect(connection3.selected()).toBe(true);
 	});	
 
-	//todo: test that mouse down on connection deselects all
-	//todo: test that mouse down on node deselects all
-
-
  	it('test chart data-model is wrapped in view-model', function () {
 
  		var mockInputConnector = {
@@ -734,20 +629,15 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can delete 1st selected node', function () {
 
- 		var mockNode1 = {};
- 		var mockNode2 = {};
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode1,
- 				mockNode2,
- 			],
- 		};
+		var mockDataModel = createMockDataModel([ 1, 2 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
 		expect(testObject.nodes.length).toBe(2);
 
 		testObject.nodes[0].select();
+
+		var mockNode2 = mockDataModel.nodes[1];
 
 		testObject.deleteSelected();
 
@@ -758,20 +648,15 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can delete 2nd selected nodes', function () {
 
- 		var mockNode1 = {};
- 		var mockNode2 = {};
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode1,
- 				mockNode2,
- 			],
- 		};
+		var mockDataModel = createMockDataModel([ 1, 2 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
 		expect(testObject.nodes.length).toBe(2);
 
 		testObject.nodes[1].select();
+
+		var mockNode1 = mockDataModel.nodes[0];
 
 		testObject.deleteSelected();
 
@@ -782,18 +667,7 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can delete multiple selected nodes', function () {
 
- 		var mockNode1 = {};
- 		var mockNode2 = {};
- 		var mockNode3 = {};
- 		var mockNode4 = {};
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode1,
- 				mockNode2,
- 				mockNode3,
- 				mockNode4,
- 			],
- 		};
+		var mockDataModel = createMockDataModel([ 1, 2, 3, 4 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
@@ -801,6 +675,9 @@ describe('flowchart-viewmodel', function () {
 
 		testObject.nodes[1].select();
 		testObject.nodes[2].select();
+
+		var mockNode1 = mockDataModel.nodes[0];
+		var mockNode4 = mockDataModel.nodes[3];
 
 		testObject.deleteSelected();
 
@@ -812,60 +689,19 @@ describe('flowchart-viewmodel', function () {
 	
 	it('deleting a node also deletes its connections', function () {
 
- 		var mockNode1 = {
- 			id: 1,
- 			outputConnectors: [
- 				{ 					
- 				}
- 			]
- 		};
- 		var mockNode2 = {
-			id: 2,
- 			inputConnectors: [
- 				{ 					
- 				}
- 			],
- 			outputConnectors: [
- 				{ 					
- 				}
- 			],
- 		};
- 		var mockNode3 = {
-			id: 3,
- 			inputConnectors: [
- 				{ 					
- 				}
- 			],
- 		};
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode1,
- 				mockNode2,
- 				mockNode3,
- 			],
- 			connections: [
- 				{
- 					source: {
- 						nodeID: 1,
- 						connectorIndex: 0,
- 					},
- 					dest: {
- 						nodeID: 2,
- 						connectorIndex: 0,
- 					},
- 				},
- 				{
- 					source: {
- 						nodeID: 2,
- 						connectorIndex: 0,
- 					},
- 					dest: {
- 						nodeID: 3,
- 						connectorIndex: 0,
- 					},
- 				},
- 			]
- 		};
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ], 	// Nodes
+			[				// Connections
+				[
+					[ 1, 0 ], // Source
+					[ 2, 0 ], // Dest
+				],
+				[
+					[ 2, 0 ], // Source
+					[ 3, 0 ], // Dest
+				],
+			]
+		);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
