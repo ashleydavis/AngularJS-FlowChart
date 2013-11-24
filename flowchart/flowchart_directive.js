@@ -257,12 +257,11 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	// Handle mousedown on a node.
 	//
-	$scope.nodeMouseDown = function (evt, nodeIndex) {
+	$scope.nodeMouseDown = function (evt, node) {
 
 		var chart = $scope.chart;
-		var node = chart.nodes[nodeIndex];
 
-		chart.handleNodeMouseDown(nodeIndex);
+		chart.handleNodeMouseDown(node, evt.ctrlKey);
 
 		dragging.startDrag(evt, {
 

@@ -465,16 +465,23 @@ var flowchart = {
 		//
 		// Handle mouse down on a particular node.
 		//
-		this.handleNodeMouseDown = function (nodeIndex) {
+		this.handleNodeMouseDown = function (node, ctrlKey) {
 
-			this.deselectAll();
-
-			var node = this.nodes[nodeIndex];
-			node.select();
+			if (ctrlKey) {
+				node.toggleSelected();
+			}
+			else {
+				this.deselectAll();
+				node.select();
+			}
 
 			// Move node to the end of the list so it is rendered after all the other.
 			// This is the way Z-order is done in SVG.
 
+			var nodeIndex = this.nodes.indexOf(node);
+			if (nodeIndex == -1) {
+				throw new Error("Failed to find node in view model!");
+			}
 			this.nodes.splice(nodeIndex, 1);
 			this.nodes.push(node);			
 		};

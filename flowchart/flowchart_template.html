@@ -27,7 +27,7 @@
   </defs>
   <g
     ng-repeat="node in chart.nodes"
-    ng-mousedown="nodeMouseDown($event, $index)"
+    ng-mousedown="nodeMouseDown($event, node)"
     ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
     >
     <rect 

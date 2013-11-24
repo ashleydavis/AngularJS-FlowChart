@@ -422,7 +422,7 @@ describe('flowchart-viewmodel', function () {
 		node2.select();
 		node3.select();
 
-		testObject.handleNodeMouseDown(1); // Doesn't matter which node is actually clicked.
+		testObject.handleNodeMouseDown(node2); // Doesn't matter which node is actually clicked.
 
 		expect(node1.selected()).toBe(false);
 		expect(node2.selected()).toBe(true);
@@ -439,7 +439,7 @@ describe('flowchart-viewmodel', function () {
 		var node2 = testObject.nodes[1];
 		var node3 = testObject.nodes[2];
 
-		testObject.handleNodeMouseDown(2); // Doesn't matter which node is actually clicked.
+		testObject.handleNodeMouseDown(node3); // Doesn't matter which node is actually clicked.
 
 		expect(node1.selected()).toBe(false);
 		expect(node2.selected()).toBe(false);
@@ -455,10 +455,41 @@ describe('flowchart-viewmodel', function () {
 		var node1 = testObject.nodes[0];
 		var node2 = testObject.nodes[1];
 
-		testObject.handleNodeMouseDown(0); // Mouse down on the 2nd node.
+		testObject.handleNodeMouseDown(node1);
 
 		expect(testObject.nodes[0]).toBe(node2); // Mock node 2 should be bought to front.
 		expect(testObject.nodes[1]).toBe(node1);
+	});
+
+	it('test control + mouse down toggles node selection', function () {
+
+		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+		var node3 = testObject.nodes[2];
+
+		node1.select(); // Mark node 1 as already selected.
+
+		testObject.handleNodeMouseDown(node2, true);
+
+		expect(node1.selected()).toBe(true);  // This node remains selected.
+		expect(node2.selected()).toBe(true);  // This node is being toggle.
+		expect(node3.selected()).toBe(false); // This nodes remains unselected.
+
+		testObject.handleNodeMouseDown(node2, true);
+
+		expect(node1.selected()).toBe(true);  // This node remains selected.
+		expect(node2.selected()).toBe(false); // This node is being toggle.
+		expect(node3.selected()).toBe(false); // This nodes remains unselected.
+
+		testObject.handleNodeMouseDown(node2, true);
+
+		expect(node1.selected()).toBe(true);  // This node remains selected.
+		expect(node2.selected()).toBe(true);  // This node is being toggle.
+		expect(node3.selected()).toBe(false); // This nodes remains unselected.
 	});
 
 	it('test mouse down deselects connections other than the one clicked', function () {
