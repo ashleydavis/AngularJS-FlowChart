@@ -489,11 +489,15 @@ var flowchart = {
 		//
 		// Handle mouse down on a connection.
 		//
-		this.handleConnectionMouseDown = function (connection) {
+		this.handleConnectionMouseDown = function (connection, ctrlKey) {
 
-			this.deselectAll();
-
-			connection.select();
+			if (ctrlKey) {
+				connection.toggleSelected();
+			}
+			else {
+				this.deselectAll();
+				connection.select();
+			}
 		};
 
 		//

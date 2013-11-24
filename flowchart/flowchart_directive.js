@@ -290,7 +290,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	$scope.connectionMouseDown = function (evt, connection) {
 		var chart = $scope.chart;
-		chart.handleConnectionMouseDown(connection);
+		chart.handleConnectionMouseDown(connection, evt.ctrlKey);
 
 		// Don't let the chart handle the mouse down.
 		evt.stopPropagation();

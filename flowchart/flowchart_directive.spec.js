@@ -207,6 +207,7 @@ describe('flowchart', function () {
 
 	it('test node dragging is started on node mouse down', function () {
 
+		var mockNode = createMockNode();
 		var mockScope = createMockScope([createMockNode()]);
 
 		var mockDragging = {
@@ -217,7 +218,7 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		mockScope.nodeMouseDown(mockEvt, 0);
+		mockScope.nodeMouseDown(mockEvt, mockNode);
 
 		expect(mockDragging.startDrag).toHaveBeenCalled();
 
@@ -234,7 +235,6 @@ describe('flowchart', function () {
 		var mockEvt = {
 			ctrlKey: false,
 		};
-		var mockNodeIndex = 0;
 
 		mockScope.nodeMouseDown(mockEvt, mockNode);
 
@@ -252,7 +252,6 @@ describe('flowchart', function () {
 		var mockEvt = {
 			ctrlKey: true,
 		};
-		var mockNodeIndex = 0;
 
 		mockScope.nodeMouseDown(mockEvt, mockNode);
 
@@ -291,14 +290,35 @@ describe('flowchart', function () {
 		var mockEvt = {
 			stopPropagation: jasmine.createSpy(),
 			preventDefault: jasmine.createSpy(),
+			ctrlKey: false,
 		};
-		var mockNodeIndex = 0;
+		var mockConnection = {};
 
-		mockScope.connectionMouseDown(mockEvt, mockNodeIndex);
+		mockScope.connectionMouseDown(mockEvt, mockConnection);
 
-		expect(mockScope.chart.handleConnectionMouseDown).toHaveBeenCalledWith(mockNodeIndex);
+		expect(mockScope.chart.handleConnectionMouseDown).toHaveBeenCalledWith(mockConnection, false);
 		expect(mockEvt.stopPropagation).toHaveBeenCalled();
 		expect(mockEvt.preventDefault).toHaveBeenCalled();
+	});
+
+	it('test control + connection click handling is forwarded to view model', function () {
+
+		var mockNode = createMockNode();
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockClicker();
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {
+			stopPropagation: jasmine.createSpy(),
+			preventDefault: jasmine.createSpy(),
+			ctrlKey: true,
+		};
+		var mockConnection = {};
+
+		mockScope.connectionMouseDown(mockEvt, mockConnection);
+
+		expect(mockScope.chart.handleConnectionMouseDown).toHaveBeenCalledWith(mockConnection, true);
 	});
 
 	it('test selection is cleared when background is clicked', function () {
