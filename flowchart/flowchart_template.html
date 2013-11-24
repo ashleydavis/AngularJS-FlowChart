@@ -36,13 +36,13 @@
       rx="10" 
       x="0" 
       y="0" 
-      width="200" 
-      height="150" 
+      ng-attr-width="{{node.width()}}" 
+      ng-attr-height="{{node.height()}}" 
       >
     </rect>
 
     <text
-      x="100"
+      ng-attr-x="{{node.width()/2}}"
       y="25"
       text-anchor="middle"
       alignment-baseline="middle"
@@ -93,15 +93,6 @@
         />
     </g>
 
-    <text 
-      text-anchor="middle" 
-      font-family="serif" 
-      font-size="24" 
-      y="80" 
-      x="183" 
-      >
-      {{node.title}}
-    </text>
   </g>
 
   <g>

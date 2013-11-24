@@ -232,6 +232,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 			dragEnded: function () {
 				$scope.dragSelecting = false;
+				$scope.chart.applySelectionRect($scope.dragSelectionRect);
 				delete $scope.dragSelectionStartPoint;
 				delete $scope.dragSelectionRect;
 			},

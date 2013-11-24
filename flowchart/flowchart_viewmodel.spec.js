@@ -805,4 +805,55 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections[0].data).toBe(mockRemainingConnectionDataModel1);
 		expect(testObject.connections[1].data).toBe(mockRemainingConnectionDataModel2);
 	});
+
+	it('can select nodes via selection rect', function () {
+
+		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
+		mockDataModel.nodes[0].x = 0;
+		mockDataModel.nodes[0].y = 0;
+		mockDataModel.nodes[1].x = 1020;
+		mockDataModel.nodes[1].y = 1020;
+		mockDataModel.nodes[2].x = 3000;
+		mockDataModel.nodes[2].y = 3000;
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		testObject.nodes[0].select(); // Select a nodes, to ensure it is correctly deselected.
+
+		testObject.applySelectionRect({ x: 1000, y: 1000, width: 1000, height: 1000 });
+
+		expect(testObject.nodes[0].selected()).toBe(false);
+		expect(testObject.nodes[1].selected()).toBe(true);
+		expect(testObject.nodes[2].selected()).toBe(false);
+	});
+
+	it('can select connections via selection rect', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3, 4 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 1 ], [ 3, 2 ]],
+				[[ 3, 2 ], [ 4, 1 ]]
+			]
+		);
+		mockDataModel.nodes[0].x = 0;
+		mockDataModel.nodes[0].y = 0;
+		mockDataModel.nodes[1].x = 1020;
+		mockDataModel.nodes[1].y = 1020;
+		mockDataModel.nodes[2].x = 1500;
+		mockDataModel.nodes[2].y = 1500;
+		mockDataModel.nodes[3].x = 3000;
+		mockDataModel.nodes[3].y = 3000;
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		testObject.connections[0].select(); // Select a connection, to ensure it is correctly deselected.
+
+		testObject.applySelectionRect({ x: 1000, y: 1000, width: 1000, height: 1000 });
+
+		expect(testObject.connections[0].selected()).toBe(false);
+		expect(testObject.connections[1].selected()).toBe(true);
+		expect(testObject.connections[2].selected()).toBe(false);
+	});
 });
