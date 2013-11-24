@@ -402,7 +402,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 					// The mouse is over a valid connector...
 					// Create a new connection.
 					//
-					$scope.chart.createConnection(connector, $scope.mouseOverConnector);
+					$scope.chart.createNewConnection(connector, $scope.mouseOverConnector);
 				}
 
 				$scope.draggingConnection = false;
