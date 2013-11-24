@@ -549,10 +549,8 @@ describe('flowchart-viewmodel', function () {
 		// Connection
  	
 		expect(testObject.connections.length).toBe(1);
-		//todo: expect(testObject.connections[0].source().node().toBe(testObject.nodes[0]);
-		//todo: expect(testObject.connections[0].source().connector().toBe(testObject.nodes[0].outputConnectors[0]);
-		//todo: expect(testObject.connections[0].dest().node()).toBe(testObject.nodes[1]);
-		//todo: expect(testObject.connections[0].dest().connector()).toBe(testObject.nodes[1].inputConnectors[0]);
+		expect(testObject.connections[0].source).toBe(testObject.nodes[0].outputConnectors[0]);
+		expect(testObject.connections[0].dest).toBe(testObject.nodes[1].inputConnectors[0]);
  	});
 
 	it('test can delete 1st selected node', function () {
