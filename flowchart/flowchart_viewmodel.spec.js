@@ -367,24 +367,20 @@ describe('flowchart-viewmodel', function () {
 
 	it('test can deselect all nodes', function () {
 
-		var mockNode1 = {};
-		var mockNode2 = {};
-
-		var mockDataModel = {
-			nodes: [
-				mockNode1, mockNode2
-			]
-		};
+		var mockDataModel = createMockDataModel([1, 2]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
-		testObject.nodes[0].select();
-		testObject.nodes[1].select();
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+
+		node1.select();
+		node2.select();
 
 		testObject.deselectAll();
 
-		expect(testObject.nodes[0].selected()).toBe(false);
-		expect(testObject.nodes[1].selected()).toBe(false);
+		expect(node1.selected()).toBe(false);
+		expect(node2.selected()).toBe(false);
 	});
 
 	it('test can deselect all connections', function () {
@@ -399,13 +395,16 @@ describe('flowchart-viewmodel', function () {
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
-		testObject.connections[0].select();
-		testObject.connections[1].select();
+		var connection1 = testObject.connections[0];
+		var connection2 = testObject.connections[1];
+
+		connection1.select();
+		connection2.select();
 
 		testObject.deselectAll();
 
-		expect(testObject.connections[0].selected()).toBe(false);
-		expect(testObject.connections[1].selected()).toBe(false);
+		expect(connection1.selected()).toBe(false);
+		expect(connection2.selected()).toBe(false);
 	});
 
 	it('test chart mouse down deselects nodes other than the one clicked', function () {
@@ -465,20 +464,11 @@ describe('flowchart-viewmodel', function () {
 	it('test chart mouse down deselects connections other than the one clicked', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2, 3 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 3, 0 ], // Dest
-				],
-				[
-					[ 2, 1 ], // Source
-					[ 3, 2 ], // Dest
-				],
-				[
-					[ 1, 2 ], // Source
-					[ 3, 0 ], // Dest
-				]
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 3, 0 ]],
+				[[ 2, 1 ], [ 3, 2 ]],
+				[[ 1, 2 ], [ 3, 0 ]]
 			]
 		);
 
@@ -503,20 +493,11 @@ describe('flowchart-viewmodel', function () {
 	it('test node mouse down selects the clicked connection', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2, 3 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 3, 0 ], // Dest
-				],
-				[
-					[ 2, 1 ], // Source
-					[ 3, 2 ], // Dest
-				],
-				[
-					[ 1, 2 ], // Source
-					[ 3, 0 ], // Dest
-				]
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 3, 0 ]],
+				[[ 2, 1 ], [ 3, 2 ]],
+				[[ 1, 2 ], [ 3, 0 ]]
 			]
 		);
 
@@ -670,16 +651,10 @@ describe('flowchart-viewmodel', function () {
 	it('deleting a node also deletes its connections', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2, 3 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 2, 0 ], // Dest
-				],
-				[
-					[ 2, 0 ], // Source
-					[ 3, 0 ], // Dest
-				],
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 0 ], [ 3, 0 ]],
 			]
 		);
 
@@ -698,12 +673,9 @@ describe('flowchart-viewmodel', function () {
 	it('deleting a node doesnt delete other connections', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2, 3 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 3, 0 ], // Dest
-				]
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 3, 0 ],]
 			]
 		);
 
@@ -722,16 +694,10 @@ describe('flowchart-viewmodel', function () {
 	it('test can delete 1st selected connection', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 2, 0 ], // Dest
-				],
-				[
-					[ 2, 1 ], // Source
-					[ 1, 2 ], // Dest
-				]
+			[ 1, 2 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 1 ], [ 1, 2 ]]
 			]
 		);
 
@@ -753,16 +719,10 @@ describe('flowchart-viewmodel', function () {
 	it('test can delete 2nd selected connection', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 2, 0 ], // Dest
-				],
-				[
-					[ 2, 1 ], // Source
-					[ 1, 2 ], // Dest
-				]
+			[ 1, 2 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 1 ], [ 1, 2 ]]
 			]
 		);
 
@@ -785,24 +745,12 @@ describe('flowchart-viewmodel', function () {
 	it('test can delete multiple selected connections', function () {
 
 		var mockDataModel = createMockDataModel(
-			[ 1, 2, 3 ], 	// Nodes
-			[				// Connections
-				[
-					[ 1, 0 ], // Source
-					[ 2, 0 ], // Dest
-				],
-				[
-					[ 2, 1 ], // Source
-					[ 1, 2 ], // Dest
-				],
-				[
-					[ 1, 1 ], // Source
-					[ 3, 0 ], // Dest
-				],
-				[
-					[ 3, 2 ], // Source
-					[ 2, 1 ], // Dest
-				]
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 1 ], [ 1, 2 ]],
+				[[ 1, 1 ], [ 3, 0 ]],
+				[[ 3, 2 ], [ 2, 1 ]]
 			]
 		);
 
