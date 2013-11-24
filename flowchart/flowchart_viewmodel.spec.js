@@ -10,6 +10,8 @@ describe('flowchart-viewmodel', function () {
 		for (var i = 0; i < nodeIds.length; ++i) {
 			nodeDataModels.push({
 				id: nodeIds[i],
+				x: 0,
+				y: 0,
 				inputConnectors: [ {}, {}, {} ],
 				outputConnectors: [ {}, {}, {} ],
 			});
@@ -855,5 +857,36 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections[0].selected()).toBe(false);
 		expect(testObject.connections[1].selected()).toBe(true);
 		expect(testObject.connections[2].selected()).toBe(false);
+	});
+
+	it('test update selected nodes location', function () {
+		var mockDataModel = createMockDataModel([1]);
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		var node = testObject.nodes[0];
+		node.select();
+
+		var xInc = 5;
+		var yInc = 15;
+
+		testObject.updateSelectedNodesLocation(xInc, yInc);
+
+		expect(node.x()).toBe(xInc);
+		expect(node.y()).toBe(yInc);
+	});
+
+	it('test update selected nodes location, ignores unselected nodes', function () {
+		var mockDataModel = createMockDataModel([1]);
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 
+
+		var node = testObject.nodes[0];
+
+		var xInc = 5;
+		var yInc = 15;
+
+		testObject.updateSelectedNodesLocation(xInc, yInc);
+
+		expect(node.x()).toBe(0);
+		expect(node.y()).toBe(0);
 	});
 });
