@@ -231,12 +231,32 @@ describe('flowchart', function () {
 
 		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
 
-		var mockEvt = {};
+		var mockEvt = {
+			ctrlKey: false,
+		};
 		var mockNodeIndex = 0;
 
-		mockScope.nodeMouseDown(mockEvt, mockNodeIndex);
+		mockScope.nodeMouseDown(mockEvt, mockNode);
 
-		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNodeIndex);
+		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNode, false);
+	});
+
+	it('test control + node click handling is forwarded to view model', function () {
+
+		var mockNode = createMockNode();
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockClicker();
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {
+			ctrlKey: true,
+		};
+		var mockNodeIndex = 0;
+
+		mockScope.nodeMouseDown(mockEvt, mockNode);
+
+		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNode, true);
 	});
 
 	it('test node dragging updates node location', function () {
@@ -248,7 +268,7 @@ describe('flowchart', function () {
 
 		var mockEvt = {};
 
-		mockScope.nodeMouseDown(mockEvt, 0);
+		mockScope.nodeMouseDown(mockEvt, mockScope.chart.nodes[0]);
 
 		var xIncrement = 5;
 		var yIncrement = 15;
