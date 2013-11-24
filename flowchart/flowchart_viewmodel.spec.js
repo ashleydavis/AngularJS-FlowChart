@@ -476,20 +476,20 @@ describe('flowchart-viewmodel', function () {
 		testObject.handleNodeMouseDown(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
-		expect(node2.selected()).toBe(true);  // This node is being toggle.
-		expect(node3.selected()).toBe(false); // This nodes remains unselected.
+		expect(node2.selected()).toBe(true);  // This node is being toggled.
+		expect(node3.selected()).toBe(false); // This node remains unselected.
 
 		testObject.handleNodeMouseDown(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
-		expect(node2.selected()).toBe(false); // This node is being toggle.
-		expect(node3.selected()).toBe(false); // This nodes remains unselected.
+		expect(node2.selected()).toBe(false); // This node is being toggled.
+		expect(node3.selected()).toBe(false); // This node remains unselected.
 
 		testObject.handleNodeMouseDown(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
-		expect(node2.selected()).toBe(true);  // This node is being toggle.
-		expect(node3.selected()).toBe(false); // This nodes remains unselected.
+		expect(node2.selected()).toBe(true);  // This node is being toggled.
+		expect(node3.selected()).toBe(false); // This node remains unselected.
 	});
 
 	it('test mouse down deselects connections other than the one clicked', function () {
@@ -544,6 +544,44 @@ describe('flowchart-viewmodel', function () {
 		expect(connection2.selected()).toBe(false);
 		expect(connection3.selected()).toBe(true);
 	});	
+
+	it('test control + mouse down toggles connection selection', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 3, 0 ]],
+				[[ 2, 1 ], [ 3, 2 ]],
+				[[ 1, 2 ], [ 3, 0 ]]
+			]
+		);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var connection1 = testObject.connections[0];
+		var connection2 = testObject.connections[1];
+		var connection3 = testObject.connections[2];
+
+		connection1.select(); // Mark connection 1 as already selected.
+
+		testObject.handleConnectionMouseDown(connection2, true);
+
+		expect(connection1.selected()).toBe(true);  // This connection remains selected.
+		expect(connection2.selected()).toBe(true);  // This connection is being toggle.
+		expect(connection3.selected()).toBe(false); // This connection remains unselected.
+
+		testObject.handleConnectionMouseDown(connection2, true);
+
+		expect(connection1.selected()).toBe(true);  // This connection remains selected.
+		expect(connection2.selected()).toBe(false); // This connection is being toggle.
+		expect(connection3.selected()).toBe(false); // This connection remains unselected.
+
+		testObject.handleConnectionMouseDown(connection2, true);
+
+		expect(connection1.selected()).toBe(true);  // This connection remains selected.
+		expect(connection2.selected()).toBe(true);  // This connection is being toggle.
+		expect(connection3.selected()).toBe(false); // This connection remains unselected.
+	});
 
  	it('test data-model is wrapped in view-model', function () {
 
