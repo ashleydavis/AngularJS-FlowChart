@@ -43,6 +43,7 @@ var flowchart = {
 	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex, parentNode) {
 
 		this.data = connectorDataModel;
+		this._parentNode = parentNode;
 
 		this.name = function () {
 			return this.data.name;
@@ -56,7 +57,9 @@ var flowchart = {
 			return flowchart.computeLocalConnectorY(connectorIndex);
 		};
 
-		this.parentNode = parentNode;
+		this.parentNode = function () {
+			return this._parentNode;
+		};
 	};
 
 	//
@@ -191,11 +194,11 @@ var flowchart = {
 		this._selected = false;
 
 		this.sourceCoordX = function () { 
-			return this.source.parentNode.x() + this.source.x();
+			return this.source.parentNode().x() + this.source.x();
 		};
 
 		this.sourceCoordY = function () { 
-			return this.source.parentNode.y() + this.source.y();
+			return this.source.parentNode().y() + this.source.y();
 		};
 
 		this.sourceCoord = function () {
@@ -214,11 +217,11 @@ var flowchart = {
 		};
 
 		this.destCoordX = function () { 
-			return this.dest.parentNode.x() + this.dest.x();
+			return this.dest.parentNode().x() + this.dest.x();
 		};
 
 		this.destCoordY = function () { 
-			return this.dest.parentNode.y() + this.dest.y();
+			return this.dest.parentNode().y() + this.dest.y();
 		};
 
 		this.destCoord = function () {
@@ -603,8 +606,8 @@ var flowchart = {
 
 			for (var i = 0; i < this.connections.length; ++i) {
 				var connection = this.connections[i];
-				if (connection.source.parentNode.selected() &&
-					connection.dest.parentNode.selected())
+				if (connection.source.parentNode().selected() &&
+					connection.dest.parentNode().selected())
 				{
 					// Select the connection if both its parent nodes are selected.
 					connection.select();

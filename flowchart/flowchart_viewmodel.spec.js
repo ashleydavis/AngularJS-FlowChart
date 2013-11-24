@@ -90,7 +90,7 @@ describe('flowchart-viewmodel', function () {
 
 		var testObject = new flowchart.ConnectorViewModel(mockDataModel, 10, 0, mockParentNodeViewModel);
 
-		expect(testObject.parentNode).toBe(mockParentNodeViewModel);
+		expect(testObject.parentNode()).toBe(mockParentNodeViewModel);
 	});
 
 	it('construct NodeViewModel with no connectors', function () {
@@ -249,7 +249,9 @@ describe('flowchart-viewmodel', function () {
 		};
 
 		var mockSourceConnector = {
-			parentNode: mockSourceParentNode,
+			parentNode: function () {
+				return mockSourceParentNode;
+			},
 
 			x: function() {
 				return 5;
@@ -266,7 +268,9 @@ describe('flowchart-viewmodel', function () {
 		};
 
 		var mockDestConnector = {
-			parentNode: mockDestParentNode,
+			parentNode: function () {
+				return mockDestParentNode;
+			},
 
 			x: function() {
 				return 25;
