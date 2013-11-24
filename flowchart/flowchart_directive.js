@@ -116,6 +116,15 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	//
 	$scope.draggingConnection = false;
 	$scope.connectorSize = 10;
+	$scope.dragSelecting = false;
+	/* Can use this to test the drag selection rect.
+	$scope.dragSelectionRect = {
+		x: 0,
+		y: 0,
+		width: 0,
+		height: 0,
+	};
+	*/
 
 	//
 	// Reference to the connection that the mouse is currently over.
@@ -194,6 +203,44 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	$scope.mouseDown = function (evt) {
 
 		$scope.chart.deselectAll();
+
+		dragging.startDrag(evt, {
+
+			dragging: function (deltaX, deltaY, x, y) {
+				var startPoint = $scope.dragSelectionStartPoint;
+				$scope.dragSelectionRect = {
+					x: x > startPoint.x ? startPoint.x : x,
+					y: y > startPoint.y ? startPoint.y : y,
+					width: x > startPoint.x ? x - startPoint.x : startPoint.x - x,
+					height: y > startPoint.y ? y - startPoint.y : startPoint.y - y,
+				};
+			},
+
+			dragStarted: function (x, y) {
+				$scope.dragSelecting = true;
+				$scope.dragSelectionStartPoint = {
+					x: x,
+					y: y,
+				};
+				$scope.dragSelectionRect = {
+					x: x,
+					y: y,
+					width: 0,
+					height: 0,
+				};
+			},
+
+			dragEnded: function () {
+				$scope.dragSelecting = false;
+				delete $scope.dragSelectionStartPoint;
+				delete $scope.dragSelectionRect;
+			},
+
+			clicked: function () {
+				console.log("Clicked...");
+			},
+
+		});
 	};
 
 	//
