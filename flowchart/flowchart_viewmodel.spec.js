@@ -463,23 +463,17 @@ describe('flowchart-viewmodel', function () {
 
 	it('test chart mouse down brings node to front', function () {
 
-		var mockNode1 = {};
-		var mockNode2 = {};
-		var mockDataModel = {
-			nodes: [
-				mockNode1, mockNode2
-			]
-		};
+		var mockDataModel = createMockDataModel([ 1, 2 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
-		expect(testObject.nodes[0].data).toBe(mockNode1);
-		expect(testObject.nodes[1].data).toBe(mockNode2);
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
 
 		testObject.handleNodeMouseDown(0); // Mouse down on the 2nd node.
 
-		expect(testObject.nodes[0].data).toBe(mockNode2); // Mock node 2 should be bought to front.
-		expect(testObject.nodes[1].data).toBe(mockNode1);
+		expect(testObject.nodes[0]).toBe(node2); // Mock node 2 should be bought to front.
+		expect(testObject.nodes[1]).toBe(node1);
 	});
 
 	it('test chart mouse down deselects connections other than the one clicked', function () {
