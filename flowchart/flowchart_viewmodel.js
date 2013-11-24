@@ -118,6 +118,20 @@ var flowchart = {
 		};
 
 		//
+		// Width of the node.
+		//
+		this.width = function () {
+			return 200;
+		}
+
+		//
+		// Width of the node.
+		//
+		this.height = function () {
+			return 150;
+		}
+
+		//
 		// Select the node.
 		//
 		this.select = function () {
@@ -561,6 +575,37 @@ var flowchart = {
 			this.data.nodes = newNodeDataModels;
 			this.connections = newConnectionViewModels;
 			this.data.connections = newConnectionDataModels;
+		};
+
+		//
+		// Select nodes and connections that fall within the selection rect.
+		//
+		this.applySelectionRect = function (selectionRect) {
+
+			this.deselectAll();
+
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+				if (node.x() >= selectionRect.x && 
+					node.y() >= selectionRect.y && 
+					node.x() + node.width() <= selectionRect.x + selectionRect.width &&
+					node.y() + node.height() <= selectionRect.y + selectionRect.height)
+				{
+					// Select nodes that are within the selection rect.
+					node.select();
+				}
+			}
+
+			for (var i = 0; i < this.connections.length; ++i) {
+				var connection = this.connections[i];
+				if (connection.source.parentNode.selected() &&
+					connection.dest.parentNode.selected())
+				{
+					// Select the connection if both its parent nodes are selected.
+					connection.select();
+				}
+			}
+
 		};
 
 	};

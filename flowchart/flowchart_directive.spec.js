@@ -46,6 +46,7 @@ describe('flowchart', function () {
 			updateNodeLocation: jasmine.createSpy(),
 			deselectAll: jasmine.createSpy(),
 			createConnection: jasmine.createSpy(),
+			applySelectionRect: jasmine.createSpy(),
 		};
 	};
 
@@ -379,6 +380,41 @@ describe('flowchart', function () {
  		draggingConfig.dragEnded();
 
 		expect(mockScope.dragSelecting).toBe(false);		
+ 	});
+
+	it('test selection dragging ends by selecting nodes', function () {
+
+		var mockNode = createMockNode();
+		var mockConnector = {};
+
+		var draggingConfig = null;
+
+		var mockScope = createMockScope([mockNode]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			 draggingConfig = config;
+		});
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.mouseDown(mockEvt);
+
+ 		draggingConfig.dragStarted(0, 0);
+ 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+
+ 		var selectionRect = { 
+ 			x: 1,
+ 			y: 2,
+ 			width: 3,
+ 			height: 4,
+ 		};
+
+ 		mockScope.dragSelectionRect = selectionRect;
+
+ 		draggingConfig.dragEnded();
+
+		expect(mockScope.chart.applySelectionRect).toHaveBeenCalledWith(selectionRect);
  	});
 
 	it('test mouse down commences connection dragging', function () {
