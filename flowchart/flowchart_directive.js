@@ -309,17 +309,22 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 		var chart = $scope.chart;
 
-		chart.handleNodeMouseDown(node, evt.ctrlKey);
-
 		dragging.startDrag(evt, {
 
 			dragging: function (deltaX, deltaY, x, y) {
 
-				chart.updateNodeLocation(node, deltaX, deltaY);
+				chart.updateSelectedNodesLocation(deltaX, deltaY);
 			},
 
 			dragStarted: function () {
-				console.log("Drag started...");
+				//
+				// If nothing is selected when dragging starts, 
+				// at least select the node we are dragging.
+				//
+				if (!node.selected()) {
+					chart.deselectAll();
+					node.select();
+				}
 			},
 
 			dragEnded: function () {
@@ -327,7 +332,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			},
 
 			clicked: function () {
-				console.log("Clicked...");
+				chart.handleNodeMouseDown(node, evt.ctrlKey);
 			},
 
 		});

@@ -470,10 +470,15 @@ var flowchart = {
 		//
 		// Update the location of the node and its connectors.
 		//
-		this.updateNodeLocation = function (node, deltaX, deltaY) {
+		this.updateSelectedNodesLocation = function (deltaX, deltaY) {
 
-			node.data.x += deltaX;
-			node.data.y += deltaY;
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+				if (node.selected()) {
+					node.data.x += deltaX;
+					node.data.y += deltaY;
+				}
+			}
 		};
 
 		//

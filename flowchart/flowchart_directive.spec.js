@@ -30,6 +30,8 @@ describe('flowchart', function () {
 			y: function () { return 0 },
 			inputConnectors: inputConnectors || [],
 			outputConnectors: outputConnectors || [],
+			select: jasmine.createSpy(),
+			selected: function () { return false; },
 		};
 	};
 
@@ -43,7 +45,7 @@ describe('flowchart', function () {
 
 			handleNodeMouseDown: jasmine.createSpy(),
 			handleConnectionMouseDown: jasmine.createSpy(),
-			updateNodeLocation: jasmine.createSpy(),
+			updateSelectedNodesLocation: jasmine.createSpy(),
 			deselectAll: jasmine.createSpy(),
 			createConnection: jasmine.createSpy(),
 			applySelectionRect: jasmine.createSpy(),
@@ -259,7 +261,7 @@ describe('flowchart', function () {
 		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNode, true);
 	});
 
-	it('test node dragging updates node location', function () {
+	it('test node dragging updates selected nodes location', function () {
 
 		var mockScope = createMockScope([createMockNode()]);
 		var mockDragging = createMockDragging();
@@ -275,9 +277,44 @@ describe('flowchart', function () {
 
 		mockDragging.config.dragging(xIncrement, yIncrement, 10, 10);
 
-		var node = mockScope.chart.nodes[0];
+		expect(mockScope.chart.updateSelectedNodesLocation).toHaveBeenCalledWith(xIncrement, yIncrement);
+	});
 
-		expect(mockScope.chart.updateNodeLocation).toHaveBeenCalledWith(node, xIncrement, yIncrement);
+	it('test node dragging doesnt modify selection when node is already selected', function () {
+		var mockNode1 = createMockNode();
+		var mockNode2 = createMockNode();
+		var mockScope = createMockScope([mockNode1, mockNode2]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			config.dragStarted(0, 0);
+		});
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		mockNode2.selected = function () { return true; }
+
+		var mockEvt = {};
+
+		mockScope.nodeMouseDown(mockEvt, mockNode2);
+
+		expect(mockScope.chart.deselectAll).not.toHaveBeenCalled();
+	});
+
+	it('test node dragging selects node, when the node is not already selected', function () {
+		var mockNode1 = createMockNode();
+		var mockNode2 = createMockNode();
+		var mockScope = createMockScope([mockNode1, mockNode2]);
+		var mockDragging = createMockDragging(function (evt, config) {
+			config.dragStarted(0, 0);
+		});
+
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+
+		var mockEvt = {};
+
+		mockScope.nodeMouseDown(mockEvt, mockNode2);
+
+		expect(mockScope.chart.deselectAll).toHaveBeenCalled();
+		//expect(mockNode2.select).toHaveBeenCalled();
 	});
 
 	it('test connection click handling is forwarded to view model', function () {
