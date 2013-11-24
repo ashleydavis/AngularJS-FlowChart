@@ -407,7 +407,7 @@ describe('flowchart-viewmodel', function () {
 		expect(connection2.selected()).toBe(false);
 	});
 
-	it('test chart mouse down deselects nodes other than the one clicked', function () {
+	it('test mouse down deselects nodes other than the one clicked', function () {
 
 		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
 
@@ -429,7 +429,7 @@ describe('flowchart-viewmodel', function () {
 		expect(node3.selected()).toBe(false);
 	});
 
-	it('test node mouse down selects the clicked node', function () {
+	it('test mouse down selects the clicked node', function () {
 
 		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
 
@@ -446,7 +446,7 @@ describe('flowchart-viewmodel', function () {
 		expect(node3.selected()).toBe(true);
 	});
 
-	it('test chart mouse down brings node to front', function () {
+	it('test mouse down brings node to front', function () {
 
 		var mockDataModel = createMockDataModel([ 1, 2 ]);
 
@@ -461,7 +461,7 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.nodes[1]).toBe(node1);
 	});
 
-	it('test chart mouse down deselects connections other than the one clicked', function () {
+	it('test mouse down deselects connections other than the one clicked', function () {
 
 		var mockDataModel = createMockDataModel(
 			[ 1, 2, 3 ],
@@ -514,31 +514,12 @@ describe('flowchart-viewmodel', function () {
 		expect(connection3.selected()).toBe(true);
 	});	
 
- 	it('test chart data-model is wrapped in view-model', function () {
+ 	it('test data-model is wrapped in view-model', function () {
 
- 		var mockInputConnector = {
- 			name: "Input1",
- 		};
-
- 		var mockOutputConnector = {
-			name: "Output1",
- 		};
-
- 		var mockNode = {
- 			inputConnectors: [
- 				mockInputConnector
- 			],
-
- 			outputConnectors: [
- 				mockOutputConnector
- 			],
- 		};
-
- 		var mockDataModel = {
- 			nodes: [
- 				mockNode
- 			],
- 		};
+		var mockDataModel = createMockDataModel([ 1, 2 ], [[[1, 0], [2, 0]]]);
+		var mockNode = mockDataModel.nodes[0];
+		var mockInputConnector = mockNode.inputConnectors[0];
+		var mockOutputConnector = mockNode.outputConnectors[0];
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 
 
@@ -548,7 +529,7 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject).toNotBe(mockDataModel);
 		expect(testObject.data).toBe(mockDataModel);
 		expect(testObject.nodes).toBeDefined();
-		expect(testObject.nodes.length).toBe(1);
+		expect(testObject.nodes.length).toBe(2);
 
 		// Node
 
@@ -557,35 +538,21 @@ describe('flowchart-viewmodel', function () {
 		expect(node).toNotBe(mockNode);
 		expect(node.data).toBe(mockNode);
 
-		expect(node.inputConnectors.length).toBe(1);
-
-		var inputConnector = node.inputConnectors[0];
-		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name()).toBe(mockInputConnector.name);
-
-		expect(node.outputConnectors.length).toBe(1);
-		
-		var outputConnector = node.outputConnectors[0];
-		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name()).toBe(mockOutputConnector.name);
-
 		// Connectors
 
-		expect(node.inputConnectors.length).toBe(1);
+		expect(node.inputConnectors.length).toBe(3);
+		expect(node.inputConnectors[0].data).toBe(mockInputConnector);
 
-		var inputConnector = node.inputConnectors[0];
-		expect(inputConnector.data).toBe(mockInputConnector);
-		expect(inputConnector.name()).toBe(mockInputConnector.name);
-
-		expect(node.outputConnectors.length).toBe(1);
-		
-		var outputConnector = node.outputConnectors[0];
-		expect(outputConnector.data).toBe(mockOutputConnector);
-		expect(outputConnector.name()).toBe(mockOutputConnector.name);
+		expect(node.outputConnectors.length).toBe(3);		
+		expect(node.outputConnectors[0].data).toBe(mockOutputConnector);
 
 		// Connection
  	
-		expect(testObject.connections.length).toBe(0);
+		expect(testObject.connections.length).toBe(1);
+		//todo: expect(testObject.connections[0].source().node().toBe(testObject.nodes[0]);
+		//todo: expect(testObject.connections[0].source().connector().toBe(testObject.nodes[0].outputConnectors[0]);
+		//todo: expect(testObject.connections[0].dest().node()).toBe(testObject.nodes[1]);
+		//todo: expect(testObject.connections[0].dest().connector()).toBe(testObject.nodes[1].inputConnectors[0]);
  	});
 
 	it('test can delete 1st selected node', function () {
