@@ -410,14 +410,7 @@ describe('flowchart-viewmodel', function () {
 
 	it('test chart mouse down deselects nodes other than the one clicked', function () {
 
-		var mockNode1 = {};
-		var mockNode2 = {};
-		var mockNode3 = {};
-		var mockDataModel = {
-			nodes: [
-				mockNode1, mockNode2, mockNode3
-			]
-		};
+		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 
@@ -439,14 +432,7 @@ describe('flowchart-viewmodel', function () {
 
 	it('test node mouse down selects the clicked node', function () {
 
-		var mockNode1 = {};
-		var mockNode2 = {};
-		var mockNode3 = {};
-		var mockDataModel = {
-			nodes: [
-				mockNode1, mockNode2, mockNode3
-			]
-		};
+		var mockDataModel = createMockDataModel([ 1, 2, 3 ]);
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel);
 		
