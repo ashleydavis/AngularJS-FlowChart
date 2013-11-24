@@ -51,13 +51,13 @@ Style for connections.
 }
 
 .connection-line {
-	stroke: blue;
+	stroke: gray;
 	stroke-width: 4;
 	fill: transparent;
 }	
 
 .mouseover-connection-line {
-	stroke: blue;
+	stroke: gray;
 	stroke-width: 6;
 	fill: transparent;
 }	
@@ -69,7 +69,7 @@ Style for connections.
 }	
 
 .connection-endpoint {
-	fill: blue;
+	fill: gray;
 }
 
 .selected-connection-endpoint {
@@ -77,7 +77,7 @@ Style for connections.
 }	
 
 .mouseover-connection-endpoint {
-	fill: blue;
+	fill: gray;
 }
 
 /*
@@ -89,13 +89,13 @@ Style for the connection being dragged out.
 }
 
 .dragging-connection-line {
-	stroke: blue;
+	stroke: gray;
 	stroke-width: 3;
 	fill: transparent;
 }	
 
 .dragging-connection-endpoint {
-	fill: blue;
+	fill: gray;
 }
 
 /*
@@ -104,4 +104,14 @@ The element (in this case the SVG element) that contains the draggable elements.
 
 .draggable-container {
 	border: solid 1px blue;
+}
+
+/*
+Drag selection rectangle.
+*/
+
+.drag-selection-rect {
+	stroke: blue;
+	stroke-width: 2;
+	fill: transparent;
 }
