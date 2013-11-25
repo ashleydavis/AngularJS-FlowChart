@@ -49,7 +49,7 @@ describe('flowchart-viewmodel', function () {
 		if (connectionDataModels) {
 			dataModel.connections = connectionDataModels;
 		}
-		
+
  		return dataModel;
 	};
 
@@ -973,6 +973,30 @@ describe('flowchart-viewmodel', function () {
 
 		expect(node.x()).toBe(0);
 		expect(node.y()).toBe(0);
+	});
+
+	it('test find node throws when there are no nodes', function () {
+		var mockDataModel = createMockDataModel();
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findNode(150); }).toThrow();
+	});
+
+	it('test find node throws when node is not found', function () {
+		var mockDataModel = createMockDataModel([5, 25, 15, 30]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findNode(150); }).toThrow();
+	});
+
+	it('test find node retreives correct node', function () {
+		var mockDataModel = createMockDataModel([5, 25, 15, 30]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(testObject.findNode(15)).toBe(testObject.nodes[2]);
 	});
 
 	it('test create new connection', function () {
