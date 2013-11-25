@@ -180,19 +180,9 @@ angular.module('app', ['flowChart', ])
 		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 		for (var i = 0; i < selectedNodes.length; ++i) {
 			var node = selectedNodes[i];
-			var connectorDataModel = {
+			node.addInputConnector({
 				name: connectorName,
-			};
-
-			/*todo: move this into the view model.
-			var connectorViewModel = new flowchart.InputConnectorViewModel(connectorDataModel, node.inputConnectors.length, node);
-
-			// Add to node's data model.
-			node.data.inputConnectors.push(connectorDataModel);
-
-			// Add to node's view model.
-			node.inputConnectors.push(connectorViewModel);
-			*/
+			});
 		}
 	};
 
@@ -208,19 +198,9 @@ angular.module('app', ['flowChart', ])
 		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 		for (var i = 0; i < selectedNodes.length; ++i) {
 			var node = selectedNodes[i];
-			var connectorDataModel = {
+			node.addOutputConnector({
 				name: connectorName,
-			};
-
-			/*todo: move this into the view model.
-			var connectorViewModel = new flowchart.OutputConnectorViewModel(connectorDataModel, node.outputConnectors.length, node);
-
-			// Add to node's data model.
-			node.data.outputConnectors.push(connectorDataModel);
-
-			// Add to node's view model.
-			node.outputConnectors.push(connectorViewModel);
-			*/
+			});
 		}
 	}
 
