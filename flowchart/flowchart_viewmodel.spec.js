@@ -909,9 +909,14 @@ describe('flowchart-viewmodel', function () {
 		var connection = testObject.connections[0];
 		expect(connection.source).toBe(sourceConnector);
 		expect(connection.dest).toBe(destConnector);
-		expect(connection.data.source.nodeID).toBe(5);
-		expect(connection.data.source.connectorIndex).toBe(0);
-		expect(connection.data.dest.nodeID).toBe(25);
-		expect(connection.data.dest.connectorIndex).toBe(1);
+
+		expect(testObject.data.connections.length).toBe(1);
+		var connectionData = testObject.data.connections[0];
+		expect(connection.data).toBe(connectionData);
+
+		expect(connectionData.source.nodeID).toBe(5);
+		expect(connectionData.source.connectorIndex).toBe(0);
+		expect(connectionData.dest.nodeID).toBe(25);
+		expect(connectionData.dest.connectorIndex).toBe(1);
 	});
 });
