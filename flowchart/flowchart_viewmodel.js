@@ -51,18 +51,30 @@ var flowchart = {
 		this._x = x;
 		this._y = y;
 
+		//
+		// The name of the connector.
+		//
 		this.name = function () {
 			return this.data.name;
 		}
 
+		//
+		// X coordinate of the connector.
+		//
 		this.x = function () {
 			return this._x;
 		};
 
+		//
+		// Y coordinate of the connector.
+		//
 		this.y = function () { 
 			return this._y;
 		};
 
+		//
+		// The parent node that the connector is attached to.
+		//
 		this.parentNode = function () {
 			return this._parentNode;
 		};
