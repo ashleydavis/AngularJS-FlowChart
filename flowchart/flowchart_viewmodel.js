@@ -416,9 +416,14 @@ var flowchart = {
 		//
 		this.createNewConnection = function (sourceConnector, destConnector) {
 
-			var connections = this.connections;
-			if (!connections) {
-				connections = this.connections = [];
+			var connectionsDataModel = this.data.connections;
+			if (!connectionsDataModel) {
+				connectionsDataModel = this.connections = [];
+			}
+
+			var connectionsViewModel = this.connections;
+			if (!connectionsViewModel) {
+				connectionsViewModel = this.connections = [];
 			}
 
 			var sourceNode = sourceConnector.parentNode();
@@ -443,24 +448,10 @@ var flowchart = {
 					connectorIndex: destConnectorIndex,
 				},
 			};
+			connectionsDataModel.push(connectionDataModel);
 
 			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
-			connections.push(connectionViewModel);
-
-			/*
-			//
-			// Create a new data model.
-			//
-			var connectionDataModel = this.createNewConnectionDataModel(sourceConnector.data, destConnector.data);
-
-			var connections = this.connections;
-			if (!connections) {
-				connections = this.connections = [];
-			}
-
-			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
-			connections.push(connectionViewModel);
-			*/
+			connectionsViewModel.push(connectionViewModel);
 		};		
 
 		//
