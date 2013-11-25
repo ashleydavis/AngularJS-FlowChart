@@ -209,15 +209,7 @@ angular.module('app', ['flowChart', ])
 			],
 		};
 
-		// 
-		// Update the data model.
-		//
-		$scope.chartViewModel.data.nodes.push(newNodeDataModel);
-
-		// 
-		// Update the view model.
-		//
-		$scope.chartViewModel.nodes.push(new flowchart.NodeViewModel(newNodeDataModel));		
+		$scope.chartViewModel.addNode(newNodeDataModel);
 	};
 
 	//
