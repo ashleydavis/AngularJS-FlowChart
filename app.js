@@ -15,17 +15,9 @@ angular.module('app', ['flowChart', ])
 	var deleteKeyCode = 46;
 
 	//
-	// Event handler for key-up on the flowchart.
+	// Selects the next node id.
 	//
-	$scope.keyUp = function (evt) {
-
-		if (evt.keyCode === deleteKeyCode) {
-			//
-			// Delete key.
-			//
-			$scope.chartViewModel.deleteSelected();
-		}
-	};
+	var nextNodeID = 10;
 
 	//
 	// Setup the data-model for the chart.
@@ -108,6 +100,67 @@ angular.module('app', ['flowChart', ])
 
 
 		]
+	};
+
+	//
+	// Event handler for key-up on the flowchart.
+	//
+	$scope.keyUp = function (evt) {
+
+		if (evt.keyCode === deleteKeyCode) {
+			//
+			// Delete key.
+			//
+			$scope.chartViewModel.deleteSelected();
+		}
+	};
+
+	//
+	// Add a new node to the chart.
+	//
+	$scope.addNewNode = function () {
+
+		//
+		// Template for a new node.
+		//
+		var newNodeDataModel = {
+			name: "New node",
+			id: nextNodeID++,
+			x: 0,
+			y: 0,
+			inputConnectors: [ 
+				{
+                    name: "X"
+                },
+                {
+                    name: "Y"
+                },
+                {
+                    name: "Z"
+                }			
+			],
+			outputConnectors: [ 
+				{
+                    name: "1"
+                },
+                {
+                    name: "2"
+                },
+                {
+                    name: "3"
+                }			
+			],
+		};
+
+		// 
+		// Update the data model.
+		//
+		$scope.chartViewModel.data.nodes.push(newNodeDataModel);
+
+		// 
+		// Update the view model.
+		//
+		$scope.chartViewModel.nodes.push(new flowchart.NodeViewModel(newNodeDataModel));		
 	};
 
 	//
