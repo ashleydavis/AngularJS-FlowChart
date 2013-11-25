@@ -38,9 +38,9 @@ var flowchart = {
 	};
 
 	//
-	// View model for a connector.
+	// View model for an input connector.
 	//
-	flowchart.ConnectorViewModel = function (connectorDataModel, x, connectorIndex, parentNode) {
+	flowchart.InputConnectorViewModel = function (connectorDataModel, connectorIndex, parentNode) {
 
 		this.data = connectorDataModel;
 		this._parentNode = parentNode;
@@ -50,7 +50,32 @@ var flowchart = {
 		}
 
 		this.x = function () {
-			return x;	
+			return flowchart.computeLocalInputConnectorX();	
+		};
+
+		this.y = function () { 
+			return flowchart.computeLocalConnectorY(connectorIndex);
+		};
+
+		this.parentNode = function () {
+			return this._parentNode;
+		};
+	};
+
+	//
+	// View model for a connector.
+	//
+	flowchart.OutputConnectorViewModel = function (connectorDataModel, connectorIndex, parentNode) {
+
+		this.data = connectorDataModel;
+		this._parentNode = parentNode;
+
+		this.name = function () {
+			return this.data.name;
+		}
+
+		this.x = function () {
+			return flowchart.computeLocalOutputConnectorX();	
 		};
 
 		this.y = function () { 
@@ -69,7 +94,7 @@ var flowchart = {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalInputConnectorX(), i, parentNode));
+			viewModels.push(new flowchart.InputConnectorViewModel(connectorDataModels[i], i, parentNode));
 		}
 
 		return viewModels;
@@ -82,7 +107,7 @@ var flowchart = {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.ConnectorViewModel(connectorDataModels[i], flowchart.computeLocalOutputConnectorX(), i, parentNode));
+			viewModels.push(new flowchart.OutputConnectorViewModel(connectorDataModels[i], i, parentNode));
 		}
 
 		return viewModels;

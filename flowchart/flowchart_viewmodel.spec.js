@@ -71,26 +71,50 @@ describe('flowchart-viewmodel', function () {
 		flowchart.computeConnectorPos(mockNode, 2, true);
 	});
 
-	it('construct ConnectorViewModel', function () {
+	it('construct InputConnectorViewModel', function () {
 
 		var mockDataModel = {
 			name: "Fooey",
 		};
 
-		new flowchart.ConnectorViewModel(mockDataModel, 10, 0);
-		new flowchart.ConnectorViewModel(mockDataModel, 10, 1);
-		new flowchart.ConnectorViewModel(mockDataModel, 10, 2);
+		new flowchart.InputConnectorViewModel(mockDataModel, 0);
+		new flowchart.InputConnectorViewModel(mockDataModel, 1);
+		new flowchart.InputConnectorViewModel(mockDataModel, 2);
 
 	});
 
-	it('ConnectorViewModel has reference to parent node', function () {
+	it('construct OutputConnectorViewModel', function () {
+
+		var mockDataModel = {
+			name: "Fooey",
+		};
+
+		new flowchart.OutputConnectorViewModel(mockDataModel, 0);
+		new flowchart.OutputConnectorViewModel(mockDataModel, 1);
+		new flowchart.OutputConnectorViewModel(mockDataModel, 2);
+
+	});
+
+	it('InputConnectorViewModel has reference to parent node', function () {
 
 		var mockDataModel = {
 			name: "Fooey",
 		};
 		var mockParentNodeViewModel = {};
 
-		var testObject = new flowchart.ConnectorViewModel(mockDataModel, 10, 0, mockParentNodeViewModel);
+		var testObject = new flowchart.InputConnectorViewModel(mockDataModel, 0, mockParentNodeViewModel);
+
+		expect(testObject.parentNode()).toBe(mockParentNodeViewModel);
+	});
+
+	it('OutputConnectorViewModel has reference to parent node', function () {
+
+		var mockDataModel = {
+			name: "Fooey",
+		};
+		var mockParentNodeViewModel = {};
+
+		var testObject = new flowchart.OutputConnectorViewModel(mockDataModel, 0, mockParentNodeViewModel);
 
 		expect(testObject.parentNode()).toBe(mockParentNodeViewModel);
 	});
