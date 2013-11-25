@@ -489,6 +489,24 @@ var flowchart = {
 		};		
 
 		//
+		// Select all nodes and connections in the chart.
+		//
+		this.selectAll = function () {
+
+			var nodes = this.nodes;
+			for (var i = 0; i < nodes.length; ++i) {
+				var node = nodes[i];
+				node.select();
+			}
+
+			var connections = this.connections;
+			for (var i = 0; i < connections.length; ++i) {
+				var connection = connections[i];
+				connection.select();
+			}			
+		}
+
+		//
 		// Deselect all nodes and connections in the chart.
 		//
 		this.deselectAll = function () {
