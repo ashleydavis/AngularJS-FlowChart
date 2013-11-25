@@ -42,13 +42,6 @@ describe('flowchart-viewmodel', function () {
  		};
 	};
 
-	it('compute connector y', function () {
-
-		flowchart.computeLocalConnectorY(0);
-		flowchart.computeLocalConnectorY(1);
-		flowchart.computeLocalConnectorY(2);
-	});
-
 	it('compute computeConnectorPos', function () {
 
 		var mockNode = {
