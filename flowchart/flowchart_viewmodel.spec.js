@@ -408,6 +408,23 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections[0].dest.data).toBe(mockDataModel.nodes[1].inputConnectors[1]);
 	});
 
+	it('test can select all', function () {
+
+		var mockDataModel = createMockDataModel([1, 2], [[[1, 0], [2, 1]]]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+		var connection = testObject.connections[0];
+
+		testObject.selectAll();
+
+		expect(node1.selected()).toBe(true);
+		expect(node2.selected()).toBe(true);
+		expect(connection.selected()).toBe(true);
+	});
+
 	it('test can deselect all nodes', function () {
 
 		var mockDataModel = createMockDataModel([1, 2]);
