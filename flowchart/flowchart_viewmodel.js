@@ -411,33 +411,43 @@ var flowchart = {
 		// Create a view-model for connections.
 		this.connections = this._createConnectionsViewModel(this.data.connections);
 
-		this.foo = "bah";
-
-		//
-		// Create a data for a new connection.
-		//
-		this.createNewConnectionDataModel = function (sourceConnector, destConnector) {
-
-			var connectionsDataModel = this.data.connections;
-			if (!connectionsDataModel) {
-				connectionsDataModel = this.data.connections = [];
-			}
-
-			var connection = {
-				source: sourceConnector,
-				dest: destConnector
-			};
-
-			connectionsDataModel.push(connection);
-
-			return connection;
-		}
-
 		//
 		// Create a view model for a new connection.
 		//
 		this.createNewConnection = function (sourceConnector, destConnector) {
 
+			var connections = this.connections;
+			if (!connections) {
+				connections = this.connections = [];
+			}
+
+			var sourceNode = sourceConnector.parentNode();
+			var sourceConnectorIndex = sourceNode.outputConnectors.indexOf(sourceConnector);
+			if (sourceConnectorIndex == -1) {
+				throw new Error("Failed to find source connector within inputConnectors of source node.");
+			}
+
+			var destNode = destConnector.parentNode();
+			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
+			if (destConnectorIndex == -1) {
+				throw new Error("Failed to find dest connector within inputConnectors of dest node.");
+			}
+
+			var connectionDataModel = {
+				source: {
+					nodeID: sourceNode.data.id,
+					connectorIndex: sourceConnectorIndex,
+				},
+				dest: {
+					nodeID: destNode.data.id,
+					connectorIndex: destConnectorIndex,
+				},
+			};
+
+			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
+			connections.push(connectionViewModel);
+
+			/*
 			//
 			// Create a new data model.
 			//
@@ -450,6 +460,7 @@ var flowchart = {
 
 			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 			connections.push(connectionViewModel);
+			*/
 		};		
 
 		//
