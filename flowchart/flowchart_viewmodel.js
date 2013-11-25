@@ -74,10 +74,12 @@ var flowchart = {
 	var createConnectorsViewModel = function (connectorDataModels, x, parentNode) {
 		var viewModels = [];
 
-		for (var i = 0; i < connectorDataModels.length; ++i) {
-			var connectorViewModel = 
-				new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
-			viewModels.push(connectorViewModel);
+		if (connectorDataModels) {
+			for (var i = 0; i < connectorDataModels.length; ++i) {
+				var connectorViewModel = 
+					new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+				viewModels.push(connectorViewModel);
+			}
 		}
 
 		return viewModels;
@@ -88,8 +90,9 @@ var flowchart = {
 	//
 	flowchart.NodeViewModel = function (nodeDataModel) {
 
-
 		this.data = nodeDataModel;
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors, 0, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors, flowchart.nodeWidth, this);
 
 		// Set to true when the node is selected.
 		this._selected = false;
@@ -195,9 +198,6 @@ var flowchart = {
 			}
 			this._addConnector(connectorDataModel, flowchart.nodeWidth, this.data.outputConnectors, this.outputConnectors);
 		};
-
-		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors || [], 0, this);
-		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors || [], flowchart.nodeWidth, this);
 	};
 
 	// 
