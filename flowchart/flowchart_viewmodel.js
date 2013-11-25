@@ -161,6 +161,41 @@ var flowchart = {
 			return this._selected;
 		};
 
+		//
+		// Internal function to add a connector.
+		this._addConnector = function (connectorDataModel, x, connectorsDataModel, connectorsViewModel) {
+			var connectorViewModel = 
+				new flowchart.ConnectorViewModel(connectorDataModel, x, 
+						flowchart.computeConnectorY(connectorsViewModel.length), this);
+
+			connectorsDataModel.push(connectorDataModel);
+
+			// Add to node's view model.
+			connectorsViewModel.push(connectorViewModel);
+		}
+
+		//
+		// Add an input connector to the node.
+		//
+		this.addInputConnector = function (connectorDataModel) {
+
+			if (!this.data.inputConnectors) {
+				this.data.inputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, 0, this.data.inputConnectors, this.inputConnectors);
+		};
+
+		//
+		// Add an ouput connector to the node.
+		//
+		this.addOutputConnector = function (connectorDataModel) {
+
+			if (!this.data.outputConnectors) {
+				this.data.outputConnectors = [];
+			}
+			this._addConnector(connectorDataModel, flowchart.nodeWidth, this.data.outputConnectors, this.outputConnectors);
+		};
+
 		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors || [], 0, this);
 		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors || [], flowchart.nodeWidth, this);
 	};

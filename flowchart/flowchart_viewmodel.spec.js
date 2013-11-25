@@ -195,6 +195,58 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.selected()).toBe(false);
 	});
 
+	it('test can add input connector to node', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		var name1 = "Connector1";
+		var name2 = "Connector2";
+		var data1 = {
+			name: name1
+		};
+		var data2 = {
+			name: name2
+		}
+		testObject.addInputConnector(data1);
+		testObject.addInputConnector(data2);
+
+		expect(testObject.inputConnectors.length).toBe(2);
+		expect(testObject.inputConnectors[0].data).toBe(data1);
+		expect(testObject.inputConnectors[1].data).toBe(data2);
+
+		expect(testObject.data.inputConnectors.length).toBe(2);
+		expect(testObject.data.inputConnectors[0]).toBe(data1);
+		expect(testObject.data.inputConnectors[1]).toBe(data2);
+	});
+
+	it('test can add output connector to node', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		var name1 = "Connector1";
+		var name2 = "Connector2";
+		var data1 = {
+			name: name1
+		};
+		var data2 = {
+			name: name2
+		}
+		testObject.addOutputConnector(data1);
+		testObject.addOutputConnector(data2);
+
+		expect(testObject.outputConnectors.length).toBe(2);
+		expect(testObject.outputConnectors[0].data).toBe(data1);
+		expect(testObject.outputConnectors[1].data).toBe(data2);
+
+		expect(testObject.data.outputConnectors.length).toBe(2);
+		expect(testObject.data.outputConnectors[0]).toBe(data1);
+		expect(testObject.data.outputConnectors[1]).toBe(data2);
+	});
+
 	it('construct ChartViewModel with no nodes or connections', function () {
 
 		var mockDataModel = {};
