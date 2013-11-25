@@ -7,14 +7,16 @@ describe('flowchart-viewmodel', function () {
 
 		var nodeDataModels = [];
 
-		for (var i = 0; i < nodeIds.length; ++i) {
-			nodeDataModels.push({
-				id: nodeIds[i],
-				x: 0,
-				y: 0,
-				inputConnectors: [ {}, {}, {} ],
-				outputConnectors: [ {}, {}, {} ],
-			});
+		if (nodeIds) {
+			for (var i = 0; i < nodeIds.length; ++i) {
+				nodeDataModels.push({
+					id: nodeIds[i],
+					x: 0,
+					y: 0,
+					inputConnectors: [ {}, {}, {} ],
+					outputConnectors: [ {}, {}, {} ],
+				});
+			}
 		}
 
 		var connectionDataModels = [];
@@ -918,5 +920,48 @@ describe('flowchart-viewmodel', function () {
 		expect(connectionData.source.connectorIndex).toBe(0);
 		expect(connectionData.dest.nodeID).toBe(25);
 		expect(connectionData.dest.connectorIndex).toBe(1);
+	});
+
+	it('test get selected nodes results in empty array when there are no nodes', function () {
+
+		var mockDataModel = createMockDataModel();
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		var selectedNodes = testObject.getSelectedNodes();
+
+		expect(selectedNodes.length).toBe(0);
+	});
+
+	it('test get selected nodes results in empty array when none selected', function () {
+
+		var mockDataModel = createMockDataModel([1, 2, 3, 4]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		var selectedNodes = testObject.getSelectedNodes();
+
+		expect(selectedNodes.length).toBe(0);
+	});
+
+	it('test can get selected nodes', function () {
+
+		var mockDataModel = createMockDataModel([1, 2, 3, 4]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		var node1 = testObject.nodes[0];
+		var node2 = testObject.nodes[1];
+		var node3 = testObject.nodes[2];
+		var node4 = testObject.nodes[3];
+
+		node2.select();
+		node3.select();
+
+		var selectedNodes = testObject.getSelectedNodes();
+
+		expect(selectedNodes.length).toBe(2);
+		expect(selectedNodes[0]).toBe(node2);
+		expect(selectedNodes[1]).toBe(node3);	
 	});
 });
