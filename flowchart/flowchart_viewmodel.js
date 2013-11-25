@@ -153,10 +153,15 @@ var flowchart = {
 		}
 
 		//
-		// Width of the node.
+		// Height of the node.
 		//
 		this.height = function () {
-			return 150;
+			var numConnectors =
+				Math.max(
+					this.inputConnectors.length, 
+					this.outputConnectors.length);
+
+			return 40 + (numConnectors * 35);
 		}
 
 		//
