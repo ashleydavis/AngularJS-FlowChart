@@ -42,11 +42,6 @@ describe('flowchart-viewmodel', function () {
  		};
 	};
 
-	it('compute output connector x', function () {
-
-		flowchart.computeLocalOutputConnectorX();
-	});
-
 	it('compute connector y', function () {
 
 		flowchart.computeLocalConnectorY(0);

@@ -26,10 +26,7 @@ var flowchart = {
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
 		return {
-			x: node.x() + 
-				(inputConnector ? 
-					0 :
-					flowchart.computeLocalOutputConnectorX(connectorIndex)),
+			x: node.x() + (inputConnector ? 0 : 250),
 			y: node.y() + flowchart.computeLocalConnectorY(connectorIndex),
 		};
 	};
@@ -72,7 +69,7 @@ var flowchart = {
 		}
 
 		this.x = function () {
-			return flowchart.computeLocalOutputConnectorX();	
+			return 250;	
 		};
 
 		this.y = function () { 
