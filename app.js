@@ -254,7 +254,16 @@ angular.module('app', ['flowChart', ])
 				name: connectorName,
 			});
 		}
-	}
+	};
+
+	//
+	// Delete selected nodes and connections.
+	//
+	$scope.deleteSelected = function () {
+
+		$scope.chartViewModel.deleteSelected();
+	};
+
 
 
 	//
