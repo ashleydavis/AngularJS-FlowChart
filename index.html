@@ -16,8 +16,6 @@
 		ng-keyup="keyUp($event)"
 		>
 
-		<input type="checkbox" ng-model="chartViewModel.connections[0].isselected">
-
 		<div style="width: 100%; overflow: hidden;">
 		    <div style="width: 600px; float: left;"> 
 				<textarea 
@@ -28,6 +26,12 @@
 				</textarea>
 			</div>
 		    <div style="margin-left: 600px;">
+    			<button
+    				ng-click="addNewNode()"
+    				title="Add a new node to the chart"
+    				>
+    				Add Node
+				</button>
 			    <flow-chart
 		    		style="margin: 5px; width: 100%; height: 100%;"
 			      	chart="chartViewModel"
