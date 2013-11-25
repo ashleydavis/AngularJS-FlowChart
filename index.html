@@ -47,6 +47,14 @@
     				>
     				Add Output Connector
 				</button>
+    			<button
+    				ng-click="deleteSelected()"
+    				ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+    				title="Delete selected nodes and connections"
+    				>
+    				Delete Selected
+				</button>
+
 			    <flow-chart
 		    		style="margin: 5px; width: 100%; height: 100%;"
 			      	chart="chartViewModel"
