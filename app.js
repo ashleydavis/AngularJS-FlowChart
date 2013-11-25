@@ -120,11 +120,16 @@ angular.module('app', ['flowChart', ])
 	//
 	$scope.addNewNode = function () {
 
+		var nodeName = prompt("Enter a node name:", "New node");
+		if (!nodeName) {
+			return;
+		}
+
 		//
 		// Template for a new node.
 		//
 		var newNodeDataModel = {
-			name: "New node",
+			name: nodeName,
 			id: nextNodeID++,
 			x: 0,
 			y: 0,
@@ -167,11 +172,16 @@ angular.module('app', ['flowChart', ])
 	// Add an input connector to selected nodes.
 	//
 	$scope.addNewInputConnector = function () {
+		var connectorName = prompt("Enter a connector name:", "New connector");
+		if (!connectorName) {
+			return;
+		}
+
 		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 		for (var i = 0; i < selectedNodes.length; ++i) {
 			var node = selectedNodes[i];
 			var connectorDataModel = {
-				name: "New connector",
+				name: connectorName,
 			};
 
 			var connectorViewModel = new flowchart.InputConnectorViewModel(connectorDataModel, node.inputConnectors.length, node);
@@ -188,11 +198,16 @@ angular.module('app', ['flowChart', ])
 	// Add an output connector to selected nodes.
 	//
 	$scope.addNewOutputConnector = function () {
+		var connectorName = prompt("Enter a connector name:", "New connector");
+		if (!connectorName) {
+			return;
+		}
+
 		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
 		for (var i = 0; i < selectedNodes.length; ++i) {
 			var node = selectedNodes[i];
 			var connectorDataModel = {
-				name: "New connector",
+				name: connectorName,
 			};
 
 			var connectorViewModel = new flowchart.OutputConnectorViewModel(connectorDataModel, node.outputConnectors.length, node);
