@@ -999,6 +999,99 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.findNode(15)).toBe(testObject.nodes[2]);
 	});
 
+	it('test find input connector throws when there are no nodes', function () {
+		var mockDataModel = createMockDataModel();
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findInputConnector(150, 1); }).toThrow();
+	});
+
+	it('test find input connector throws when the node is not found', function () {
+		var mockDataModel = createMockDataModel([ 1, 2, 3]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findInputConnector(150, 1); }).toThrow();
+	});
+
+	it('test find input connector throws when there are no connectors', function () {
+		var mockDataModel = createMockDataModel([ 1 ]);
+
+		mockDataModel.nodes[0].inputConnectors = [];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findInputConnector(1, 1); }).toThrow();
+	});
+
+	it('test find input connector throws when connector is not found', function () {
+		var mockDataModel = createMockDataModel([5]);
+
+		mockDataModel.nodes[0].inputConnectors = [ 
+			{} // Only 1 input connector.
+		];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findInputConnector(5, 1); }).toThrow();
+	});
+
+	it('test find input connector retreives correct connector', function () {
+		var mockDataModel = createMockDataModel([5, 25, 15, 30]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(testObject.findInputConnector(15, 1)).toBe(testObject.nodes[2].inputConnectors[1]);
+	});
+
+	it('test find output connector throws when there are no nodes', function () {
+		var mockDataModel = createMockDataModel();
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findOutputConnector(150, 1); }).toThrow();
+	});
+
+	it('test find output connector throws when the node is not found', function () {
+		var mockDataModel = createMockDataModel([ 1, 2, 3]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findOutputConnector(150, 1); }).toThrow();
+	});
+
+	it('test find output connector throws when there are no connectors', function () {
+		var mockDataModel = createMockDataModel([ 1 ]);
+
+		mockDataModel.nodes[0].outputConnectors = [];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findOutputConnector(1, 1); }).toThrow();
+	});
+
+	it('test find output connector throws when connector is not found', function () {
+		var mockDataModel = createMockDataModel([5]);
+
+		mockDataModel.nodes[0].outputConnectors = [ 
+			{} // Only 1 input connector.
+		];
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(function () { testObject.findOutputConnector(5, 1); }).toThrow();
+	});
+
+	it('test find output connector retreives correct connector', function () {
+		var mockDataModel = createMockDataModel([5, 25, 15, 30]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		expect(testObject.findOutputConnector(15, 1)).toBe(testObject.nodes[2].outputConnectors[1]);
+	});
+
+
 	it('test create new connection', function () {
 
 		var mockDataModel = createMockDataModel([5, 25]);
