@@ -379,6 +379,15 @@ var flowchart = {
 	//
 	flowchart.ChartViewModel = function (chartDataModel) {
 
+		// Reference to the underlying data.
+		this.data = chartDataModel;
+
+		// Create a view-model for nodes.
+		this.nodes = createNodesViewModel(this.data.nodes);
+
+		// Create a view-model for connections.
+		this.connections = this._createConnectionsViewModel(this.data.connections);
+
 		//
 		// Find a specific node within the chart.
 		//
@@ -447,15 +456,6 @@ var flowchart = {
 
 			return connectionsViewModel;
 		};
-
-		// Reference to the underlying data.
-		this.data = chartDataModel;
-
-		// Create a view-model for nodes.
-		this.nodes = createNodesViewModel(this.data.nodes);
-
-		// Create a view-model for connections.
-		this.connections = this._createConnectionsViewModel(this.data.connections);
 
 		//
 		// Create a view model for a new connection.
