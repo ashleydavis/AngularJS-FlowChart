@@ -12,12 +12,9 @@ var flowchart = {
 	//
 	// Compute the position of a connector relative to its node.
 	//
-	flowchart.computeLocalInputConnectorX = function () {
-		return 0;
-	};
 
 	flowchart.computeLocalOutputConnectorX = function () {
-		return 200;
+		return 250;
 	};
 
 	flowchart.computeLocalConnectorY = function (connectorIndex) {
@@ -31,7 +28,7 @@ var flowchart = {
 		return {
 			x: node.x() + 
 				(inputConnector ? 
-					flowchart.computeLocalInputConnectorX(connectorIndex) :
+					0 :
 					flowchart.computeLocalOutputConnectorX(connectorIndex)),
 			y: node.y() + flowchart.computeLocalConnectorY(connectorIndex),
 		};
@@ -50,7 +47,7 @@ var flowchart = {
 		}
 
 		this.x = function () {
-			return flowchart.computeLocalInputConnectorX();	
+			return 0;	
 		};
 
 		this.y = function () { 
@@ -149,7 +146,7 @@ var flowchart = {
 		// Width of the node.
 		//
 		this.width = function () {
-			return 200;
+			return 250;
 		}
 
 		//
