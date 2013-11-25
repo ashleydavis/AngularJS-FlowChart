@@ -10,58 +10,57 @@ var flowchart = {
 (function () {
 
 	//
+	// Width of a node.
+	//
+	flowchart.nodeWidth = 250;
+
+	//
+	// Amount of space reserved for displaying the node's name.
+	//
+	flowchart.nodeNameHeight = 40;
+
+	//
+	// Height of a connector in a node.
+	//
+	flowchart.connectorHeight = 35;
+
+	//
+	// Compute the Y coordinate of a connector, given its index.
+	//
+	flowchart.computeConnectorY = function (connectorIndex) {
+		return flowchart.nodeNameHeight + (connectorIndex * flowchart.connectorHeight);
+	}
+
+	//
 	// Compute the position of a connector in the graph.
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
 		return {
-			x: node.x() + (inputConnector ? 0 : 250),
-			y: node.y() + 40 + (connectorIndex * 35),
-		};
-	};
-
-	//
-	// View model for an input connector.
-	//
-	flowchart.InputConnectorViewModel = function (connectorDataModel, connectorIndex, parentNode) {
-
-		this.data = connectorDataModel;
-		this._parentNode = parentNode;
-
-		this.name = function () {
-			return this.data.name;
-		}
-
-		this.x = function () {
-			return 0;	
-		};
-
-		this.y = function () { 
-			return 40 + (connectorIndex * 35);
-		};
-
-		this.parentNode = function () {
-			return this._parentNode;
+			x: node.x() + (inputConnector ? 0 : flowchart.nodeWidth),
+			y: node.y() + flowchart.computeConnectorY(connectorIndex),
 		};
 	};
 
 	//
 	// View model for a connector.
 	//
-	flowchart.OutputConnectorViewModel = function (connectorDataModel, connectorIndex, parentNode) {
+	flowchart.ConnectorViewModel = function (connectorDataModel, x, y, parentNode) {
 
 		this.data = connectorDataModel;
 		this._parentNode = parentNode;
+		this._x = x;
+		this._y = y;
 
 		this.name = function () {
 			return this.data.name;
 		}
 
 		this.x = function () {
-			return 250;	
+			return this._x;
 		};
 
 		this.y = function () { 
-			return 40 + (connectorIndex * 35);
+			return this._y;
 		};
 
 		this.parentNode = function () {
@@ -72,24 +71,13 @@ var flowchart = {
 	//
 	// Create view model for a list of data models.
 	//
-	var createInputConnectorsViewModel = function (connectorDataModels, parentNode) {
+	var createConnectorsViewModel = function (connectorDataModels, x, parentNode) {
 		var viewModels = [];
 
 		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.InputConnectorViewModel(connectorDataModels[i], i, parentNode));
-		}
-
-		return viewModels;
-	};
-
-	//
-	// Create view model for a list of data models.
-	//
-	var createOutputConnectorsViewModel = function (connectorDataModels, parentNode) {
-		var viewModels = [];
-
-		for (var i = 0; i < connectorDataModels.length; ++i) {
-			viewModels.push(new flowchart.OutputConnectorViewModel(connectorDataModels[i], i, parentNode));
+			var connectorViewModel = 
+				new flowchart.ConnectorViewModel(connectorDataModels[i], x, flowchart.computeConnectorY(i), parentNode);
+			viewModels.push(connectorViewModel);
 		}
 
 		return viewModels;
@@ -131,7 +119,7 @@ var flowchart = {
 		// Width of the node.
 		//
 		this.width = function () {
-			return 250;
+			return flowchart.nodeWidth;
 		}
 
 		//
@@ -142,8 +130,7 @@ var flowchart = {
 				Math.max(
 					this.inputConnectors.length, 
 					this.outputConnectors.length);
-
-			return 40 + (numConnectors * 35);
+			return flowchart.computeConnectorY(numConnectors);
 		}
 
 		//
@@ -174,8 +161,8 @@ var flowchart = {
 			return this._selected;
 		};
 
-		this.inputConnectors = createInputConnectorsViewModel(this.data.inputConnectors || [], this);
-		this.outputConnectors = createOutputConnectorsViewModel(this.data.outputConnectors || [], this);
+		this.inputConnectors = createConnectorsViewModel(this.data.inputConnectors || [], 0, this);
+		this.outputConnectors = createConnectorsViewModel(this.data.outputConnectors || [], flowchart.nodeWidth, this);
 	};
 
 	// 
