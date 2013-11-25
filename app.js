@@ -164,6 +164,49 @@ angular.module('app', ['flowChart', ])
 	};
 
 	//
+	// Add an input connector to selected nodes.
+	//
+	$scope.addNewInputConnector = function () {
+		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+		for (var i = 0; i < selectedNodes.length; ++i) {
+			var node = selectedNodes[i];
+			var connectorDataModel = {
+				name: "New connector",
+			};
+
+			var connectorViewModel = new flowchart.InputConnectorViewModel(connectorDataModel, node.inputConnectors.length, node);
+
+			// Add to node's data model.
+			node.data.inputConnectors.push(connectorDataModel);
+
+			// Add to node's view model.
+			node.inputConnectors.push(connectorViewModel);
+		}
+	};
+
+	//
+	// Add an output connector to selected nodes.
+	//
+	$scope.addNewOutputConnector = function () {
+		var selectedNodes = $scope.chartViewModel.getSelectedNodes();
+		for (var i = 0; i < selectedNodes.length; ++i) {
+			var node = selectedNodes[i];
+			var connectorDataModel = {
+				name: "New connector",
+			};
+
+			var connectorViewModel = new flowchart.OutputConnectorViewModel(connectorDataModel, node.outputConnectors.length, node);
+
+			// Add to node's data model.
+			node.data.outputConnectors.push(connectorDataModel);
+
+			// Add to node's view model.
+			node.outputConnectors.push(connectorViewModel);
+		}
+	}
+
+
+	//
 	// Create the view-model for the chart and attach to the scope.
 	//
 	$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
