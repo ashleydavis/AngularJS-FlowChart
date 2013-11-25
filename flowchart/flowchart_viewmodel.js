@@ -618,6 +618,22 @@ var flowchart = {
 
 		};
 
+		//
+		// Get the array of nodes that are currently selected.
+		//
+		this.getSelectedNodes = function () {
+			var selectedNodes = [];
+
+			for (var i = 0; i < this.nodes.length; ++i) {
+				var node = this.nodes[i];
+				if (node.selected()) {
+					selectedNodes.push(node);
+				}
+			}
+
+			return selectedNodes;
+		};
+
 	};
 
 })();
