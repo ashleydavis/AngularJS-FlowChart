@@ -5,9 +5,11 @@ describe('flowchart-viewmodel', function () {
 	//
 	var createMockDataModel = function (nodeIds, connections) {
 
-		var nodeDataModels = [];
+		var nodeDataModels = null;
 
 		if (nodeIds) {
+			nodeDataModels = [];
+
 			for (var i = 0; i < nodeIds.length; ++i) {
 				nodeDataModels.push({
 					id: nodeIds[i],
@@ -19,9 +21,11 @@ describe('flowchart-viewmodel', function () {
 			}
 		}
 
-		var connectionDataModels = [];
+		var connectionDataModels = null;
 
 		if (connections) {
+			connectionDataModels = [];
+
 			for (var i = 0; i < connections.length; ++i) {
 				connectionDataModels.push({
 					source: {
@@ -36,10 +40,17 @@ describe('flowchart-viewmodel', function () {
 			}
 		}
 
- 		return {
- 			nodes: nodeDataModels,
- 			connections: connectionDataModels,
- 		};
+		var dataModel = {};
+
+		if (nodeDataModels) {
+			dataModel.nodes = nodeDataModels;
+		}
+
+		if (connectionDataModels) {
+			dataModel.connections = connectionDataModels;
+		}
+		
+ 		return dataModel;
 	};
 
 	it('compute computeConnectorPos', function () {
@@ -406,6 +417,22 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.connections[0].data).toBe(mockDataModel.connections[0]);
 		expect(testObject.connections[0].source.data).toBe(mockDataModel.nodes[0].outputConnectors[0]);
 		expect(testObject.connections[0].dest.data).toBe(mockDataModel.nodes[1].inputConnectors[1]);
+	});
+
+	it('test can add new node', function () {
+
+		var mockDataModel = createMockDataModel();
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var nodeDataModel = {};
+		testObject.addNode(nodeDataModel);
+
+		expect(testObject.nodes.length).toBe(1);
+		expect(testObject.nodes[0].data).toBe(nodeDataModel);
+
+		expect(testObject.data.nodes.length).toBe(1);
+		expect(testObject.data.nodes[0]).toBe(nodeDataModel);
 	});
 
 	it('test can select all', function () {

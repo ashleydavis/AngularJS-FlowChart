@@ -452,7 +452,7 @@ var flowchart = {
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
-				connectionsDataModel = this.connections = [];
+				connectionsDataModel = this.data.connections = [];
 			}
 
 			var connectionsViewModel = this.connections;
@@ -487,6 +487,25 @@ var flowchart = {
 			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
 			connectionsViewModel.push(connectionViewModel);
 		};		
+
+		//
+		// Add a node to the view model.
+		//
+		this.addNode = function (nodeDataModel) {
+			if (!this.data.nodes) {
+				this.data.nodes = [];
+			}
+
+			// 
+			// Update the data model.
+			//
+			this.data.nodes.push(nodeDataModel);
+
+			// 
+			// Update the view model.
+			//
+			this.nodes.push(new flowchart.NodeViewModel(nodeDataModel));		
+		}
 
 		//
 		// Select all nodes and connections in the chart.
