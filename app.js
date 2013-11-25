@@ -5,9 +5,24 @@
 angular.module('app', ['flowChart', ])
 
 //
+// Simple service to create a prompt.
+//
+.factory('prompt', function () {
+
+	/* Uncomment the following to test that the prompt service is working as expected.
+	return function () {
+		return "Test!";
+	}
+	*/
+
+	// Return the browsers prompt function.
+	return prompt;
+})
+
+//
 // Application controller.
 //
-.controller('AppCtrl', function AppCtrl ($scope) {
+.controller('AppCtrl', function AppCtrl ($scope, prompt) {
 
 	//
 	// Code for the delete key.
