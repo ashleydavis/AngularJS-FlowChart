@@ -893,4 +893,25 @@ describe('flowchart-viewmodel', function () {
 		expect(node.x()).toBe(0);
 		expect(node.y()).toBe(0);
 	});
+
+	it('test create new connection', function () {
+
+		var mockDataModel = createMockDataModel([5, 25]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		var sourceConnector = testObject.nodes[0].outputConnectors[0];
+		var destConnector = testObject.nodes[1].inputConnectors[1];
+
+		testObject.createNewConnection(sourceConnector, destConnector);
+
+		expect(testObject.connections.length).toBe(1);
+		var connection = testObject.connections[0];
+		expect(connection.source).toBe(sourceConnector);
+		expect(connection.dest).toBe(destConnector);
+		expect(connection.data.source.nodeID).toBe(5);
+		expect(connection.data.source.connectorIndex).toBe(0);
+		expect(connection.data.dest.nodeID).toBe(25);
+		expect(connection.data.dest.connectorIndex).toBe(1);
+	});
 });
