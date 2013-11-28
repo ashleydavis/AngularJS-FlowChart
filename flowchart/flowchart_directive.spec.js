@@ -1,5 +1,5 @@
 
-describe('flowchart', function () {
+describe('flowchart-directive', function () {
 
 	// 
 	// Create a mock DOM element.
