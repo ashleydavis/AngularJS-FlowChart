@@ -98,11 +98,9 @@
   <g>
     <g
       ng-repeat="connection in chart.connections"
+      class="connection"
+      ng-mousedown="connectionMouseDown($event, connection)"
       >
-      <g 
-        class="connection"
-        ng-mousedown="connectionMouseDown($event, connection)"
-        >
         <path
           ng-attr-class="{{connection.selected() && 'selected-connection-line' || (connection == mouseOverConnection && 'mouseover-connection-line' || 'connection-line')}}"
           ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
@@ -126,7 +124,6 @@
             ng-attr-cy="{{connection.destCoordY()}}" 
             >
         </circle>
-      <g>
     </g>
   </g>
 
