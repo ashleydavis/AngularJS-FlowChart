@@ -23,14 +23,14 @@ angular.module('dragging', ['mouseCapture', ] )
 
   			var draggingElement = $(evt.target);
   			var draggingElementOffset = draggingElement.offset();
-  			var startOffsetX = evt.clientX - draggingElementOffset.left;
-  			var startOffsetY = evt.clientY - draggingElementOffset.top;
+  			var startOffsetX = evt.pageX - draggingElementOffset.left;
+  			var startOffsetY = evt.pageY - draggingElementOffset.top;
   			var parentElement = draggingElement.closest('.draggable-container') || draggingElement.parent();
   			var parentOffset = parentElement.offset();
 
   			var dragging = false;
-			var x = evt.clientX;
-			var y = evt.clientY;
+			var x = evt.pageX;
+			var y = evt.pageY;
 
 			//
 			// Handler for mousemove events while the mouse is 'captured'.
@@ -38,29 +38,29 @@ angular.module('dragging', ['mouseCapture', ] )
 	  		var mouseMove = function (evt) {
 
 				if (!dragging) {
-					if (evt.clientX - x > threshold ||
-						evt.clientY - y > threshold)
+					if (evt.pageX - x > threshold ||
+						evt.pageY - y > threshold)
 					{
 						dragging = true;
 
 						if (config.dragStarted) {
-							var relativeX = evt.clientX - parentOffset.left;
-							var relativeY = evt.clientY - parentOffset.top;
+							var relativeX = evt.pageX - parentOffset.left;
+							var relativeY = evt.pageY - parentOffset.top;
 							config.dragStarted(relativeX, relativeY, evt, startOffsetX, startOffsetY);
 						}
 					}
 				}
 				else {
 					if (config.dragging) {
-						var deltaX = evt.clientX - x;
-						var deltaY = evt.clientY - y;
-						var relativeX = evt.clientX - parentOffset.left;
-						var relativeY = evt.clientY - parentOffset.top;
+						var deltaX = evt.pageX - x;
+						var deltaY = evt.pageY - y;
+						var relativeX = evt.pageX - parentOffset.left;
+						var relativeY = evt.pageY - parentOffset.top;
 						config.dragging(deltaX, deltaY, relativeX, relativeY, evt, startOffsetX, startOffsetY);
 					}
 
-					x = evt.clientX;
-					y = evt.clientY;
+					x = evt.pageX;
+					y = evt.pageY;
 				}
 	  		};
 
