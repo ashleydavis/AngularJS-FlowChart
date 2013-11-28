@@ -22,13 +22,11 @@ Styles for nodes and connectors.
 .node-rect {
 	stroke: black;
 	stroke-width: 2;
-	fill: url(#nodeBackgroundGradient); 
 }
 
 .selected-node-rect {
 	stroke: red;
 	stroke-width: 3;
-	fill: url(#nodeBackgroundGradient); 
 }
 
 .connector-circle {
