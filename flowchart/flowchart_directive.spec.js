@@ -596,6 +596,7 @@ describe('flowchart-directive', function () {
 
  	it('test mouseMove handles mouse over connection', function () {
 
+ 		var mockElement = {};
  		var mockConnection = {};
  		var mockConnectionScope = {
  			connection: mockConnection
@@ -617,6 +618,10 @@ describe('flowchart-directive', function () {
  			return null;
  		};
 
+ 		testObject.hitTest = function () {
+ 			return mockElement;
+ 		};
+
  		mockScope.mouseMove(mockEvent);
 
  		expect(mockScope.mouseOverConnection).toBe(mockConnection);
@@ -624,6 +629,7 @@ describe('flowchart-directive', function () {
 
  	it('test mouse over connection clears mouse over connector', function () {
 
+		var mockElement = {};
  		var mockConnector = {};
  		var mockConnection = {};
  		var mockConnectionScope = {
@@ -646,6 +652,11 @@ describe('flowchart-directive', function () {
  			return null;
  		};
 
+ 		testObject.hitTest = function () {
+ 			return mockElement;
+ 		};
+
+
  		mockScope.mouseOverConnector = mockConnector;
 
  		mockScope.mouseMove(mockEvent);
@@ -655,6 +666,7 @@ describe('flowchart-directive', function () {
 
  	it('test mouseMove handles mouse over connector', function () {
 
+		var mockElement = {};
  		var mockConnector = {};
  		var mockConnectorScope = {
  			connector: mockConnector
@@ -675,6 +687,11 @@ describe('flowchart-directive', function () {
 
  			return null;
  		};
+
+ 		testObject.hitTest = function () {
+ 			return mockElement;
+ 		};
+ 		
 
  		mockScope.mouseMove(mockEvent);
 
