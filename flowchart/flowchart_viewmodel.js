@@ -478,13 +478,19 @@ var flowchart = {
 			var sourceNode = sourceConnector.parentNode();
 			var sourceConnectorIndex = sourceNode.outputConnectors.indexOf(sourceConnector);
 			if (sourceConnectorIndex == -1) {
-				throw new Error("Failed to find source connector within outputConnectors of source node.");
+				sourceConnectorIndex = sourceNode.inputConnectors.indexOf(sourceConnector);
+				if (sourceConnectorIndex == -1) {
+					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
+				}
 			}
 
 			var destNode = destConnector.parentNode();
 			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
 			if (destConnectorIndex == -1) {
-				throw new Error("Failed to find dest connector within inputConnectors of dest node.");
+				destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
+				if (destConnectorIndex == -1) {
+					throw new Error("Failed to find dest connector within inputConnectors or ouputConnectors of dest node.");
+				}
 			}
 
 			var connectionDataModel = {
