@@ -95,7 +95,7 @@ var flowchart_directive = {
 // it is painful to unit test a directive without instantiating the DOM 
 // (which is possible, just not ideal).
 //
-flowchart_directive.FlowChartController = function ($scope, dragging) {
+flowchart_directive.FlowChartController = function ($scope, dragging, $element) {
 
 	var controller = this;
 
@@ -198,6 +198,18 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	};
 
 	//
+	// Translate the coordinates so they are relative to the svg element.
+	//
+	this.translateCoordinates = function(x, y) {
+		var svg_elem =  $element.get(0);
+		var matrix = svg_elem.getScreenCTM();
+		var point = svg_elem.createSVGPoint();
+		point.x = x;
+		point.y = y;
+		return point.matrixTransform(matrix.inverse());
+	};
+
+	//
 	// Called on mouse down in the chart.
 	//
 	$scope.mouseDown = function (evt) {
@@ -208,23 +220,23 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 
 			dragging: function (deltaX, deltaY, x, y) {
 				var startPoint = $scope.dragSelectionStartPoint;
+				var curPoint = controller.translateCoordinates(x, y);
+
 				$scope.dragSelectionRect = {
-					x: x > startPoint.x ? startPoint.x : x,
-					y: y > startPoint.y ? startPoint.y : y,
-					width: x > startPoint.x ? x - startPoint.x : startPoint.x - x,
-					height: y > startPoint.y ? y - startPoint.y : startPoint.y - y,
+					x: curPoint.x > startPoint.x ? startPoint.x : curPoint.x,
+					y: curPoint.y > startPoint.y ? startPoint.y : curPoint.y,
+					width: curPoint.x > startPoint.x ? x - startPoint.x : startPoint.x - x,
+					height: curPoint.y > startPoint.y ? y - startPoint.y : startPoint.y - y,
 				};
 			},
 
 			dragStarted: function (x, y) {
 				$scope.dragSelecting = true;
-				$scope.dragSelectionStartPoint = {
-					x: x,
-					y: y,
-				};
+				var startPoint = controller.translateCoordinates(x, y);
+				$scope.dragSelectionStartPoint = startPoint;
 				$scope.dragSelectionRect = {
-					x: x,
-					y: y,
+					x: startPoint.x,
+					y: startPoint.y,
 					width: 0,
 					height: 0,
 				};
@@ -308,15 +320,14 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 	$scope.nodeMouseDown = function (evt, node) {
 
 		var chart = $scope.chart;
+		var lastMouseCoords;
 
 		dragging.startDrag(evt, {
 
-			dragging: function (deltaX, deltaY, x, y) {
+			dragStarted: function (x, y) {
 
-				chart.updateSelectedNodesLocation(deltaX, deltaY);
-			},
+				lastMouseCoords = controller.translateCoordinates(x, y);
 
-			dragStarted: function () {
 				//
 				// If nothing is selected when dragging starts, 
 				// at least select the node we are dragging.
@@ -325,6 +336,17 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 					chart.deselectAll();
 					node.select();
 				}
+			},
+			
+			dragging: function (x, y) {
+
+				var curCoords = controller.translateCoordinates(x, y);
+				var deltaX = curCoords.x - lastMouseCoords.x;
+				var deltaY = curCoords.y - lastMouseCoords.y;
+
+				chart.updateSelectedNodesLocation(deltaX, deltaY);
+
+				lastMouseCoords = curCoords;
 			},
 
 			dragEnded: function () {
@@ -366,11 +388,13 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			//
 			dragStarted: function (x, y) {
 
+				var curCoords = controller.translateCoordinates(x, y);				
+
 				$scope.draggingConnection = true;
 				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
-					x: x,
-					y: y
+					x: curCoords.x,
+					y: curCoords.y
 				};
 				$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
 				$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);
@@ -379,11 +403,12 @@ flowchart_directive.FlowChartController = function ($scope, dragging) {
 			//
 			// Called on mousemove while dragging out a connection.
 			//
-			dragging: function (deltaX, deltaY, x, y, evt) {
+			dragging: function (x, y, evt) {
+				var startCoords = controller.translateCoordinates(x, y);				
 				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
-					x: x,
-					y: y
+					x: startCoords.x,
+					y: startCoords.y
 				};
 				$scope.dragTangent1 = flowchart.computeConnectionSourceTangent($scope.dragPoint1, $scope.dragPoint2);
 				$scope.dragTangent2 = flowchart.computeConnectionDestTangent($scope.dragPoint1, $scope.dragPoint2);

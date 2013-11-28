@@ -96,7 +96,35 @@ describe('flowchart-directive', function () {
 		return createMockDragging(function (evt, config) {
 			config.clicked();
 		});
-	}
+	};
+
+	//
+	// Create a mock version of the SVG element.
+	//
+	var createMockSvgElement = function () {
+		return {
+			getScreenCTM: function () {
+				return {
+					inverse: function () {
+						return this;
+					},
+				};
+			},
+
+			createSVGPoint: function () {
+				return { 
+					x: 0, 
+					y: 0 ,
+					matrixTransform: function () {
+						return this;
+					},
+				};
+			}
+
+
+
+		};
+	};
 
 	it('searchUp returns null when at root 1', function () {
 
@@ -265,8 +293,13 @@ describe('flowchart-directive', function () {
 
 		var mockScope = createMockScope([createMockNode()]);
 		var mockDragging = createMockDragging();
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
@@ -275,7 +308,8 @@ describe('flowchart-directive', function () {
 		var xIncrement = 5;
 		var yIncrement = 15;
 
-		mockDragging.config.dragging(xIncrement, yIncrement, 10, 10);
+		mockDragging.config.dragStarted(0, 0);
+		mockDragging.config.dragging(xIncrement, yIncrement);
 
 		expect(mockScope.chart.updateSelectedNodesLocation).toHaveBeenCalledWith(xIncrement, yIncrement);
 	});
@@ -287,8 +321,13 @@ describe('flowchart-directive', function () {
 		var mockDragging = createMockDragging(function (evt, config) {
 			config.dragStarted(0, 0);
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		mockNode2.selected = function () { return true; }
 
@@ -306,15 +345,20 @@ describe('flowchart-directive', function () {
 		var mockDragging = createMockDragging(function (evt, config) {
 			config.dragStarted(0, 0);
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.nodeMouseDown(mockEvt, mockNode2);
 
 		expect(mockScope.chart.deselectAll).toHaveBeenCalled();
-		//expect(mockNode2.select).toHaveBeenCalled();
+		expect(mockNode2.select).toHaveBeenCalled();
 	});
 
 	it('test connection click handling is forwarded to view model', function () {
@@ -379,13 +423,17 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockConnector = {};
-
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			config.dragStarted(0, 0);
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
@@ -398,22 +446,25 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockConnector = {};
-
 		var draggingConfig = null;
-
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.mouseDown(mockEvt);
 
- 		draggingConfig.dragStarted(0, 0);
- 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragStarted(0, 0, mockEvt);
+ 		draggingConfig.dragging(0, 0, mockEvt);
  		draggingConfig.dragEnded();
 
 		expect(mockScope.dragSelecting).toBe(false);		
@@ -423,22 +474,25 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockConnector = {};
-
 		var draggingConfig = null;
-
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.mouseDown(mockEvt);
 
- 		draggingConfig.dragStarted(0, 0);
- 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragStarted(0, 0, mockEvt);
+ 		draggingConfig.dragging(0, 0, mockEvt);
 
  		var selectionRect = { 
  			x: 1,
@@ -458,13 +512,17 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockConnector = {};
-
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			config.dragStarted(0, 0);
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
@@ -477,22 +535,25 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockConnector = {};
-
 		var draggingConfig = null;
-
 		var mockScope = createMockScope([mockNode]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockScope.chart.nodes[0].inputConnectors[0], 0, false);
 
- 		draggingConfig.dragStarted(0, 0);
- 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragStarted(0, 0, mockEvt);
+ 		draggingConfig.dragging(0, 0, mockEvt);
  		draggingConfig.dragEnded();
 
 		expect(mockScope.draggingConnection).toBe(false);		
@@ -503,22 +564,25 @@ describe('flowchart-directive', function () {
 		var mockNode = createMockNode();
 		var mockDraggingConnector = {};
 		var mockDragOverConnector = {};
-
 		var draggingConfig = null;
-
 		var mockScope = createMockScope([ mockNode ]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockDraggingConnector, 0, false);
 
- 		draggingConfig.dragStarted(0, 0);
- 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragStarted(0, 0, mockEvt);
+ 		draggingConfig.dragging(0, 0, mockEvt);
 
  		// Fake out the mouse over connector.
  		mockScope.mouseOverConnector = mockDragOverConnector;
@@ -533,22 +597,25 @@ describe('flowchart-directive', function () {
 		var mockNode = createMockNode();
 		var mockDraggingConnector = {};
 		var mockDragOverConnector = {};
-
 		var draggingConfig = null;
-
 		var mockScope = createMockScope([ mockNode ]);
 		var mockDragging = createMockDragging(function (evt, config) {
 			 draggingConfig = config;
 		});
+		var mockSvgElement = {
+			get: function () {
+				return createMockSvgElement();
+			}
+		};
 
-		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging);
+		var testObject = new flowchart_directive.FlowChartController(mockScope, mockDragging, mockSvgElement);
 
 		var mockEvt = {};
 
 		mockScope.connectorMouseDown(mockEvt, mockScope.chart.nodes[0], mockDraggingConnector, 0, false);
 
- 		draggingConfig.dragStarted(0, 0);
- 		draggingConfig.dragging(0, 0, 0, 0, mockEvt);
+ 		draggingConfig.dragStarted(0, 0, mockEvt);
+ 		draggingConfig.dragging(0, 0, mockEvt);
 
  		// Fake out the invalid connector.
  		mockScope.mouseOverConnector = null;
@@ -691,7 +758,7 @@ describe('flowchart-directive', function () {
  		testObject.hitTest = function () {
  			return mockElement;
  		};
- 		
+
 
  		mockScope.mouseMove(mockEvent);
 

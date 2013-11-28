@@ -21,13 +21,6 @@ angular.module('dragging', ['mouseCapture', ] )
 		//
   		startDrag: function (evt, config) {
 
-  			var draggingElement = $(evt.target);
-  			var draggingElementOffset = draggingElement.offset();
-  			var startOffsetX = evt.pageX - draggingElementOffset.left;
-  			var startOffsetY = evt.pageY - draggingElementOffset.top;
-  			var parentElement = draggingElement.closest('.draggable-container') || draggingElement.parent();
-  			var parentOffset = parentElement.offset();
-
   			var dragging = false;
 			var x = evt.pageX;
 			var y = evt.pageY;
@@ -44,19 +37,19 @@ angular.module('dragging', ['mouseCapture', ] )
 						dragging = true;
 
 						if (config.dragStarted) {
-							var relativeX = evt.pageX - parentOffset.left;
-							var relativeY = evt.pageY - parentOffset.top;
-							config.dragStarted(relativeX, relativeY, evt, startOffsetX, startOffsetY);
+							config.dragStarted(x, y, evt);
+						}
+
+						if (config.dragging) {
+							// First 'dragging' call to take into account that we have 
+							// already moved the mouse by a 'threshold' amount.
+							config.dragging(evt.pageX, evt.pageY, evt);
 						}
 					}
 				}
 				else {
 					if (config.dragging) {
-						var deltaX = evt.pageX - x;
-						var deltaY = evt.pageY - y;
-						var relativeX = evt.pageX - parentOffset.left;
-						var relativeY = evt.pageY - parentOffset.top;
-						config.dragging(deltaX, deltaY, relativeX, relativeY, evt, startOffsetX, startOffsetY);
+						config.dragging(evt.pageX, evt.pageY, evt);
 					}
 
 					x = evt.pageX;
