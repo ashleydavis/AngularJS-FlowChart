@@ -158,32 +158,6 @@
     </circle>
   </g>
 
-  <!-- fio: -->
-  <circle
-        ng-if="draggingConnection"
-        r="5" 
-        ng-attr-cx="{{dragTangent1.x}}" 
-        ng-attr-cy="{{dragTangent1.y}}" 
-        stroke="blue"
-        stroke-width="1"
-        fill="transparent"
-        style="pointer-events: none;"
-        >
-  </circle>
-
-  <!-- fio: -->
-  <circle
-        ng-if="draggingConnection"
-        r="5" 
-        ng-attr-cx="{{dragTangent2.x}}" 
-        ng-attr-cy="{{dragTangent2.y}}" 
-        stroke="blue"
-        stroke-width="1"
-        fill="transparent"
-        style="pointer-events: none;"
-        >
-  </circle>
-
   <rect
       ng-if="dragSelecting"
       class="drag-selection-rect"
