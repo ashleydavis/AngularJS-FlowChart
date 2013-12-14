@@ -22,15 +22,6 @@ angular.module('flowChart', ['dragging'] )
   	// (which is possible, just not ideal).
   	//
   	controller: flowchart_directive.FlowChartController,
-
-  	//
-  	// Angular link function, called to attach the directive's element to the its scope (its data-model).
-  	//
-  	link: function($scope, $element, $attrs, controller) {
-
-
-
- 	},
   };
 })
 
@@ -439,4 +430,4 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 
 		});
 	};
-}
+};
