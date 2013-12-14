@@ -201,6 +201,37 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 	};
 
 	//
+	// Handle the case when a connection has the mouse over it.
+	//
+	this.handleConnectionMouseOver = function (mouseOverElement, whichClass) {
+		//
+		// Retreive the connection the mouse is currently over.
+		//
+		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
+		$scope.mouseOverConnection = connectionScope != null ? connectionScope.connection : null;
+		if ($scope.mouseOverConnection) {
+			// Reset 'connector mouse over'.
+			$scope.mouseOverConnector = null;
+			return true;
+		}
+		else {
+			return false;
+		}
+	};
+
+	//
+	// Handle the case when a connector has the mouse over it.
+	//
+	this.handleConnectorMouseOver = function (mouseOverElement, whichClass) {
+		//
+		// Retreive the connection the mouse is currently over.
+		//
+		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
+		$scope.mouseOverConnector = connectionScope != null ? connectionScope.connector : null;
+		return $scope.mouseOverConnector != null;
+	};
+
+	//
 	// Called on mouse down in the chart.
 	//
 	$scope.mouseDown = function (evt) {
@@ -245,37 +276,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 			},
 
 		});
-	};
-
-	//
-	// Handle the case when a connection has the mouse over it.
-	//
-	this.handleConnectionMouseOver = function (mouseOverElement, whichClass) {
-		//
-		// Retreive the connection the mouse is currently over.
-		//
-		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
-		$scope.mouseOverConnection = connectionScope != null ? connectionScope.connection : null;
-		if ($scope.mouseOverConnection) {
-			// Reset 'connector mouse over'.
-			$scope.mouseOverConnector = null;
-			return true;
-		}
-		else {
-			return false;
-		}
-	};
-
-	//
-	// Handle the case when a connector has the mouse over it.
-	//
-	this.handleConnectorMouseOver = function (mouseOverElement, whichClass) {
-		//
-		// Retreive the connection the mouse is currently over.
-		//
-		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
-		$scope.mouseOverConnector = connectionScope != null ? connectionScope.connector : null;
-		return $scope.mouseOverConnector != null;
 	};
 
 	//
