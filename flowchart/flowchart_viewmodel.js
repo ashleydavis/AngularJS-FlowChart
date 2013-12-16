@@ -579,9 +579,9 @@ var flowchart = {
 		};
 
 		//
-		// Handle mouse down on a particular node.
+		// Handle mouse click on a particular node.
 		//
-		this.handleNodeMouseDown = function (node, ctrlKey) {
+		this.handleNodeClicked = function (node, ctrlKey) {
 
 			if (ctrlKey) {
 				node.toggleSelected();
