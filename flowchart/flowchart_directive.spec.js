@@ -94,7 +94,9 @@ describe('flowchart-directive', function () {
 	//
 	var createMockClicker = function () {
 		return createMockDragging(function (evt, config) {
-			config.clicked();
+			if (config.clicked) {
+				config.clicked();
+			}
 		});
 	};
 

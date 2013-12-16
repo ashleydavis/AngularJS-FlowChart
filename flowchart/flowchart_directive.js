@@ -335,10 +335,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 				lastMouseCoords = curCoords;
 			},
 
-			dragEnded: function () {
-				console.log("Drag ended...");
-			},
-
 			clicked: function () {
 				chart.handleNodeClicked(node, evt.ctrlKey);
 			},
