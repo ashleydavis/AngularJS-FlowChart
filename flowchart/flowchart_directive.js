@@ -240,18 +240,6 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 
 		dragging.startDrag(evt, {
 
-			dragging: function (deltaX, deltaY, x, y) {
-				var startPoint = $scope.dragSelectionStartPoint;
-				var curPoint = controller.translateCoordinates(x, y);
-
-				$scope.dragSelectionRect = {
-					x: curPoint.x > startPoint.x ? startPoint.x : curPoint.x,
-					y: curPoint.y > startPoint.y ? startPoint.y : curPoint.y,
-					width: curPoint.x > startPoint.x ? x - startPoint.x : startPoint.x - x,
-					height: curPoint.y > startPoint.y ? y - startPoint.y : startPoint.y - y,
-				};
-			},
-
 			dragStarted: function (x, y) {
 				$scope.dragSelecting = true;
 				var startPoint = controller.translateCoordinates(x, y);
@@ -264,17 +252,24 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 				};
 			},
 
+			dragging: function (deltaX, deltaY, x, y) {
+				var startPoint = $scope.dragSelectionStartPoint;
+				var curPoint = controller.translateCoordinates(x, y);
+
+				$scope.dragSelectionRect = {
+					x: curPoint.x > startPoint.x ? startPoint.x : curPoint.x,
+					y: curPoint.y > startPoint.y ? startPoint.y : curPoint.y,
+					width: curPoint.x > startPoint.x ? x - startPoint.x : startPoint.x - x,
+					height: curPoint.y > startPoint.y ? y - startPoint.y : startPoint.y - y,
+				};
+			},
+
 			dragEnded: function () {
 				$scope.dragSelecting = false;
 				$scope.chart.applySelectionRect($scope.dragSelectionRect);
 				delete $scope.dragSelectionStartPoint;
 				delete $scope.dragSelectionRect;
 			},
-
-			clicked: function () {
-				console.log("Clicked...");
-			},
-
 		});
 	};
 
@@ -345,7 +340,7 @@ flowchart_directive.FlowChartController = function ($scope, dragging, $element) 
 			},
 
 			clicked: function () {
-				chart.handleNodeMouseDown(node, evt.ctrlKey);
+				chart.handleNodeClicked(node, evt.ctrlKey);
 			},
 
 		});

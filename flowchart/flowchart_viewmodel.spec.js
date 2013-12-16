@@ -509,7 +509,7 @@ describe('flowchart-viewmodel', function () {
 		node2.select();
 		node3.select();
 
-		testObject.handleNodeMouseDown(node2); // Doesn't matter which node is actually clicked.
+		testObject.handleNodeClicked(node2); // Doesn't matter which node is actually clicked.
 
 		expect(node1.selected()).toBe(false);
 		expect(node2.selected()).toBe(true);
@@ -526,7 +526,7 @@ describe('flowchart-viewmodel', function () {
 		var node2 = testObject.nodes[1];
 		var node3 = testObject.nodes[2];
 
-		testObject.handleNodeMouseDown(node3); // Doesn't matter which node is actually clicked.
+		testObject.handleNodeClicked(node3); // Doesn't matter which node is actually clicked.
 
 		expect(node1.selected()).toBe(false);
 		expect(node2.selected()).toBe(false);
@@ -542,7 +542,7 @@ describe('flowchart-viewmodel', function () {
 		var node1 = testObject.nodes[0];
 		var node2 = testObject.nodes[1];
 
-		testObject.handleNodeMouseDown(node1);
+		testObject.handleNodeClicked(node1);
 
 		expect(testObject.nodes[0]).toBe(node2); // Mock node 2 should be bought to front.
 		expect(testObject.nodes[1]).toBe(node1);
@@ -560,19 +560,19 @@ describe('flowchart-viewmodel', function () {
 
 		node1.select(); // Mark node 1 as already selected.
 
-		testObject.handleNodeMouseDown(node2, true);
+		testObject.handleNodeClicked(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
 		expect(node2.selected()).toBe(true);  // This node is being toggled.
 		expect(node3.selected()).toBe(false); // This node remains unselected.
 
-		testObject.handleNodeMouseDown(node2, true);
+		testObject.handleNodeClicked(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
 		expect(node2.selected()).toBe(false); // This node is being toggled.
 		expect(node3.selected()).toBe(false); // This node remains unselected.
 
-		testObject.handleNodeMouseDown(node2, true);
+		testObject.handleNodeClicked(node2, true);
 
 		expect(node1.selected()).toBe(true);  // This node remains selected.
 		expect(node2.selected()).toBe(true);  // This node is being toggled.

@@ -43,7 +43,7 @@ describe('flowchart-directive', function () {
 			nodes: mockNodes,
 			connections: mockConnections,
 
-			handleNodeMouseDown: jasmine.createSpy(),
+			handleNodeClicked: jasmine.createSpy(),
 			handleConnectionMouseDown: jasmine.createSpy(),
 			updateSelectedNodesLocation: jasmine.createSpy(),
 			deselectAll: jasmine.createSpy(),
@@ -269,7 +269,7 @@ describe('flowchart-directive', function () {
 
 		mockScope.nodeMouseDown(mockEvt, mockNode);
 
-		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNode, false);
+		expect(mockScope.chart.handleNodeClicked).toHaveBeenCalledWith(mockNode, false);
 	});
 
 	it('test control + node click handling is forwarded to view model', function () {
@@ -286,7 +286,7 @@ describe('flowchart-directive', function () {
 
 		mockScope.nodeMouseDown(mockEvt, mockNode);
 
-		expect(mockScope.chart.handleNodeMouseDown).toHaveBeenCalledWith(mockNode, true);
+		expect(mockScope.chart.handleNodeClicked).toHaveBeenCalledWith(mockNode, true);
 	});
 
 	it('test node dragging updates selected nodes location', function () {
