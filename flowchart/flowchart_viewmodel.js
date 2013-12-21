@@ -569,12 +569,12 @@ var flowchart = {
 		//
 		this.updateSelectedNodesLocation = function (deltaX, deltaY) {
 
-			for (var i = 0; i < this.nodes.length; ++i) {
-				var node = this.nodes[i];
-				if (node.selected()) {
-					node.data.x += deltaX;
-					node.data.y += deltaY;
-				}
+			var selectedNodes = this.getSelectedNodes();
+
+			for (var i = 0; i < selectedNodes.length; ++i) {
+				var node = selectedNodes[i];
+				node.data.x += deltaX;
+				node.data.y += deltaY;
 			}
 		};
 
@@ -652,7 +652,7 @@ var flowchart = {
 
 			//
 			// Remove connections that are selected.
-			// Also rRemove connections for nodes that have been deleted.
+			// Also remove connections for nodes that have been deleted.
 			//
 			for (var connectionIndex = 0; connectionIndex < this.connections.length; ++connectionIndex) {
 
