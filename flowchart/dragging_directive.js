@@ -10,7 +10,7 @@ angular.module('dragging', ['mouseCapture', ] )
 	// Threshold for dragging.
 	// When the mouse moves by at least this amount dragging starts.
 	//
-	var threshold = 5; //todo: make this an attr option.
+	var threshold = 5;
 
 	return {
 
