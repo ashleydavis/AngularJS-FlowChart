@@ -27,7 +27,7 @@ angular.module('mouseCapture', [] )
 			
 			mouseCaptureConfig.mouseMove(evt);
 
-			$rootScope.$apply();
+			$rootScope.$digest();
 		}
 	};
 
@@ -40,7 +40,7 @@ angular.module('mouseCapture', [] )
 			
 			mouseCaptureConfig.mouseUp(evt);
 
-			$rootScope.$apply();
+			$rootScope.$digest();
 		}
 	};
 
