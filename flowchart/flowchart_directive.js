@@ -232,6 +232,9 @@ angular.module('flowChart', ['dragging'] )
 
 		dragging.startDrag(evt, {
 
+			//
+			// Commence dragging... setup variables to display the drag selection rect.
+			//
 			dragStarted: function (x, y) {
 				$scope.dragSelecting = true;
 				var startPoint = controller.translateCoordinates(x, y);
@@ -244,18 +247,24 @@ angular.module('flowChart', ['dragging'] )
 				};
 			},
 
-			dragging: function (deltaX, deltaY, x, y) {
+			//
+			// Update the drag selection rect while dragging continues.
+			//
+			dragging: function (x, y) {
 				var startPoint = $scope.dragSelectionStartPoint;
 				var curPoint = controller.translateCoordinates(x, y);
 
 				$scope.dragSelectionRect = {
 					x: curPoint.x > startPoint.x ? startPoint.x : curPoint.x,
 					y: curPoint.y > startPoint.y ? startPoint.y : curPoint.y,
-					width: curPoint.x > startPoint.x ? x - startPoint.x : startPoint.x - x,
-					height: curPoint.y > startPoint.y ? y - startPoint.y : startPoint.y - y,
+					width: curPoint.x > startPoint.x ? curPoint.x - startPoint.x : startPoint.x - curPoint.x,
+					height: curPoint.y > startPoint.y ? curPoint.y - startPoint.y : startPoint.y - curPoint.y,
 				};
 			},
 
+			//
+			// Dragging has ended... select all that are within the drag selection rect.
+			//
 			dragEnded: function () {
 				$scope.dragSelecting = false;
 				$scope.chart.applySelectionRect($scope.dragSelectionRect);
@@ -302,6 +311,9 @@ angular.module('flowChart', ['dragging'] )
 
 		dragging.startDrag(evt, {
 
+			//
+			// Node dragging has commenced.
+			//
 			dragStarted: function (x, y) {
 
 				lastMouseCoords = controller.translateCoordinates(x, y);
@@ -316,6 +328,9 @@ angular.module('flowChart', ['dragging'] )
 				}
 			},
 			
+			//
+			// Dragging selected nodes... update their x,y coordinates.
+			//
 			dragging: function (x, y) {
 
 				var curCoords = controller.translateCoordinates(x, y);
@@ -327,6 +342,9 @@ angular.module('flowChart', ['dragging'] )
 				lastMouseCoords = curCoords;
 			},
 
+			//
+			// The node wasn't dragged... it was clicked.
+			//
 			clicked: function () {
 				chart.handleNodeClicked(node, evt.ctrlKey);
 			},
