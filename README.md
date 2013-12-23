@@ -7,24 +7,27 @@ This isn't designed to be completely general purpose, but it will be a good basi
 
 
 How to use it
-=============
+-------------
 
 Include the following Javascript in your HTML file:
 
+```html
 	<script src="flowchart/svg_class.js" type="text/javascript"></script>
 	<script src="flowchart/mouse_capture_directive.js" type="text/javascript"></script>
 	<script src="flowchart/dragging_directive.js" type="text/javascript"></script>
 	<script src="flowchart/flowchart_viewmodel.js" type="text/javascript"></script>
 	<script src="flowchart/flowchart_directive.js" type="text/javascript"></script>
-
+```
 
 Make a dependency on the the flowchart's AngularJS module from your application (or other module):
 
+```javascript
 	angular.module('app', ['flowChart', ])
-
+```
 
 In your application (or other) controller setup a data-model for the initial flowchart (or AJAX the data-model in from a JSON resource):
 
+```javascript
 	var chartDataModel = {
 
 		nodes: [
@@ -104,21 +107,25 @@ In your application (or other) controller setup a data-model for the initial flo
 
 		]
 	};
-
+```
 
 Also in your controller, wrap the data-model in a view-model and add it to the AngularJS scope:
 
+```javascript
 	$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
+```
 
 Your code is in direct control of creation of the view-model, so you can interact with it in almost anyway you want.
 
 Finally instantiate the flowchart's AngularJS directive in your HTML:
 
+```html
     <flow-chart
 		style="margin: 5px; width: 100%; height: 100%;"
       	chart="chartViewModel"
       	>
     </flow-chart>
+```
 
 Be sure to bind your view-model as the 'chart' attribute!
 
