@@ -524,10 +524,9 @@ describe('flowchart-directive', function () {
  		expect(mockScope.mouseOverConnection).toBe(mockConnection);
  	});
 
- 	it('test mouse over connection clears mouse over connector', function () {
+ 	it('test mouse over connection clears mouse over connector and node', function () {
 
 		var mockElement = {};
- 		var mockConnector = {};
  		var mockConnection = {};
  		var mockConnectionScope = {
  			connection: mockConnection
@@ -550,11 +549,13 @@ describe('flowchart-directive', function () {
  		};
 
 
- 		mockScope.mouseOverConnector = mockConnector;
+ 		mockScope.mouseOverConnector = {};
+ 		mockScope.mouseOverNode = {};
 
  		mockScope.mouseMove(mockEvent);
 
  		expect(mockScope.mouseOverConnector).toBe(null);
+ 		expect(mockScope.mouseOverNode).toBe(null);
  	});
 
  	it('test mouseMove handles mouse over connector', function () {
@@ -581,10 +582,37 @@ describe('flowchart-directive', function () {
  			return mockElement;
  		};
 
-
  		mockScope.mouseMove(mockEvent);
 
  		expect(mockScope.mouseOverConnector).toBe(mockConnector);
  	});
 
+ 	it('test mouseMove handles mouse over node', function () {
+
+		var mockElement = {};
+ 		var mockNode = {};
+ 		var mockNodeScope = {
+ 			node: mockNode
+ 		};
+ 		var mockEvent = {};
+
+ 		//
+ 		// Fake out the function that check if a connector has been hit.
+ 		//
+ 		testObject.checkForHit = function (element, whichClass) {
+ 			if (whichClass === testObject.nodeClass) {
+ 				return mockNodeScope;
+ 			}
+
+ 			return null;
+ 		};
+
+ 		testObject.hitTest = function () {
+ 			return mockElement;
+ 		};
+
+ 		mockScope.mouseMove(mockEvent);
+
+ 		expect(mockScope.mouseOverNode).toBe(mockNode);
+ 	});
 });
