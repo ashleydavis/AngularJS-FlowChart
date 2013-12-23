@@ -24,6 +24,11 @@ Styles for nodes and connectors.
 	stroke-width: 2;
 }
 
+.mouseover-node-rect {
+	stroke: black;
+	stroke-width: 4;
+}
+
 .selected-node-rect {
 	stroke: red;
 	stroke-width: 3;

@@ -110,20 +110,16 @@ angular.module('flowChart', ['dragging'] )
 	*/
 
 	//
-	// Reference to the connection that the mouse is currently over.
+	// Reference to the connection, connector or node that the mouse is currently over.
 	//
-	$scope.mouseOverConnection = null;
-
-	//
-	// Reference to the connector that the mouse is currently over.
-	//
-	$scope.mouseOverConnector = null;
+	$scope.mouseOver = null;
 
 	//
 	// The class for connections and connectors.
 	//
 	this.connectionClass = 'connection';
 	this.connectorClass = 'connector';
+	this.nodeClass = 'node';
 
 	//
 	// Search up the HTML element tree for an element the requested class.
@@ -259,17 +255,24 @@ angular.module('flowChart', ['dragging'] )
 			// Figure out if the mouse is over a connection.
 			var scope = controller.checkForHit(mouseOverElement, controller.connectionClass);
 			$scope.mouseOverConnection = (scope && scope.connection) ? scope.connection : null;
-			if ($scope.mouseOverConnection) {
+			if ($scope.mouseOver) {
 				// Don't attempt to handle 'connector mouse-over'.
 				// Reset 'mouse over' connector.
-				$scope.mouseOverConnector = null;
+				$scope.mouseOver = null;
 				return;
 			}
 		}
 
 		// Figure out if the mouse is over a connector.
 		var scope = controller.checkForHit(mouseOverElement, controller.connectorClass);
-		$scope.mouseOverConnector = (scope && scope.connector) ? scope.connector : null;
+		$scope.mouseOver = (scope && scope.connector) ? scope.connector : null;
+		if ($scope.mouseOver) {
+			return;
+		}
+
+		// Figure out if the mouse is over a node.
+		var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
+		$scope.mouseOver = (scope && scope.node) ? scope.node : null;		
 	};
 
 	//
