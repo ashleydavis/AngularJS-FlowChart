@@ -120,7 +120,7 @@ Finally instantiate the flowchart's AngularJS directive in your HTML:
       	>
     </flow-chart>
 
-Be sure to bind your view-model as the ''chart'' attribute!
+Be sure to bind your view-model as the 'chart' attribute!
 
 
 Have fun and please contribute!
