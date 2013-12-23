@@ -271,8 +271,6 @@ angular.module('app', ['flowChart', ])
 		$scope.chartViewModel.deleteSelected();
 	};
 
-
-
 	//
 	// Create the view-model for the chart and attach to the scope.
 	//
