@@ -451,7 +451,7 @@ describe('flowchart-directive', function () {
 		expect(mockScope.draggingConnection).toBe(false);		
  	});
 
-	it('test can make a connection by dragging', function () {
+	it('can make a connection by dragging', function () {
 
 		var mockNode = createMockNode();
 		var mockDraggingConnector = {};
@@ -466,7 +466,7 @@ describe('flowchart-directive', function () {
  		mockDragging.config.dragging(0, 0, mockEvt);
 
  		// Fake out the mouse over connector.
- 		mockScope.mouseOverConnector = mockDragOverConnector;
+ 		mockScope.mouseOver = mockDragOverConnector;
 
  		mockDragging.config.dragEnded();
 
@@ -488,7 +488,7 @@ describe('flowchart-directive', function () {
  		mockDragging.config.dragging(0, 0, mockEvt);
 
  		// Fake out the invalid connector.
- 		mockScope.mouseOverConnector = null;
+ 		mockScope.mouseOver = null;
 
  		mockDragging.config.dragEnded();
 
@@ -521,40 +521,7 @@ describe('flowchart-directive', function () {
 
  		mockScope.mouseMove(mockEvent);
 
- 		expect(mockScope.mouseOverConnection).toBe(mockConnection);
- 	});
-
- 	it('test mouse over connection clears mouse over connector', function () {
-
-		var mockElement = {};
- 		var mockConnector = {};
- 		var mockConnection = {};
- 		var mockConnectionScope = {
- 			connection: mockConnection
- 		};
- 		var mockEvent = {};
-
- 		//
- 		// Fake out the function that check if a connection has been hit.
- 		//
- 		testObject.checkForHit = function (element, whichClass) {
- 			if (whichClass === testObject.connectionClass) {
- 				return mockConnectionScope;
- 			}
-
- 			return null;
- 		};
-
- 		testObject.hitTest = function () {
- 			return mockElement;
- 		};
-
-
- 		mockScope.mouseOverConnector = mockConnector;
-
- 		mockScope.mouseMove(mockEvent);
-
- 		expect(mockScope.mouseOverConnector).toBe(null);
+ 		expect(mockScope.mouseOver).toBe(mockConnection);
  	});
 
  	it('test mouseMove handles mouse over connector', function () {
@@ -584,7 +551,7 @@ describe('flowchart-directive', function () {
 
  		mockScope.mouseMove(mockEvent);
 
- 		expect(mockScope.mouseOverConnector).toBe(mockConnector);
+ 		expect(mockScope.mouseOver).toBe(mockConnector);
  	});
 
 });
