@@ -18,7 +18,7 @@ Include the following Javascript in your HTML file:
 	<script src="flowchart/flowchart_directive.js" type="text/javascript"></script>
 
 
-Make a dependency on the the flowchart's AngularJS module from your appliation (or other module):
+Make a dependency on the the flowchart's AngularJS module from your application (or other module):
 
 	angular.module('app', ['flowChart', ])
 
@@ -120,7 +120,7 @@ Finally instantiate the flowchart's AngularJS directive in your HTML:
       	>
     </flow-chart>
 
-Be sure to bind your view-model as the 'chart' attribute!
+Be sure to bind your view-model as the ''chart'' attribute!
 
 
 Have fun and please contribute!
