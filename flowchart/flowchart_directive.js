@@ -193,37 +193,6 @@ angular.module('flowChart', ['dragging'] )
 	};
 
 	//
-	// Handle the case when a connection has the mouse over it.
-	//
-	this.handleConnectionMouseOver = function (mouseOverElement, whichClass) {
-		//
-		// Retreive the connection the mouse is currently over.
-		//
-		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
-		$scope.mouseOverConnection = connectionScope != null ? connectionScope.connection : null;
-		if ($scope.mouseOverConnection) {
-			// Reset 'connector mouse over'.
-			$scope.mouseOverConnector = null;
-			return true;
-		}
-		else {
-			return false;
-		}
-	};
-
-	//
-	// Handle the case when a connector has the mouse over it.
-	//
-	this.handleConnectorMouseOver = function (mouseOverElement, whichClass) {
-		//
-		// Retreive the connection the mouse is currently over.
-		//
-		var connectionScope = this.checkForHit(mouseOverElement, whichClass);
-		$scope.mouseOverConnector = connectionScope != null ? connectionScope.connector : null;
-		return $scope.mouseOverConnector != null;
-	};
-
-	//
 	// Called on mouse down in the chart.
 	//
 	$scope.mouseDown = function (evt) {
@@ -285,20 +254,22 @@ angular.module('flowChart', ['dragging'] )
 			return;
 		}
 
-		if (!$scope.draggingConnection) { 
+		if (!$scope.draggingConnection) { // Only allow 'connection mouse over' when not dragging out a connection.
 
-			// Only allow 'connection mouse over' when not dragging out a connection.
-
-			if (controller.handleConnectionMouseOver(mouseOverElement, controller.connectionClass))
-			{
+			// Figure out if the mouse is over a connection.
+			var scope = controller.checkForHit(mouseOverElement, controller.connectionClass);
+			$scope.mouseOverConnection = (scope && scope.connection) ? scope.connection : null;
+			if ($scope.mouseOverConnection) {
 				// Don't attempt to handle 'connector mouse-over'.
+				// Reset 'mouse over' connector.
+				$scope.mouseOverConnector = null;
 				return;
 			}
 		}
 
-		// Check for 'connector mouse over'.
-
-		controller.handleConnectorMouseOver(mouseOverElement, controller.connectorClass);
+		// Figure out if the mouse is over a connector.
+		var scope = controller.checkForHit(mouseOverElement, controller.connectorClass);
+		$scope.mouseOverConnector = (scope && scope.connector) ? scope.connector : null;
 	};
 
 	//
