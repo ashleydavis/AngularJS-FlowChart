@@ -112,7 +112,9 @@ angular.module('flowChart', ['dragging'] )
 	//
 	// Reference to the connection, connector or node that the mouse is currently over.
 	//
-	$scope.mouseOver = null;
+	$scope.mouseOverConnector = null;
+	$scope.mouseOverConnection = null;
+	$scope.mouseOverNode = null;
 
 	//
 	// The class for connections and connectors.
@@ -244,9 +246,16 @@ angular.module('flowChart', ['dragging'] )
 	//
 	$scope.mouseMove = function (evt) {
 
+		//
+		// Clear out all cached mouse over elements.
+		//
+		$scope.mouseOverConnection = null;
+		$scope.mouseOverConnector = null;
+		$scope.mouseOverNode = null;
+
 		var mouseOverElement = controller.hitTest(evt.clientX, evt.clientY);
 		if (mouseOverElement == null) {
-			// Mouse isn't over anything.
+			// Mouse isn't over anything, just clear all.
 			return;
 		}
 
@@ -255,24 +264,23 @@ angular.module('flowChart', ['dragging'] )
 			// Figure out if the mouse is over a connection.
 			var scope = controller.checkForHit(mouseOverElement, controller.connectionClass);
 			$scope.mouseOverConnection = (scope && scope.connection) ? scope.connection : null;
-			if ($scope.mouseOver) {
-				// Don't attempt to handle 'connector mouse-over'.
-				// Reset 'mouse over' connector.
-				$scope.mouseOver = null;
+			if ($scope.mouseOverConnection) {
+				// Don't attempt to mouse over anything else.
 				return;
 			}
 		}
 
 		// Figure out if the mouse is over a connector.
 		var scope = controller.checkForHit(mouseOverElement, controller.connectorClass);
-		$scope.mouseOver = (scope && scope.connector) ? scope.connector : null;
-		if ($scope.mouseOver) {
+		$scope.mouseOverConnector = (scope && scope.connector) ? scope.connector : null;
+		if ($scope.mouseOverConnector) {
+			// Don't attempt to mouse over anything else.
 			return;
 		}
 
 		// Figure out if the mouse is over a node.
 		var scope = controller.checkForHit(mouseOverElement, controller.nodeClass);
-		$scope.mouseOver = (scope && scope.node) ? scope.node : null;		
+		$scope.mouseOverNode = (scope && scope.node) ? scope.node : null;		
 	};
 
 	//
