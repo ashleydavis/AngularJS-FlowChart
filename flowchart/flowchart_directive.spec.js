@@ -495,7 +495,7 @@ describe('flowchart-directive', function () {
  		expect(mockScope.chart.createNewConnection).not.toHaveBeenCalled();
  	});
 
- 	it('test mouseMove handles mouse over connection', function () {
+ 	it('mouse move over connection caches the connection', function () {
 
  		var mockElement = {};
  		var mockConnection = {};
