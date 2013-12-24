@@ -22,7 +22,7 @@ angular.module('app', ['flowChart', ])
 //
 // Application controller.
 //
-.controller('AppCtrl', function AppCtrl ($scope, prompt) {
+.controller('AppCtrl', ['$scope', 'prompt', function AppCtrl ($scope, prompt) {
 
 	//
 	// Code for the delete key.
@@ -275,5 +275,5 @@ angular.module('app', ['flowChart', ])
 	// Create the view-model for the chart and attach to the scope.
 	//
 	$scope.chartViewModel = new flowchart.ChartViewModel(chartDataModel);
-})
+}])
 ;
