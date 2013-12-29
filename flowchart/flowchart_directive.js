@@ -78,7 +78,7 @@ angular.module('flowChart', ['dragging'] )
 // it is painful to unit test a directive without instantiating the DOM 
 // (which is possible, just not ideal).
 //
-.controller('FlowChartController', ['$scope', 'dragging', '$element', function ($scope, dragging, $element) {
+.controller('FlowChartController', ['$scope', 'dragging', '$element', function FlowChartController ($scope, dragging, $element) {
 
 	var controller = this;
 
