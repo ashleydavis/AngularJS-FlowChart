@@ -1,5 +1,5 @@
 
-angular.module('mouseCapture', [] )
+angular.module('mouseCapture', [])
 
 //
 // Service used to acquire 'mouse capture' then receive dragging events while the mouse is captured.
@@ -92,10 +92,10 @@ angular.module('mouseCapture', [] )
 				}
 
 				mouseCaptureConfig = null;
-
-  				$element.unbind("mousemove", mouseMove);
-  				$element.unbind("mouseup", mouseUp);
   			}
+
+			$element.unbind("mousemove", mouseMove);
+			$element.unbind("mouseup", mouseUp);
 		},
 	};
 })
