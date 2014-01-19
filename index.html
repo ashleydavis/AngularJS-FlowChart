@@ -49,7 +49,7 @@
 				</button>
     			<button
     				ng-click="deleteSelected()"
-    				ng-disabled="chartViewModel.getSelectedNodes().length == 0"
+    				ng-disabled="chartViewModel.getSelectedNodes().length == 0 && chartViewModel.getSelectedConnections().length == 0"
     				title="Delete selected nodes and connections"
     				>
     				Delete Selected

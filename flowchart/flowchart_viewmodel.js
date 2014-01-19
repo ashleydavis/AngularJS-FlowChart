@@ -726,6 +726,23 @@ var flowchart = {
 			return selectedNodes;
 		};
 
+		//
+		// Get the array of connections that are currently selected.
+		//
+		this.getSelectedConnections = function () {
+			var selectedConnections = [];
+
+			for (var i = 0; i < this.connections.length; ++i) {
+				var connection = this.connections[i];
+				if (connection.selected()) {
+					selectedConnections.push(connection);
+				}
+			}
+
+			return selectedConnections;
+		};
+		
+
 	};
 
 })();

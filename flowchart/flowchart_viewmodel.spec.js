@@ -1160,4 +1160,32 @@ describe('flowchart-viewmodel', function () {
 		expect(selectedNodes[0]).toBe(node2);
 		expect(selectedNodes[1]).toBe(node3);	
 	});
+
+	it('test can get selected connections', function () {
+
+		var mockDataModel = createMockDataModel(
+			[ 1, 2, 3 ],
+			[
+				[[ 1, 0 ], [ 2, 0 ]],
+				[[ 2, 1 ], [ 1, 2 ]],
+				[[ 1, 1 ], [ 3, 0 ]],
+				[[ 3, 2 ], [ 2, 1 ]]
+			]
+		);
+		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
+
+		var connection1 = testObject.connections[0];
+		var connection2 = testObject.connections[1];
+		var connection3 = testObject.connections[2];
+		var connection4 = testObject.connections[3];
+
+		connection2.select();
+		connection3.select();
+
+		var selectedConnections = testObject.getSelectedConnections();
+
+		expect(selectedConnections.length).toBe(2);
+		expect(selectedConnections[0]).toBe(connection2);
+		expect(selectedConnections[1]).toBe(connection3);	
+	});
 });
