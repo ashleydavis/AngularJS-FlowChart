@@ -31,8 +31,8 @@ angular.module('dragging', ['mouseCapture', ] )
 	  		var mouseMove = function (evt) {
 
 				if (!dragging) {
-					if (evt.pageX - x > threshold ||
-						evt.pageY - y > threshold)
+					if (Math.abs(evt.pageX - x) > threshold ||
+						Math.abs(evt.pageY - y) > threshold)
 					{
 						dragging = true;
 
