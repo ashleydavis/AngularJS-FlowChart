@@ -462,9 +462,6 @@ var flowchart = {
 		//
 		this.createNewConnection = function (sourceConnector, destConnector) {
 
-			debug.assertObjectValid(sourceConnector);
-			debug.assertObjectValid(destConnector);
-
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
 				connectionsDataModel = this.data.connections = [];
