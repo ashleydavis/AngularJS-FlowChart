@@ -110,6 +110,13 @@ var flowchart = {
 		this._selected = false;
 
 		//
+		// Get custom variable from node's data.
+		//
+		this.get = function (key) {
+			return this.data[key];
+		};
+
+		//
 		// Name of the node.
 		//
 		this.name = function () {

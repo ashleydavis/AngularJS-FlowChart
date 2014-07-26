@@ -149,6 +149,17 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.name()).toBe(mockDataModel.name);
 	});
 
+	it('test get() of NodeViewModel', function () {
+
+		var mockDataModel = {
+			shape: "star",
+		};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		expect(testObject.get('shape')).toBe(mockDataModel.shape);
+	});
+
 	it('test name of NodeViewModel defaults to empty string', function () {
 
 		var mockDataModel = {};
