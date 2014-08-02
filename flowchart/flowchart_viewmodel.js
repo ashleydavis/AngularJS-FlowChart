@@ -460,7 +460,7 @@ var flowchart = {
 		//
 		// Create a view model for a new connection.
 		//
-		this.createNewConnection = function (sourceConnector, destConnector) {
+		this.createNewConnection = function (startConnector, endConnector) {
 
 			var connectionsDataModel = this.data.connections;
 			if (!connectionsDataModel) {
@@ -472,39 +472,58 @@ var flowchart = {
 				connectionsViewModel = this.connections = [];
 			}
 
-			var sourceNode = sourceConnector.parentNode();
-			var sourceConnectorIndex = sourceNode.outputConnectors.indexOf(sourceConnector);
-			if (sourceConnectorIndex == -1) {
-				sourceConnectorIndex = sourceNode.inputConnectors.indexOf(sourceConnector);
-				if (sourceConnectorIndex == -1) {
+			var startNode = startConnector.parentNode();
+			var startConnectorIndex = startNode.outputConnectors.indexOf(startConnector);
+			var startConnectorType = 'output';
+			if (startConnectorIndex == -1) {
+				startConnectorIndex = startNode.inputConnectors.indexOf(startConnector);
+				startConnectorType = 'input';
+				if (startConnectorIndex == -1) {
 					throw new Error("Failed to find source connector within either inputConnectors or outputConnectors of source node.");
 				}
 			}
 
-			var destNode = destConnector.parentNode();
-			var destConnectorIndex = destNode.inputConnectors.indexOf(destConnector);
-			if (destConnectorIndex == -1) {
-				destConnectorIndex = destNode.outputConnectors.indexOf(destConnector);
-				if (destConnectorIndex == -1) {
-					throw new Error("Failed to find dest connector within inputConnectors or ouputConnectors of dest node.");
+			var endNode = endConnector.parentNode();
+			var endConnectorIndex = endNode.inputConnectors.indexOf(endConnector);
+			var endConnectorType = 'input';
+			if (endConnectorIndex == -1) {
+				endConnectorIndex = endNode.outputConnectors.indexOf(endConnector);
+				endConnectorType = 'output';
+				if (endConnectorIndex == -1) {
+					throw new Error("Failed to find dest connector within inputConnectors or outputConnectors of dest node.");
 				}
 			}
 
+			if (startConnectorType == endConnectorType) {
+				throw new Error("Failed to create connection. Only output to input connections are allowed.")
+			}
+
+			if (startNode == endNode) {
+				throw new Error("Failed to create connection. Cannot link a node with itself.")
+			}
+
+			var startNode = {
+				nodeID: startNode.data.id,
+				connectorIndex: startConnectorIndex,
+			}
+
+			var endNode = {
+				nodeID: endNode.data.id,
+				connectorIndex: endConnectorIndex,
+			}
+
 			var connectionDataModel = {
-				source: {
-					nodeID: sourceNode.data.id,
-					connectorIndex: sourceConnectorIndex,
-				},
-				dest: {
-					nodeID: destNode.data.id,
-					connectorIndex: destConnectorIndex,
-				},
+				source: startConnectorType == 'output' ? startNode : endNode,
+				dest: startConnectorType == 'output' ? endNode : startNode,
 			};
 			connectionsDataModel.push(connectionDataModel);
 
-			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, sourceConnector, destConnector);
+			var outputConnector = startConnectorType == 'output' ? startConnector : endConnector;
+			var inputConnector = startConnectorType == 'output' ? endConnector : startConnector;
+
+			var connectionViewModel = new flowchart.ConnectionViewModel(connectionDataModel, outputConnector, inputConnector);
 			connectionsViewModel.push(connectionViewModel);
-		};		
+		};
 
 		//
 		// Add a node to the view model.
