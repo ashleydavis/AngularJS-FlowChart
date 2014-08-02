@@ -181,12 +181,12 @@ angular.module('flowChart', ['dragging'] )
 	//
 	// Translate the coordinates so they are relative to the svg element.
 	//
-	this.translateCoordinates = function(x, y) {
+	this.translateCoordinates = function(x, y, evt) {
 		var svg_elem =  $element.get(0);
 		var matrix = svg_elem.getScreenCTM();
 		var point = svg_elem.createSVGPoint();
-		point.x = x;
-		point.y = y;
+		point.x = x - evt.view.scrollX;
+		point.y = y - evt.view.scrollY;
 		return point.matrixTransform(matrix.inverse());
 	};
 
@@ -204,7 +204,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragStarted: function (x, y) {
 				$scope.dragSelecting = true;
-				var startPoint = controller.translateCoordinates(x, y);
+				var startPoint = controller.translateCoordinates(x, y, evt);
 				$scope.dragSelectionStartPoint = startPoint;
 				$scope.dragSelectionRect = {
 					x: startPoint.x,
@@ -219,7 +219,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragging: function (x, y) {
 				var startPoint = $scope.dragSelectionStartPoint;
-				var curPoint = controller.translateCoordinates(x, y);
+				var curPoint = controller.translateCoordinates(x, y, evt);
 
 				$scope.dragSelectionRect = {
 					x: curPoint.x > startPoint.x ? startPoint.x : curPoint.x,
@@ -298,7 +298,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragStarted: function (x, y) {
 
-				lastMouseCoords = controller.translateCoordinates(x, y);
+				lastMouseCoords = controller.translateCoordinates(x, y, evt);
 
 				//
 				// If nothing is selected when dragging starts, 
@@ -315,7 +315,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragging: function (x, y) {
 
-				var curCoords = controller.translateCoordinates(x, y);
+				var curCoords = controller.translateCoordinates(x, y, evt);
 				var deltaX = curCoords.x - lastMouseCoords.x;
 				var deltaY = curCoords.y - lastMouseCoords.y;
 
@@ -362,7 +362,7 @@ angular.module('flowChart', ['dragging'] )
 			//
 			dragStarted: function (x, y) {
 
-				var curCoords = controller.translateCoordinates(x, y);				
+				var curCoords = controller.translateCoordinates(x, y, evt);
 
 				$scope.draggingConnection = true;
 				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
@@ -378,7 +378,7 @@ angular.module('flowChart', ['dragging'] )
 			// Called on mousemove while dragging out a connection.
 			//
 			dragging: function (x, y, evt) {
-				var startCoords = controller.translateCoordinates(x, y);				
+				var startCoords = controller.translateCoordinates(x, y, evt);
 				$scope.dragPoint1 = flowchart.computeConnectorPos(node, connectorIndex, isInputConnector);
 				$scope.dragPoint2 = {
 					x: startCoords.x,
