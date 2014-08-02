@@ -1098,15 +1098,41 @@ describe('flowchart-viewmodel', function () {
 
 		var testObject = new flowchart.ChartViewModel(mockDataModel); 		
 
-		var sourceConnector = testObject.nodes[0].outputConnectors[0];
-		var destConnector = testObject.nodes[1].inputConnectors[1];
+		var startConnector = testObject.nodes[0].outputConnectors[0];
+		var endConnector = testObject.nodes[1].inputConnectors[1];
 
-		testObject.createNewConnection(sourceConnector, destConnector);
+		testObject.createNewConnection(startConnector, endConnector);
 
 		expect(testObject.connections.length).toBe(1);
 		var connection = testObject.connections[0];
-		expect(connection.source).toBe(sourceConnector);
-		expect(connection.dest).toBe(destConnector);
+		expect(connection.source).toBe(startConnector);
+		expect(connection.dest).toBe(endConnector);
+
+		expect(testObject.data.connections.length).toBe(1);
+		var connectionData = testObject.data.connections[0];
+		expect(connection.data).toBe(connectionData);
+
+		expect(connectionData.source.nodeID).toBe(5);
+		expect(connectionData.source.connectorIndex).toBe(0);
+		expect(connectionData.dest.nodeID).toBe(25);
+		expect(connectionData.dest.connectorIndex).toBe(1);
+	});
+
+	it('test create new connection from input to output', function () {
+
+		var mockDataModel = createMockDataModel([5, 25]);
+
+		var testObject = new flowchart.ChartViewModel(mockDataModel);
+
+		var startConnector = testObject.nodes[1].inputConnectors[1];
+		var endConnector = testObject.nodes[0].outputConnectors[0];
+
+		testObject.createNewConnection(startConnector, endConnector);
+
+		expect(testObject.connections.length).toBe(1);
+		var connection = testObject.connections[0];
+		expect(connection.source).toBe(endConnector);
+		expect(connection.dest).toBe(startConnector);
 
 		expect(testObject.data.connections.length).toBe(1);
 		var connectionData = testObject.data.connections[0];
