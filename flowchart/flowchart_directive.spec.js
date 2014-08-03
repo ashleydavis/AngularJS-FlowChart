@@ -259,7 +259,12 @@ describe('flowchart-directive', function () {
 
 	it('test node dragging updates selected nodes location', function () {
 
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([createMockNode()]);
 
@@ -283,7 +288,12 @@ describe('flowchart-directive', function () {
 
 		mockNode2.selected = function () { return true; }
 
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.nodeMouseDown(mockEvt, mockNode2);
 
@@ -299,7 +309,12 @@ describe('flowchart-directive', function () {
 
 		mockScope.chart = createMockChart([mockNode1, mockNode2]);
 
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.nodeMouseDown(mockEvt, mockNode2);
 
@@ -363,8 +378,12 @@ describe('flowchart-directive', function () {
 	it('test background mouse down commences selection dragging', function () {
 
 		var mockNode = createMockNode();
-		var mockConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -372,14 +391,18 @@ describe('flowchart-directive', function () {
 
 		mockDragging.config.dragStarted(0, 0);
 
-		expect(mockScope.dragSelecting).toBe(true);		
+		expect(mockScope.dragSelecting).toBe(true);
 	});
 
 	it('test can end selection dragging', function () {
 
 		var mockNode = createMockNode();
-		var mockConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -395,8 +418,12 @@ describe('flowchart-directive', function () {
 	it('test selection dragging ends by selecting nodes', function () {
 
 		var mockNode = createMockNode();
-		var mockConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -422,8 +449,12 @@ describe('flowchart-directive', function () {
 	it('test mouse down commences connection dragging', function () {
 
 		var mockNode = createMockNode();
-		var mockConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -437,8 +468,12 @@ describe('flowchart-directive', function () {
 	it('test can end connection dragging', function () {
 
 		var mockNode = createMockNode();
-		var mockConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -456,7 +491,12 @@ describe('flowchart-directive', function () {
 		var mockNode = createMockNode();
 		var mockDraggingConnector = {};
 		var mockDragOverConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+            view: {
+                scrollX: 0,
+                scrollY: 0,
+            },
+        };
 
 		mockScope.chart = createMockChart([mockNode]);
 
@@ -477,8 +517,12 @@ describe('flowchart-directive', function () {
 
 		var mockNode = createMockNode();
 		var mockDraggingConnector = {};
-		var mockDragOverConnector = {};
-		var mockEvt = {};
+		var mockEvt = {
+			view: {
+				scrollX: 0,
+				scrollY: 0,
+			},
+		};
 
 		mockScope.chart = createMockChart([mockNode]);
 
