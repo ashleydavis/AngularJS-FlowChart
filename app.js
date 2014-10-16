@@ -65,6 +65,7 @@ angular.module('app', ['flowChart', ])
 				id: 0,
 				x: 0,
 				y: 0,
+				width: 350,
 				inputConnectors: [
 					{
 						name: "A",
@@ -200,27 +201,27 @@ angular.module('app', ['flowChart', ])
 			id: nextNodeID++,
 			x: 0,
 			y: 0,
-			inputConnectors: [ 
+			inputConnectors: [
 				{
-                    name: "X"
-                },
-                {
-                    name: "Y"
-                },
-                {
-                    name: "Z"
-                }			
+					name: "X"
+				},
+				{
+					name: "Y"
+				},
+				{
+					name: "Z"
+				}
 			],
 			outputConnectors: [ 
 				{
-                    name: "1"
-                },
-                {
-                    name: "2"
-                },
-                {
-                    name: "3"
-                }			
+					name: "1"
+				},
+				{
+					name: "2"
+				},
+				{
+					name: "3"
+				}
 			],
 		};
 
