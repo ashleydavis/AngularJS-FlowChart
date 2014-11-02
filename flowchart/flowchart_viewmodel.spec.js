@@ -167,6 +167,57 @@ describe('flowchart-viewmodel', function () {
 		expect(testObject.selected()).toBe(false);
 	});
 
+	it('test node width is set by default', function () {
+
+		var mockDataModel = {};
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		expect(testObject.width() === flowchart.defaultNodeWidth).toBe(true);
+	});
+
+	it('test node width is used', function () {
+
+		var mockDataModel = {"width": 900 };
+
+		var testObject = new flowchart.NodeViewModel(mockDataModel);
+
+		expect(testObject.width()).toBe(900);
+	});
+
+	it('test computeConnectorPos uses node width', function () {
+
+		var mockDataModel = {
+			x: function () {
+				return 10
+			},
+			y: function () {
+				return 15
+			},
+			"width": 900
+		};
+
+		var testObject = flowchart.computeConnectorPos(mockDataModel, 1, false);
+
+		expect(testObject.x).toBe(910);
+	});
+
+	it('test computeConnectorPos uses default node width', function () {
+
+		var mockDataModel = {
+			x: function () {
+				return 10
+			},
+			y: function () {
+				return 15
+			},
+		};
+
+		var testObject = flowchart.computeConnectorPos(mockDataModel, 1, false);
+
+		expect(testObject.x).toBe(flowchart.defaultNodeWidth + 10);
+	});
+
 	it('test node can be selected', function () {
 
 		var mockDataModel = {};
