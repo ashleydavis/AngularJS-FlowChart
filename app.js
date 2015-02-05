@@ -61,60 +61,60 @@ angular.module('app', ['flowChart', ])
 
 		nodes: [
 			{
-				name: "Node1",
+				name: "Example Node 1",
 				id: 0,
-				x: 50,
-				y: 50,
-				// width: 350,
+				x: 0,
+				y: 0,
+				width: 350,
 				inputConnectors: [
 					{
-						name: "iA",
+						name: "A",
 					},
 					{
-						name: "iB",
+						name: "B",
 					},
 					{
-						name: "iC",
+						name: "C",
 					},
 				],
 				outputConnectors: [
 					{
-						name: "oA",
+						name: "A",
 					},
 					{
-						name: "oB",
+						name: "B",
 					},
 					{
-						name: "oC",
+						name: "C",
 					},
 				],
 			},
 
 			{
-				name: "Node2",
+				name: "Example Node 2",
 				id: 1,
 				x: 400,
 				y: 200,
 				inputConnectors: [
 					{
-						name: "iA",
+						name: "A",
 					},
 					{
-						name: "iB",
+						name: "B",
 					},
 					{
-						name: "iC",
+						name: "C",
 					},
 				],
 				outputConnectors: [
 					{
-						name: "oA",
+						name: "A",
 					},
 					{
-						name: "oB",
+						name: "B",
 					},
 					{
-						name: "oC",
+						name: "C",
 					},
 				],
 			},
@@ -138,14 +138,15 @@ angular.module('app', ['flowChart', ])
 				name:'Connection 2',
 				source: {
 					nodeID: 0,
-					connectorIndex: 2,
+					connectorIndex: 0,
 				},
 
 				dest: {
 					nodeID: 1,
-					connectorIndex: 2,
+					connectorIndex: 0,
 				},
 			},
+
 		]
 	};
 

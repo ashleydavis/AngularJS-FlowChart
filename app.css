@@ -83,6 +83,17 @@ Style for connections.
 	fill: gray;
 }
 
+.connection-text{
+	fill: black;
+}
+
+.selected-connection-text{
+	fill: red;
+}
+
+.mouseover-connection-text{
+	fill: gray;
+
 /*
 Style for the connection being dragged out.
 */
