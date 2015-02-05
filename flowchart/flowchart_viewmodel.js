@@ -244,6 +244,10 @@ var flowchart = {
 		// Set to true when the connection is selected.
 		this._selected = false;
 
+		this.name = function() {
+			return this.data.name || "";
+		}
+
 		this.sourceCoordX = function () { 
 			return this.source.parentNode().x() + this.source.x();
 		};
@@ -289,6 +293,19 @@ var flowchart = {
 		this.destTangentY = function () { 
 			return flowchart.computeConnectionDestTangentY(this.sourceCoord(), this.destCoord());
 		};
+
+		this.middleX = function(scale) {
+			if(typeof(scale)=="undefined")
+				scale = 0.5;
+			return this.sourceCoordX()*(1-scale)+this.destCoordX()*scale;
+		};
+
+		this.middleY = function(scale) {
+			if(typeof(scale)=="undefined")
+				scale = 0.5;
+			return this.sourceCoordY()*(1-scale)+this.destCoordY()*scale;
+		};
+
 
 		//
 		// Select the connection.
