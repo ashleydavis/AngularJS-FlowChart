@@ -83,15 +83,15 @@ Style for connections.
 	fill: gray;
 }
 
-.connection-text{
+.connection-name{
 	fill: black;
 }
 
-.selected-connection-text{
+.selected-connection-name{
 	fill: red;
 }
 
-.mouseover-connection-text{
+.mouseover-connection-name{
 	fill: gray;
 }
 /*
