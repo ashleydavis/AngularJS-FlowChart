@@ -194,10 +194,15 @@ describe('flowchart-viewmodel', function () {
 			y: function () {
 				return 15
 			},
-			"width": 900
+			width: function() {
+				return 900
+			}
 		};
 
+		
 		var testObject = flowchart.computeConnectorPos(mockDataModel, 1, false);
+
+		console.log(testObject);
 
 		expect(testObject.x).toBe(910);
 	});
