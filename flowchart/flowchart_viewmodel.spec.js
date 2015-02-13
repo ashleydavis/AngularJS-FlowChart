@@ -199,10 +199,7 @@ describe('flowchart-viewmodel', function () {
 			}
 		};
 
-		
 		var testObject = flowchart.computeConnectorPos(mockDataModel, 1, false);
-
-		console.log(testObject);
 
 		expect(testObject.x).toBe(910);
 	});
