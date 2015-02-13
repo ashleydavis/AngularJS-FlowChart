@@ -195,6 +195,13 @@ var flowchart = {
 		}
 
 		//
+		// Internal function to add a connector.
+		this._deleteConnector = function (connectorID, x, connectorsDataModel, connectorsViewModel) {
+			connectorsDataModel.splice(connectorID, 1);
+			connectorsViewModel.splice(connectorID, 1);
+		}
+
+		//
 		// Add an input connector to the node.
 		//
 		this.addInputConnector = function (connectorDataModel) {
@@ -214,6 +221,24 @@ var flowchart = {
 				this.data.outputConnectors = [];
 			}
 			this._addConnector(connectorDataModel, this.data.width, this.data.outputConnectors, this.outputConnectors);
+		};
+
+		//
+		// Delete an input connector from the node.
+		//
+		this.deleteInputConnector = function (connectorID) {
+			if (this.data.inputConnectors) {
+				this._deleteConnector(connectorID, this.data.width, this.data.inputConnectors, this.inputConnectors);
+			}
+		};
+
+		//
+		// Delete an output connector from the node.
+		//
+		this.deleteOutputConnector = function (connectorID) {
+			if (this.data.outputConnectors) {
+				this._deleteConnector(connectorID, this.data.width, this.data.outputConnectors, this.outputConnectors);
+			}
 		};
 	};
 
