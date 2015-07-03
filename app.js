@@ -123,6 +123,7 @@ angular.module('app', ['flowChart', ])
 
 		connections: [
 			{
+				name:'Connection 1',
 				source: {
 					nodeID: 0,
 					connectorIndex: 1,
@@ -133,7 +134,18 @@ angular.module('app', ['flowChart', ])
 					connectorIndex: 2,
 				},
 			},
+			{
+				name:'Connection 2',
+				source: {
+					nodeID: 0,
+					connectorIndex: 0,
+				},
 
+				dest: {
+					nodeID: 1,
+					connectorIndex: 0,
+				},
+			},
 
 		]
 	};
