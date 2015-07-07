@@ -111,6 +111,15 @@
                        {{connection.destCoordX()}}, {{connection.destCoordY()}}"
           >
         </path>
+
+      <text
+            ng-attr-class="{{connection.selected() && 'selected-connection-name' || (connection == mouseOverConnection && 'mouseover-connection-name' || 'connection-name')}}"
+        ng-attr-x="{{connection.middleX()}}"
+        ng-attr-y="{{connection.middleY()}}"
+        text-anchor="middle"
+        alignment-baseline="middle"
+        >{{connection.name()}}</text>
+
         <circle
             ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
             r="5" 
