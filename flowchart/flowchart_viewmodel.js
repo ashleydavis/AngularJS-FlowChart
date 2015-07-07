@@ -36,7 +36,7 @@ var flowchart = {
 	//
 	flowchart.computeConnectorPos = function (node, connectorIndex, inputConnector) {
 		return {
-			x: node.x() + (inputConnector ? 0 : node.width ? node.width : flowchart.defaultNodeWidth),
+			x: node.x() + (inputConnector ? 0 : node.width() ? node.width() : flowchart.defaultNodeWidth),
 			y: node.y() + flowchart.computeConnectorY(connectorIndex),
 		};
 	};
@@ -146,10 +146,7 @@ var flowchart = {
 		// Height of the node.
 		//
 		this.height = function () {
-			var numConnectors =
-				Math.max(
-					this.inputConnectors.length, 
-					this.outputConnectors.length);
+			var numConnectors = Math.max(this.inputConnectors.length, this.outputConnectors.length);
 			return flowchart.computeConnectorY(numConnectors);
 		}
 
