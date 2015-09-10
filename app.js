@@ -32,7 +32,7 @@ angular.module('app', ['flowChart', ])
 	//
 	// Code for control key.
 	//
-	var ctrlKeyCode = 65;
+	var ctrlKeyCode = 17;
 
 	//
 	// Set to true when the ctrl key is down.
@@ -42,7 +42,7 @@ angular.module('app', ['flowChart', ])
 	//
 	// Code for A key.
 	//
-	var aKeyCode = 17;
+	var aKeyCode = 65;
 
 	//
 	// Code for esc key.
