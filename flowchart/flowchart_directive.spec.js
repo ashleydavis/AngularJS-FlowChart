@@ -261,8 +261,8 @@ describe('flowchart-directive', function () {
 
 		var mockEvt = {
 			view: {
-				scrollX: 0,
-				scrollY: 0,
+				pageXOffset: 0,
+				pageYOffset: 0,
 			},
 		};
 

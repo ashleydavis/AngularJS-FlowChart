@@ -185,8 +185,8 @@ angular.module('flowChart', ['dragging'] )
 		var svg_elem =  $element.get(0);
 		var matrix = svg_elem.getScreenCTM();
 		var point = svg_elem.createSVGPoint();
-		point.x = x - evt.view.scrollX;
-		point.y = y - evt.view.scrollY;
+		point.x = x - evt.view.pageXOffset;
+		point.y = y - evt.view.pageYOffset;
 		return point.matrixTransform(matrix.inverse());
 	};
 
