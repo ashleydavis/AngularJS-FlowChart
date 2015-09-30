@@ -53,7 +53,7 @@ describe('flowchart-viewmodel', function () {
  		return dataModel;
 	};
 
-	it('compute computeConnectorPos', function () {
+	it('compute input connector pos', function () {
 
 		var mockNode = {
 			x: function () { return 10 },
@@ -63,6 +63,18 @@ describe('flowchart-viewmodel', function () {
 		flowchart.computeConnectorPos(mockNode, 0, true);
 		flowchart.computeConnectorPos(mockNode, 1, true);
 		flowchart.computeConnectorPos(mockNode, 2, true);
+	});
+
+	it('compute output connector pos', function () {
+
+		var mockNode = {
+			x: function () { return 10 },
+			y: function () { return 15 },
+		};
+
+		flowchart.computeConnectorPos(mockNode, 0, false);
+		flowchart.computeConnectorPos(mockNode, 1, false);
+		flowchart.computeConnectorPos(mockNode, 2, false);
 	});
 
 	it('construct ConnectorViewModel', function () {
@@ -189,12 +201,14 @@ describe('flowchart-viewmodel', function () {
 
 		var mockDataModel = {
 			x: function () {
-				return 10
+				return 10;
 			},
 			y: function () {
-				return 15
+				return 15;
 			},
-			"width": 900
+			width: function () {
+				return 900;
+			},
 		};
 
 		var testObject = flowchart.computeConnectorPos(mockDataModel, 1, false);
