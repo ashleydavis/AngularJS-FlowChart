@@ -4,7 +4,7 @@ angular.module('mouseCapture', [])
 //
 // Service used to acquire 'mouse capture' then receive dragging events while the mouse is captured.
 //
-.factory('mouseCapture', function ($rootScope) {
+.factory('mouseCapture', [ '$rootScope', function ($rootScope) {
 
 	//
 	// Element that the mouse capture applies to, defaults to 'document' 
@@ -98,7 +98,8 @@ angular.module('mouseCapture', [])
 			$element.unbind("mouseup", mouseUp);
 		},
 	};
-})
+}]
+)
 
 //
 // Directive that marks the mouse capture element.
@@ -107,14 +108,16 @@ angular.module('mouseCapture', [])
   return {
   	restrict: 'A',
 
-  	controller: function($scope, $element, $attrs, mouseCapture) {
+  	controller: ['$scope', '$element', '$attrs', 'mouseCapture',
+        function($scope, $element, $attrs, mouseCapture) {
 
   		// 
   		// Register the directives element as the mouse capture element.
   		//
   		mouseCapture.registerElement($element);
 
-  	},
+  	    }],
+
   };
 })
 ;

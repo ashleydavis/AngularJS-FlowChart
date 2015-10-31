@@ -4,7 +4,7 @@ angular.module('dragging', ['mouseCapture', ] )
 //
 // Service used to help with dragging and clicking on elements.
 //
-.factory('dragging', function ($rootScope, mouseCapture) {
+.factory('dragging', ['$rootScope', 'mouseCapture',function ($rootScope, mouseCapture) {
 
 	//
 	// Threshold for dragging.
@@ -101,7 +101,7 @@ angular.module('dragging', ['mouseCapture', ] )
 
 	};
 
-})
+}])
 
 ;
 
