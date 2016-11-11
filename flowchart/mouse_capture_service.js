@@ -10,7 +10,7 @@ angular.module('mouseCapture', [])
 	// Element that the mouse capture applies to, defaults to 'document' 
 	// unless the 'mouse-capture' directive is used.
 	//
-	var $element = document; 
+	var $element = $(document); 
 
 	//
 	// Set when mouse capture is acquired to an object that contains 
