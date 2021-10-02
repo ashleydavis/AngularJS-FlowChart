@@ -5,6 +5,8 @@ A WebUI control for visualizing and editing flow charts.
 
 This isn't designed to be completely general purpose, but it will be a good basis if you need an SVG flowchart and you are willing to work with AngularJS.
 
+[Click here to support my work](https://www.codecapers.com.au/about#support-my-work)
+
 Code Project Article
 --------------------
 
